@@ -20,7 +20,7 @@ public class AccesoDatos {
         
         String url = "jdbc:sqlserver://localhost:1433;databaseName=Revendedores_Catalogo";
         String user = "sa";
-        String pass = "CuasiRecontrameh1582";
+        String pass = "Server1552";
         String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
         
         try {
