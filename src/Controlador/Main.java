@@ -5,6 +5,8 @@
  */
 package Controlador;
 
+import Vista.MenuPrincipal;
+
 /**
  *
  * @author Usuario
@@ -17,7 +19,9 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
         
-        System.out.println("Testing");
+        MenuPrincipal wdw = new MenuPrincipal();
+        wdw.setVisible(true);
+        
     }
     
 }
