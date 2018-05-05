@@ -54,31 +54,31 @@ public class ConsultaCliente extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jtClient);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(10, 11, 561, 222);
+        jScrollPane1.setBounds(10, 140, 561, 200);
 
         jLabel1.setText("Buscar Cliente");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(10, 250, 80, 14);
+        jLabel1.setBounds(10, 20, 80, 14);
         getContentPane().add(txtClientName);
-        txtClientName.setBounds(10, 310, 80, 20);
+        txtClientName.setBounds(10, 90, 80, 20);
 
         btnSearchClientName.setText("Buscar");
         getContentPane().add(btnSearchClientName);
-        btnSearchClientName.setBounds(110, 310, 65, 23);
+        btnSearchClientName.setBounds(110, 90, 65, 23);
         getContentPane().add(txtClientMail);
-        txtClientMail.setBounds(210, 310, 80, 20);
+        txtClientMail.setBounds(210, 90, 80, 20);
 
         btnSearchClientMail.setText("Buscar");
         getContentPane().add(btnSearchClientMail);
-        btnSearchClientMail.setBounds(310, 310, 65, 23);
+        btnSearchClientMail.setBounds(300, 90, 65, 23);
 
         rbtClientByMail.setText("E-mail");
         getContentPane().add(rbtClientByMail);
-        rbtClientByMail.setBounds(210, 280, 53, 23);
+        rbtClientByMail.setBounds(210, 50, 53, 23);
 
         rbtClientByName.setText("Nombre");
         getContentPane().add(rbtClientByName);
-        rbtClientByName.setBounds(10, 280, 63, 23);
+        rbtClientByName.setBounds(10, 50, 63, 23);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
