@@ -85,7 +85,7 @@ public class AltaProducto extends javax.swing.JFrame {
 
         btnModifyProduct.setText("Modificar");
 
-        btnNewProduct.setText("Guardar");
+        btnNewProduct.setText("Agregar");
 
         btnSearchProduct.setText("Buscar");
 
