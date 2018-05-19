@@ -5,10 +5,14 @@
  */
 package Controlador;
 
+import Modelo.AgenteOficial;
 import Modelo.Condicion;
 import Modelo.Premio;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -49,6 +53,23 @@ public class GestorPremio {
         stmt.close();
         ad.cerrarConexion();       
 
+    }
+    
+    public ArrayList<AgenteOficial> loadCmbOfficialAgent() throws SQLException{
+        ArrayList<AgenteOficial> agents = new ArrayList<>();
+        ad.abrirConexion();
+        Statement stmt = ad.getConn().createStatement();
+        ResultSet query = stmt.executeQuery("select idAgenteOficial, nombreAgente from AGENTES_OFICIALES");
+        while(query.next()){
+            AgenteOficial ag = new AgenteOficial();
+            ag.setIdOfficialAgent(query.getInt("idAgenteOficial"));
+            ag.setAgentName("nombreAgente");
+            agents.add(ag);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return agents;
     }
 
 }
