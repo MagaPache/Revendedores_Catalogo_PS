@@ -9,12 +9,12 @@ package Vista;
  *
  * @author Usuario
  */
-public class ModificarPedido extends javax.swing.JFrame {
+public class ImprimirDetallePedido extends javax.swing.JFrame {
 
     /**
      * Creates new form ModificarPedido
      */
-    public ModificarPedido() {
+    public ImprimirDetallePedido() {
         initComponents();
     }
 
@@ -38,8 +38,7 @@ public class ModificarPedido extends javax.swing.JFrame {
         tblOrderDetail = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         lblOrderDate = new javax.swing.JLabel();
-        btnAddItem = new javax.swing.JButton();
-        btnDropItem = new javax.swing.JButton();
+        btnPrint = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -91,9 +90,7 @@ public class ModificarPedido extends javax.swing.JFrame {
 
         lblOrderDate.setText("jLabel5");
 
-        btnAddItem.setText("Agregar");
-
-        btnDropItem.setText("Quitar");
+        btnPrint.setText("Imprimir");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -105,31 +102,28 @@ public class ModificarPedido extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cmbOfficialAgent, 0, 178, Short.MAX_VALUE)
+                                    .addComponent(cmbOrder, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(cmbOfficialAgent, 0, 178, Short.MAX_VALUE)
-                                            .addComponent(cmbOrder, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(lblOrderDate)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(162, 162, 162)
-                                .addComponent(btnAddItem)
-                                .addGap(76, 76, 76)
-                                .addComponent(btnDropItem)))
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblOrderDate))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(242, 242, 242)
+                .addComponent(btnPrint)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -151,9 +145,7 @@ public class ModificarPedido extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddItem)
-                    .addComponent(btnDropItem))
+                .addComponent(btnPrint)
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
@@ -177,27 +169,29 @@ public class ModificarPedido extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImprimirDetallePedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImprimirDetallePedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImprimirDetallePedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImprimirDetallePedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ModificarPedido().setVisible(true);
+                new ImprimirDetallePedido().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddItem;
-    private javax.swing.JButton btnDropItem;
+    private javax.swing.JButton btnPrint;
     private javax.swing.JComboBox<String> cmbCampaign;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
     private javax.swing.JComboBox<String> cmbOrder;
