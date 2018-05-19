@@ -29,9 +29,10 @@ public class ModificarPremio extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jtPrices = new javax.swing.JTable();
-        btnModifyPrice = new javax.swing.JButton();
+        btnDropPrice = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         cmbOfficialAgent = new javax.swing.JComboBox<>();
+        btnAddPrice = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,11 +49,13 @@ public class ModificarPremio extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jtPrices);
 
-        btnModifyPrice.setText("Modificar");
+        btnDropPrice.setText("Quitar");
 
         jLabel1.setText("Seleccione un Agente Oficial");
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        btnAddPrice.setText("Agregar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -64,7 +67,9 @@ public class ModificarPremio extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnModifyPrice))
+                        .addComponent(btnAddPrice)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDropPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -82,7 +87,9 @@ public class ModificarPremio extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnModifyPrice)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDropPrice)
+                    .addComponent(btnAddPrice))
                 .addContainerGap())
         );
 
@@ -125,7 +132,8 @@ public class ModificarPremio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnModifyPrice;
+    private javax.swing.JButton btnAddPrice;
+    private javax.swing.JButton btnDropPrice;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
