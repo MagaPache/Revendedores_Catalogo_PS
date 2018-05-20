@@ -47,7 +47,7 @@ public class GestorCliente {
         ad.cerrarConexion();
     }
 
-    public Cliente obtainClient(int id) throws SQLException {
+    public Cliente getClient(int id) throws SQLException {
         Cliente c = new Cliente();
         ad.abrirConexion();
         Statement stmt = ad.getConn().createStatement();
@@ -65,7 +65,7 @@ public class GestorCliente {
         return c;
     }
 
-    public ArrayList<Cliente> obtainAllClients() throws SQLException {
+    public ArrayList<Cliente> getAllClients() throws SQLException {
         ArrayList<Cliente> clients = new ArrayList<>();
         ad.abrirConexion();
         Statement stmt = ad.getConn().createStatement();
@@ -85,7 +85,7 @@ public class GestorCliente {
         return clients;
     }
 
-    public Cliente obtainClientByName(String nombre) throws SQLException {
+    public Cliente getClientByName(String nombre) throws SQLException {
         Cliente c = new Cliente();
         ad.abrirConexion();
         Statement stmt = ad.getConn().createStatement();
@@ -103,7 +103,7 @@ public class GestorCliente {
         return c;
     }
 
-    public Cliente obtainClientByEmail(String email) throws SQLException {
+    public Cliente getClientByEmail(String email) throws SQLException {
         Cliente c = new Cliente();
         ad.abrirConexion();
         Statement stmt = ad.getConn().createStatement();

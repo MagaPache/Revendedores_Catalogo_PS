@@ -45,7 +45,7 @@ public class GestorPremio {
 
     }
 
-    public void dropPrice(int id) throws SQLException {
+    public void deletePrice(int id) throws SQLException {
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("exec sp_delete_price ?");
         stmt.setInt(1, id);
