@@ -38,7 +38,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtClienteMail" min="-2" pref="109" max="-2" attributes="0"/>
+                                  <Component id="txtClientMail" min="-2" pref="109" max="-2" attributes="0"/>
                                   <Component id="jdcBirthDate" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtClientPhone" alignment="0" min="-2" pref="109" max="-2" attributes="0"/>
                                   <Component id="txtClientAddress" alignment="0" min="-2" pref="109" max="-2" attributes="0"/>
@@ -77,7 +77,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtClienteMail" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtClientMail" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
@@ -126,9 +126,9 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtClientPhone">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtClienteMail">
+    <Component class="javax.swing.JTextField" name="txtClientMail">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtClienteMailActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtClientMailActionPerformed"/>
       </Events>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="jdcBirthDate">
@@ -137,6 +137,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Guardar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSaveClientActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnCancel">
       <Properties>

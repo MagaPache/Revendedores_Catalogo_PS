@@ -5,7 +5,8 @@
  */
 package Modelo;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 /**
  *
@@ -79,6 +80,15 @@ public class Cliente {
         this.email = email;
         this.birthDate = birthDate;
     }
+
+    public Cliente(String clientName, String address, String telephone, String email, Date birthDate) {
+        this.clientName = clientName;
+        this.address = address;
+        this.telephone = telephone;
+        this.email = email;
+        this.birthDate = birthDate;
+    }    
+    
 
     @Override
     public String toString() {

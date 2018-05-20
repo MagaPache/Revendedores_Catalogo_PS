@@ -5,6 +5,15 @@
  */
 package Vista;
 
+import Controlador.GestorCliente;
+import Modelo.Cliente;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Usuario
@@ -14,6 +23,13 @@ public class AltaCliente extends javax.swing.JFrame {
     /**
      * Creates new form AltaCliente
      */
+    GestorCliente gc = new GestorCliente();
+    String name;
+    String address;
+    String telephone;
+    String email;
+    Date birthDate;
+
     public AltaCliente() {
         initComponents();
     }
@@ -35,7 +51,7 @@ public class AltaCliente extends javax.swing.JFrame {
         txtClientName = new javax.swing.JTextField();
         txtClientAddress = new javax.swing.JTextField();
         txtClientPhone = new javax.swing.JTextField();
-        txtClienteMail = new javax.swing.JTextField();
+        txtClientMail = new javax.swing.JTextField();
         jdcBirthDate = new com.toedter.calendar.JDateChooser();
         btnSaveClient = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
@@ -52,13 +68,18 @@ public class AltaCliente extends javax.swing.JFrame {
 
         jLabel5.setText("Fecha Nacimiento");
 
-        txtClienteMail.addActionListener(new java.awt.event.ActionListener() {
+        txtClientMail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtClienteMailActionPerformed(evt);
+                txtClientMailActionPerformed(evt);
             }
         });
 
         btnSaveClient.setText("Guardar");
+        btnSaveClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveClientActionPerformed(evt);
+            }
+        });
 
         btnCancel.setText("Cancelar");
 
@@ -80,7 +101,7 @@ public class AltaCliente extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(27, 27, 27)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtClienteMail, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtClientMail, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jdcBirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtClientPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtClientAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -109,7 +130,7 @@ public class AltaCliente extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtClienteMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtClientMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
@@ -124,9 +145,27 @@ public class AltaCliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtClienteMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClienteMailActionPerformed
+    private void txtClientMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClientMailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtClienteMailActionPerformed
+    }//GEN-LAST:event_txtClientMailActionPerformed
+
+    private void btnSaveClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveClientActionPerformed
+        try {
+            // TODO add your handling code here:
+            final JDialog dialog = new JDialog();
+            name = txtClientName.getText();
+            address = txtClientAddress.getText();
+            telephone = txtClientPhone.getText();
+            email = txtClientMail.getText();
+            birthDate = jdcBirthDate.getDate();
+            System.out.println(birthDate);
+            Cliente c = new Cliente(name, address, telephone, email, birthDate);
+            gc.addClient(c);
+            JOptionPane.showMessageDialog(dialog, "Se ha registrado un nuevo curso");
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSaveClientActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,8 +212,8 @@ public class AltaCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private com.toedter.calendar.JDateChooser jdcBirthDate;
     private javax.swing.JTextField txtClientAddress;
+    private javax.swing.JTextField txtClientMail;
     private javax.swing.JTextField txtClientName;
     private javax.swing.JTextField txtClientPhone;
-    private javax.swing.JTextField txtClienteMail;
     // End of variables declaration//GEN-END:variables
 }
