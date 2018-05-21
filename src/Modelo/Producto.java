@@ -88,6 +88,17 @@ public class Producto {
         this.idOfficialAgent = idOfficialAgent;
     }
 
+    public Producto(String productName, int code, int idProductType, int idProductCategory, float unitPrice, int idOfficialAgent) {
+        this.productName = productName;
+        this.code = code;
+        this.idProductType = idProductType;
+        this.idProductCategory = idProductCategory;
+        this.unitPrice = unitPrice;
+        this.idOfficialAgent = idOfficialAgent;
+    }
+    
+    
+
     @Override
     public String toString() {
         return "Producto{" + "idProduct=" + idProduct + ", productName=" + productName + ", code=" + code + ", idProductType=" + idProductType + ", idProductCategory=" + idProductCategory + ", unitPrice=" + unitPrice + ", idOfficialAgent=" + idOfficialAgent + '}';

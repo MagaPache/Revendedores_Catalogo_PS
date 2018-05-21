@@ -23,7 +23,7 @@ public class GestorProducto {
 
     public void addProduct(Producto p) throws SQLException {
         ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("exec sp_insert_product ?, ?, ?, ?, ?, ?");
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_insert_product ?, ?, ?, ?, ?, ?");
         stmt.setString(1, p.getProductName());
         stmt.setInt(2, p.getCode());
         stmt.setInt(3, p.getIdProductType());

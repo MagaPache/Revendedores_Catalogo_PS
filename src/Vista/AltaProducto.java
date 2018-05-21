@@ -10,6 +10,7 @@ import Controlador.GestorProducto;
 import Controlador.GestorTipoProducto;
 import Modelo.AgenteOficial;
 import Modelo.CategoriaProducto;
+import Modelo.Producto;
 import Modelo.TipoProducto;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,6 +30,12 @@ public class AltaProducto extends javax.swing.JFrame {
     GestorProducto gp = new GestorProducto();
     GestorTipoProducto gtp = new GestorTipoProducto();
     GestorCategoriaProducto gcp = new GestorCategoriaProducto();
+    String name;
+    int code;
+    int officialAgent;
+    int productType;
+    int productCategory;
+    float unitPrice;
 
     public AltaProducto() throws SQLException {
         initComponents();
@@ -106,6 +113,11 @@ public class AltaProducto extends javax.swing.JFrame {
         btnModifyProduct.setText("Modificar");
 
         btnNewProduct.setText("Agregar");
+        btnNewProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewProductActionPerformed(evt);
+            }
+        });
 
         btnSearchProduct.setText("Buscar");
 
@@ -205,6 +217,22 @@ public class AltaProducto extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnNewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewProductActionPerformed
+        try {
+            // TODO add your handling code here:
+            name = txtProductName.getText();
+            code = Integer.parseInt(txtProductCode.getText());
+            officialAgent = cmbOfficialAgent.getSelectedIndex()+1;
+            productType = cmbProductType.getSelectedIndex()+1;
+            productCategory = cmbProductCategory.getSelectedIndex()+1;
+            unitPrice = Float.parseFloat(txtProductPrice.getText());
+            Producto p = new Producto(name, code, productType, productCategory, unitPrice, officialAgent);
+            gp.addProduct(p);
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnNewProductActionPerformed
 
     /**
      * @param args the command line arguments
