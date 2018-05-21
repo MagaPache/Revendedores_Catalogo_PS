@@ -28,7 +28,7 @@ public class GestorCliente {
         stmt.setString(2, c.getAddress());
         stmt.setString(3, c.getTelephone());
         stmt.setString(4, c.getEmail());
-        stmt.setDate(5, (Date) c.getBirthDate());
+        stmt.setDate(5, c.getBirthDate());
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
@@ -42,7 +42,7 @@ public class GestorCliente {
         stmt.setString(3, c.getAddress());
         stmt.setString(4, c.getTelephone());
         stmt.setString(5, c.getEmail());
-        stmt.setDate(6, (Date) c.getBirthDate());
+        stmt.setDate(6, c.getBirthDate());
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();

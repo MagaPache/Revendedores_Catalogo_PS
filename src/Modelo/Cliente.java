@@ -5,21 +5,22 @@
  */
 package Modelo;
 
-import java.util.Date;
-
+import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
  * @author Usuario
  */
 public class Cliente {
-    
+
     private int idClient;
     private String clientName;
     private String address;
     private String telephone;
     private String email;
     private Date birthDate;
+    
 
     public int getIdClient() {
         return idClient;
@@ -87,13 +88,11 @@ public class Cliente {
         this.telephone = telephone;
         this.email = email;
         this.birthDate = birthDate;
-    }    
-    
+    }
 
     @Override
     public String toString() {
         return "Cliente{" + "idClient=" + idClient + ", clientName=" + clientName + ", address=" + address + ", telephone=" + telephone + ", email=" + email + ", birthDate=" + birthDate + '}';
     }
-    
-    
+
 }
