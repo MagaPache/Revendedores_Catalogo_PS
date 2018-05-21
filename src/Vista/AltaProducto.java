@@ -5,9 +5,11 @@
  */
 package Vista;
 
+import Controlador.GestorCategoriaProducto;
 import Controlador.GestorProducto;
 import Controlador.GestorTipoProducto;
 import Modelo.AgenteOficial;
+import Modelo.CategoriaProducto;
 import Modelo.TipoProducto;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,12 +28,14 @@ public class AltaProducto extends javax.swing.JFrame {
      */
     GestorProducto gp = new GestorProducto();
     GestorTipoProducto gtp = new GestorTipoProducto();
+    GestorCategoriaProducto gcp = new GestorCategoriaProducto();
 
     public AltaProducto() throws SQLException {
         initComponents();
 
         loadCmbOfficialAgent(gp.getOfficialAgents());
         loadCmbProductType(gtp.getProductTypes());
+        loadCmbProductCategory(gcp.getProductCategories());
     }
 
     /**
@@ -281,5 +285,13 @@ public class AltaProducto extends javax.swing.JFrame {
             model.addElement(productType.getPtName());
         }
         cmbProductType.setModel(model);
+    }
+
+    private void loadCmbProductCategory(ArrayList<CategoriaProducto> productCategories) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (CategoriaProducto productCategory : productCategories) {
+            model.addElement(productCategory.getPcName());
+        }
+        cmbProductCategory.setModel(model);
     }
 }
