@@ -12,6 +12,7 @@ import Modelo.AgenteOficial;
 import Modelo.CategoriaProducto;
 import Modelo.Producto;
 import Modelo.TipoProducto;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -43,7 +44,9 @@ public class AltaProducto extends javax.swing.JFrame {
         initComponents();
         //cmbProductType.setSelectedIndex(-1);
         loadCmbOfficialAgent(gp.getOfficialAgents());
-        //loadCmbProductType(gtp.getProductTypesPerOfficialAgent(idAgent));
+        //loadCmbProductType(gtp.getProductTypesPerOfficialAgent(idAgent));       
+        //cmbProductType.setSelectedIndex(-1);
+        loadCmbProductType(gtp.getProductTypesPerOfficialAgent(((AgenteOficial)cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
         loadCmbProductCategory(gcp.getProductCategories());
     }
 
@@ -92,15 +95,15 @@ public class AltaProducto extends javax.swing.JFrame {
         jLabel6.setText("Agente Oficial");
 
         cmbProductType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbProductType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbProductTypeActionPerformed(evt);
-            }
-        });
 
         cmbProductCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOfficialAgent.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbOfficialAgentItemStateChanged(evt);
+            }
+        });
 
         btnCancelProduct.setText("Cancelar");
 
@@ -244,26 +247,30 @@ public class AltaProducto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnNewProductActionPerformed
 
-    private void cmbProductTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductTypeActionPerformed
-          
-        try {
-            // TODO add your handling code here:
-            idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
-            loadCmbProductType(gtp.getProductTypesPerOfficialAgent(idAgent));
-        } catch (SQLException ex) {
-            Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+    private void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOfficialAgentItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbOfficialAgent.getItemCount() > 0) {
+                    int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+                    System.out.println(idAgente);
+                }
+                loadCmbProductType(gtp.getProductTypesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
-        
+    }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
 
-    }//GEN-LAST:event_cmbProductTypeActionPerformed
-
-//    public void cmbOfficialAgentItemStateChanged(ItemEvent ie) {
-//        try {
-//            idAgent = cmbOfficialAgent.getSelectedIndex()+1;
-//            loadCmbProductType(gtp.getProductTypesPerOfficialAgent(idAgent));
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+//    public void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {
+//        
+////        try {
+////            idAgent = cmbOfficialAgent.getSelectedIndex()+1;
+////            loadCmbProductType(gtp.getProductTypesPerOfficialAgent(idAgent));
+////        } catch (SQLException ex) {
+////            Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+////        }
 //    }
     /**
      * @param args the command line arguments

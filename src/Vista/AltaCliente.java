@@ -164,20 +164,12 @@ public class AltaCliente extends javax.swing.JFrame {
             address = txtClientAddress.getText();
             telephone = txtClientPhone.getText();
             email = txtClientMail.getText();
-//            try {
-//                String formato = jdcBirthDate.getDateFormatString();
-//                birthDate = jdcBirthDate.getDate();
-//                SimpleDateFormat sdf = new SimpleDateFormat(formato);
-//            } catch (Exception e) {
-//                JOptionPane.showMessageDialog(null, "Al menos elija una FECHA DE NACIMIENTO VALIDA ", "Error..!!", JOptionPane.ERROR_MESSAGE);
-//
-//            }
             birthDate = jdcBirthDate.getDate();
             fechaNac = dfDateInstance.format(birthDate);
             System.out.println(fechaNac);
             Cliente c = new Cliente(name, address, telephone, email, fechaNac);
             gc.addClient(c);
-            JOptionPane.showMessageDialog(dialog, "Se ha registrado un nuevo curso");
+            JOptionPane.showMessageDialog(dialog, "Se ha registrado un nuevo cliente");
         } catch (SQLException ex) {
             Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
