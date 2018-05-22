@@ -19,7 +19,7 @@ public class Cliente {
     private String address;
     private String telephone;
     private String email;
-    private Date birthDate;
+    private String birthDate;
     
 
     public int getIdClient() {
@@ -62,18 +62,18 @@ public class Cliente {
         this.email = email;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
     public Cliente() {
     }
 
-    public Cliente(int idClient, String clientName, String address, String telephone, String email, Date birthDate) {
+    public Cliente(int idClient, String clientName, String address, String telephone, String email, String birthDate) {
         this.idClient = idClient;
         this.clientName = clientName;
         this.address = address;
@@ -82,7 +82,7 @@ public class Cliente {
         this.birthDate = birthDate;
     }
 
-    public Cliente(String clientName, String address, String telephone, String email, Date birthDate) {
+    public Cliente(String clientName, String address, String telephone, String email, String birthDate) {
         this.clientName = clientName;
         this.address = address;
         this.telephone = telephone;
