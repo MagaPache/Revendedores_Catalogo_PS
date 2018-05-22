@@ -12,6 +12,7 @@ import Modelo.AgenteOficial;
 import Modelo.CategoriaProducto;
 import Modelo.Producto;
 import Modelo.TipoProducto;
+import java.awt.event.ItemEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -36,12 +37,13 @@ public class AltaProducto extends javax.swing.JFrame {
     int productType;
     int productCategory;
     float unitPrice;
+    int idAgent;
 
     public AltaProducto() throws SQLException {
         initComponents();
-
+        //cmbProductType.setSelectedIndex(-1);
         loadCmbOfficialAgent(gp.getOfficialAgents());
-        loadCmbProductType(gtp.getProductTypes());
+        //loadCmbProductType(gtp.getProductTypesPerOfficialAgent(idAgent));
         loadCmbProductCategory(gcp.getProductCategories());
     }
 
@@ -90,6 +92,11 @@ public class AltaProducto extends javax.swing.JFrame {
         jLabel6.setText("Agente Oficial");
 
         cmbProductType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbProductType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbProductTypeActionPerformed(evt);
+            }
+        });
 
         cmbProductCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -131,28 +138,31 @@ public class AltaProducto extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(cmbProductCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cmbProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel4)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbProductCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(36, 36, 36)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(96, 96, 96)
+                                    .addComponent(btnNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(34, 34, 34)
+                                    .addComponent(cmbProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -223,9 +233,9 @@ public class AltaProducto extends javax.swing.JFrame {
             // TODO add your handling code here:
             name = txtProductName.getText();
             code = Integer.parseInt(txtProductCode.getText());
-            officialAgent = cmbOfficialAgent.getSelectedIndex()+1;
-            productType = cmbProductType.getSelectedIndex()+1;
-            productCategory = cmbProductCategory.getSelectedIndex()+1;
+            officialAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+            productType = ((TipoProducto) cmbProductType.getSelectedItem()).getIdProductType();
+            productCategory = ((CategoriaProducto) cmbProductCategory.getSelectedItem()).getIdProductCategory();
             unitPrice = Float.parseFloat(txtProductPrice.getText());
             Producto p = new Producto(name, code, productType, productCategory, unitPrice, officialAgent);
             gp.addProduct(p);
@@ -234,6 +244,27 @@ public class AltaProducto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnNewProductActionPerformed
 
+    private void cmbProductTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductTypeActionPerformed
+          
+        try {
+            // TODO add your handling code here:
+            idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+            loadCmbProductType(gtp.getProductTypesPerOfficialAgent(idAgent));
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
+    }//GEN-LAST:event_cmbProductTypeActionPerformed
+
+//    public void cmbOfficialAgentItemStateChanged(ItemEvent ie) {
+//        try {
+//            idAgent = cmbOfficialAgent.getSelectedIndex()+1;
+//            loadCmbProductType(gtp.getProductTypesPerOfficialAgent(idAgent));
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
     /**
      * @param args the command line arguments
      */

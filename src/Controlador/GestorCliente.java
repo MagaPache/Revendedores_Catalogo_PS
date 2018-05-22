@@ -28,7 +28,7 @@ public class GestorCliente {
         stmt.setString(2, c.getAddress());
         stmt.setString(3, c.getTelephone());
         stmt.setString(4, c.getEmail());
-        stmt.setDate(5, c.getBirthDate());
+        stmt.setString(5, c.getBirthDate());
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
@@ -42,7 +42,7 @@ public class GestorCliente {
         stmt.setString(3, c.getAddress());
         stmt.setString(4, c.getTelephone());
         stmt.setString(5, c.getEmail());
-        stmt.setDate(6, c.getBirthDate());
+        stmt.setString(6, c.getBirthDate());
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
@@ -59,7 +59,7 @@ public class GestorCliente {
             c.setAddress(query.getString("direccion"));
             c.setTelephone(query.getString("telefono"));
             c.setEmail(query.getString("email"));
-            c.setBirthDate(query.getDate("fechaNac"));
+            c.setBirthDate(query.getString("fechaNac"));
         }
         query.close();
         stmt.close();
@@ -78,7 +78,7 @@ public class GestorCliente {
             c.setAddress(query.getString("direccion"));
             c.setTelephone(query.getString("telefono"));
             c.setEmail(query.getString("email"));
-            c.setBirthDate(query.getDate("fechaNac"));
+            c.setBirthDate(query.getString("fechaNac"));
             clients.add(c);
         }
         query.close();
@@ -98,7 +98,7 @@ public class GestorCliente {
             c.setAddress(query.getString("direccion"));
             c.setTelephone(query.getString("telefono"));
             c.setEmail(query.getString("email"));
-            c.setBirthDate(query.getDate("fechaNac"));
+            c.setBirthDate(query.getString("fechaNac"));
         }
         query.close();
         stmt.close();
@@ -116,7 +116,7 @@ public class GestorCliente {
             c.setAddress(query.getString("direccion"));
             c.setTelephone(query.getString("telefono"));
             c.setEmail(query.getString("email"));
-            c.setBirthDate(query.getDate("fechaNac"));
+            c.setBirthDate(query.getString("fechaNac"));
         }
         query.close();
         stmt.close();
