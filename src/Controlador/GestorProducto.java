@@ -7,6 +7,7 @@ package Controlador;
 
 import Modelo.AgenteOficial;
 import Modelo.Producto;
+import Modelo.VmProducto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -81,20 +82,20 @@ public class GestorProducto {
         return p;
     }
 
-    public ArrayList<Producto> getAllProducts() throws SQLException {
-        ArrayList<Producto> products = new ArrayList<>();
+    public ArrayList<VmProducto> getAllProducts() throws SQLException {
+        ArrayList<VmProducto> products = new ArrayList<>();
         ad.abrirConexion();
         Statement stmt = ad.getConn().createStatement();
-        ResultSet query = stmt.executeQuery("SELECT * FROM PRODUCTOS ORDER BY idAgenteOficial");
+        ResultSet query = stmt.executeQuery("SELECT p.idProducto id, producto producto, codigoProducto codigo, tp.tipoProducto tipo, cp.categoriaProducto categoria, precioUnitario precio, ao.nombreAgente agente FROM PRODUCTOS p join TIPOS_PRODUCTOS tp ON p.idTipoProducto = tp.idTipoProducto JOIN CATEGORIAS_PRODUCTOS cp ON p.idCategoriaProducto = cp.idCategoriaProducto JOIN AGENTES_OFICIALES ao ON p.idAgenteOficial = ao.idAgenteOficial ORDER BY 7");
         while (query.next()) {
-            Producto p = new Producto();
-            p.setIdProduct(query.getInt("idProducto"));
+            VmProducto p = new VmProducto();
+            p.setIdProduct(query.getInt("id"));
             p.setProductName(query.getString("producto"));
-            p.setCode(query.getInt("codigoProducto"));
-            p.setIdProductType(query.getInt("idTipoProducto"));
-            p.setIdProductCategory(query.getInt("idCategoriaProducto"));
-            p.setUnitPrice(query.getFloat("precioUnitario"));
-            p.setIdOfficialAgent(query.getInt("idAgenteOficial"));
+            p.setProductCode(query.getInt("codigo"));
+            p.setProductType(query.getString("tipo"));
+            p.setProductCategory(query.getString("categoria"));
+            p.setUnitPrice(query.getFloat("precio"));
+            p.setAgentName(query.getString("agente"));
             products.add(p);
         }
         query.close();

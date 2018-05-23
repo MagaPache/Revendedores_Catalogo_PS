@@ -60,7 +60,7 @@ public class TipoProducto {
 
     @Override
     public String toString() {
-        return "TipoProducto{" + "idProductType=" + idProductType + ", ptName=" + ptName + ", profitPercentage=" + profitPercentage + ", idOfficialAgent=" + idOfficialAgent + '}';
+        return ptName;
     }
     
     

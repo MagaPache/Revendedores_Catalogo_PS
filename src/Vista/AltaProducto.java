@@ -12,6 +12,7 @@ import Modelo.AgenteOficial;
 import Modelo.CategoriaProducto;
 import Modelo.Producto;
 import Modelo.TipoProducto;
+import Modelo.VmProducto;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
@@ -33,7 +34,7 @@ public class AltaProducto extends javax.swing.JFrame {
     GestorProducto gp = new GestorProducto();
     GestorTipoProducto gtp = new GestorTipoProducto();
     GestorCategoriaProducto gcp = new GestorCategoriaProducto();
-    ArrayList<Producto> products = new ArrayList<>();
+    ArrayList<VmProducto> products = new ArrayList<>();
     String name;
     int code;
     int officialAgent;
@@ -45,11 +46,11 @@ public class AltaProducto extends javax.swing.JFrame {
     public AltaProducto() throws SQLException {
         initComponents();
         loadCmbOfficialAgent(gp.getOfficialAgents());
-        loadCmbProductType(gtp.getProductTypesPerOfficialAgent(((AgenteOficial)cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
-        loadCmbProductCategory(gcp.getProductCategoriesPerOfficialAgent(((AgenteOficial)cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        loadCmbProductType(gtp.getProductTypesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        loadCmbProductCategory(gcp.getProductCategoriesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
         products = gp.getAllProducts();
         loadTableProducts();
-        
+
     }
 
     /**
@@ -81,6 +82,7 @@ public class AltaProducto extends javax.swing.JFrame {
         btnSearchProduct = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         txtSearchProduct = new javax.swing.JTextField();
+        btnUpdateTable = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -135,6 +137,13 @@ public class AltaProducto extends javax.swing.JFrame {
 
         jLabel7.setText("Nombre Producto");
 
+        btnUpdateTable.setText("Actualizar");
+        btnUpdateTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateTableActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,21 +182,21 @@ public class AltaProducto extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
-                        .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnSearchProduct)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCancelProduct)
                         .addGap(18, 18, 18)
                         .addComponent(btnModifyProduct)
-                        .addGap(17, 17, 17))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 903, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdateTable))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 903, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,7 +235,8 @@ public class AltaProducto extends javax.swing.JFrame {
                     .addComponent(btnNewProduct)
                     .addComponent(btnSearchProduct)
                     .addComponent(jLabel7)
-                    .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateTable))
                 .addGap(22, 22, 22))
         );
 
@@ -235,14 +245,13 @@ public class AltaProducto extends javax.swing.JFrame {
 
     private void btnNewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewProductActionPerformed
         try {
-            // TODO add your handling code here:
-            name = txtProductName.getText();
-            code = Integer.parseInt(txtProductCode.getText());
-            officialAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
-            productType = ((TipoProducto) cmbProductType.getSelectedItem()).getIdProductType();
-            productCategory = ((CategoriaProducto) cmbProductCategory.getSelectedItem()).getIdProductCategory();
-            unitPrice = Float.parseFloat(txtProductPrice.getText());
-            Producto p = new Producto(name, code, productType, productCategory, unitPrice, officialAgent);
+            Producto p = new Producto();
+            p.setProductName(txtProductName.getText());
+            p.setCode(Integer.parseInt(txtProductCode.getText()));
+            p.setIdProductType(((TipoProducto) cmbProductType.getSelectedItem()).getIdProductType());
+            p.setIdProductCategory(((CategoriaProducto) cmbProductCategory.getSelectedItem()).getIdProductCategory());
+            p.setUnitPrice(Float.parseFloat(txtProductPrice.getText()));
+            p.setIdOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent());
             gp.addProduct(p);
         } catch (SQLException ex) {
             Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
@@ -266,6 +275,15 @@ public class AltaProducto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
 
+    private void btnUpdateTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTableActionPerformed
+        try {
+            // TODO add your handling code here:
+            products = gp.getAllProducts();
+            loadTableProducts();
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnUpdateTableActionPerformed
 
     /**
      * @param args the command line arguments
@@ -314,6 +332,7 @@ public class AltaProducto extends javax.swing.JFrame {
     private javax.swing.JButton btnModifyProduct;
     private javax.swing.JButton btnNewProduct;
     private javax.swing.JButton btnSearchProduct;
+    private javax.swing.JButton btnUpdateTable;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
     private javax.swing.JComboBox<String> cmbProductCategory;
     private javax.swing.JComboBox<String> cmbProductType;
@@ -343,7 +362,7 @@ public class AltaProducto extends javax.swing.JFrame {
     private void loadCmbProductType(ArrayList<TipoProducto> productTypes) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (TipoProducto productType : productTypes) {
-            model.addElement(productType.getPtName());
+            model.addElement(productType);
         }
         cmbProductType.setModel(model);
     }
@@ -351,17 +370,17 @@ public class AltaProducto extends javax.swing.JFrame {
     private void loadCmbProductCategory(ArrayList<CategoriaProducto> productCategories) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (CategoriaProducto productCategory : productCategories) {
-            model.addElement(productCategory.getPcName());
+            model.addElement(productCategory);
         }
         cmbProductCategory.setModel(model);
     }
-    
-    private void loadTableProducts(){
+
+    private void loadTableProducts() {
         DefaultTableModel model = new DefaultTableModel();
         String[] columns = {"Id", "Producto", "Código", "Tipo Producto", "Categoría", "Precio Unitario", "Agente Oficial"};
         model.setColumnIdentifiers(columns);
-        for (Producto product : products) {
-            Object[] rows = {product.getIdProduct(), product.getProductName(), product.getCode(), product.getIdProductType(), product.getIdProductCategory(), product.getUnitPrice(), product.getIdOfficialAgent()};
+        for (VmProducto product : products) {
+            Object[] rows = {product.getIdProduct(), product.getProductName(), product.getProductCode(), product.getProductType(), product.getProductCategory(), product.getUnitPrice(), product.getAgentName()};
             model.addRow(rows);
         }
         tblProducts.setModel(model);
