@@ -51,7 +51,7 @@ public class CategoriaProducto {
 
     @Override
     public String toString() {
-        return "CategoriaProducto{" + "idProductCategory=" + idProductCategory + ", pcName=" + pcName + ", idAgenteOficial=" + idAgenteOficial + '}';
+        return pcName;
     }
 
     
