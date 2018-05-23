@@ -49,7 +49,7 @@ public class GestorProducto {
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
-    }    
+    }
 
     public void deleteProduct(Producto P) throws SQLException {
 
@@ -62,24 +62,31 @@ public class GestorProducto {
 
     }
 
-    public Producto getProductByName(String nombre) throws SQLException {
-        Producto p = new Producto();
+    public ArrayList<VmProducto> getProductByName(String nombre) throws SQLException {
+        ArrayList<VmProducto> products = new ArrayList<>();
         ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("exec sp_search_product_by_name ?");
-        stmt.setString(1, nombre);
-        ResultSet query = stmt.executeQuery();
-        if (query.next()) {
+        Statement stmt = ad.getConn().createStatement();
+        //stmt.setString(1, nombre);
+        ResultSet query = stmt.executeQuery("SELECT p.idProducto id, producto producto, codigoProducto codigo, tp.tipoProducto tipo, cp.categoriaProducto categoria, precioUnitario precio, ao.nombreAgente agente FROM PRODUCTOS p join TIPOS_PRODUCTOS tp \n"
+                + "ON p.idTipoProducto = tp.idTipoProducto JOIN CATEGORIAS_PRODUCTOS cp \n"
+                + "ON p.idCategoriaProducto = cp.idCategoriaProducto JOIN AGENTES_OFICIALES ao \n"
+                + "ON p.idAgenteOficial = ao.idAgenteOficial\n"
+                + "WHERE producto LIKE '%" + nombre + "%'");
+        while (query.next()) {
+            VmProducto p  = new VmProducto();
+            p.setIdProduct(query.getInt("id"));
             p.setProductName(query.getString("producto"));
-            p.setCode(query.getInt("codigoProducto"));
-            p.setIdProductType(query.getInt("idTipoProducto"));
-            p.setIdProductCategory(query.getInt("idCategoriaProducto"));
-            p.setUnitPrice(query.getFloat("precioUnitario"));
-            p.setIdOfficialAgent(query.getInt("idAgenteOficial"));
+            p.setProductCode(query.getInt("codigo"));
+            p.setProductType(query.getString("tipo"));
+            p.setProductCategory(query.getString("categoria"));
+            p.setUnitPrice(query.getFloat("precio"));
+            p.setAgentName(query.getString("agente"));
+            products.add(p);
         }
         query.close();
         stmt.close();
         ad.cerrarConexion();
-        return p;
+        return products;
     }
 
     public ArrayList<VmProducto> getAllProducts() throws SQLException {
@@ -123,13 +130,13 @@ public class GestorProducto {
         ad.cerrarConexion();
         return p;
     }
-    
-    public ArrayList<AgenteOficial> getOfficialAgents() throws SQLException{
+
+    public ArrayList<AgenteOficial> getOfficialAgents() throws SQLException {
         ArrayList<AgenteOficial> agents = new ArrayList<>();
         ad.abrirConexion();
         Statement stmt = ad.getConn().createStatement();
         ResultSet query = stmt.executeQuery("SELECT idAgenteOficial, nombreAgente FROM AGENTES_OFICIALES");
-        while(query.next()){
+        while (query.next()) {
             AgenteOficial ag = new AgenteOficial();
             ag.setIdOfficialAgent(query.getInt("idAgenteOficial"));
             ag.setAgentName(query.getString("nombreAgente"));
@@ -143,7 +150,6 @@ public class GestorProducto {
         stmt.close();
         ad.cerrarConexion();
         return agents;
-    }    
-    
+    }
 
 }

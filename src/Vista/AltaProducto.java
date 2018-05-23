@@ -35,12 +35,6 @@ public class AltaProducto extends javax.swing.JFrame {
     GestorTipoProducto gtp = new GestorTipoProducto();
     GestorCategoriaProducto gcp = new GestorCategoriaProducto();
     ArrayList<VmProducto> products = new ArrayList<>();
-    String name;
-    int code;
-    int officialAgent;
-    int productType;
-    int productCategory;
-    float unitPrice;
     int idAgent;
 
     public AltaProducto() throws SQLException {
@@ -134,6 +128,11 @@ public class AltaProducto extends javax.swing.JFrame {
         });
 
         btnSearchProduct.setText("Buscar");
+        btnSearchProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchProductActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Nombre Producto");
 
@@ -284,6 +283,16 @@ public class AltaProducto extends javax.swing.JFrame {
             Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnUpdateTableActionPerformed
+
+    private void btnSearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchProductActionPerformed
+        try {
+            // TODO add your handling code here:
+            products = gp.getProductByName(txtSearchProduct.getText());
+            loadTableProducts();
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchProductActionPerformed
 
     /**
      * @param args the command line arguments
