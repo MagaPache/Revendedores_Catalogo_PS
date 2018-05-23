@@ -85,7 +85,7 @@ public class GestorProducto {
         ArrayList<Producto> products = new ArrayList<>();
         ad.abrirConexion();
         Statement stmt = ad.getConn().createStatement();
-        ResultSet query = stmt.executeQuery("select * from vw_obtain_all_products");
+        ResultSet query = stmt.executeQuery("SELECT * FROM PRODUCTOS ORDER BY idAgenteOficial");
         while (query.next()) {
             Producto p = new Producto();
             p.setIdProduct(query.getInt("idProducto"));

@@ -6,6 +6,7 @@
 package Controlador;
 
 import Modelo.CategoriaProducto;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,6 +25,24 @@ public class GestorCategoriaProducto {
         ad.abrirConexion();
         Statement stmt = ad.getConn().createStatement();
         ResultSet query = stmt.executeQuery("select * from CATEGORIAS_PRODUCTOS");
+        while(query.next()){
+            CategoriaProducto cp = new CategoriaProducto();
+            cp.setIdProductCategory(query.getInt("idCategoriaProducto"));
+            cp.setPcName(query.getString("categoriaProducto"));
+            categories.add(cp);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return categories;
+    }
+    
+    public ArrayList<CategoriaProducto> getProductCategoriesPerOfficialAgent(int idAgent) throws SQLException{
+        ArrayList<CategoriaProducto> categories = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_prod_cat_per_official_agent ?");
+        stmt.setInt(1, idAgent);
+        ResultSet query = stmt.executeQuery();
         while(query.next()){
             CategoriaProducto cp = new CategoriaProducto();
             cp.setIdProductCategory(query.getInt("idCategoriaProducto"));
