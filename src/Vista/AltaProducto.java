@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -32,6 +33,7 @@ public class AltaProducto extends javax.swing.JFrame {
     GestorProducto gp = new GestorProducto();
     GestorTipoProducto gtp = new GestorTipoProducto();
     GestorCategoriaProducto gcp = new GestorCategoriaProducto();
+    ArrayList<Producto> products = new ArrayList<>();
     String name;
     int code;
     int officialAgent;
@@ -42,12 +44,12 @@ public class AltaProducto extends javax.swing.JFrame {
 
     public AltaProducto() throws SQLException {
         initComponents();
-        //cmbProductType.setSelectedIndex(-1);
         loadCmbOfficialAgent(gp.getOfficialAgents());
-        //loadCmbProductType(gtp.getProductTypesPerOfficialAgent(idAgent));       
-        //cmbProductType.setSelectedIndex(-1);
         loadCmbProductType(gtp.getProductTypesPerOfficialAgent(((AgenteOficial)cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
-        loadCmbProductCategory(gcp.getProductCategories());
+        loadCmbProductCategory(gcp.getProductCategoriesPerOfficialAgent(((AgenteOficial)cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        products = gp.getAllProducts();
+        loadTableProducts();
+        
     }
 
     /**
@@ -73,7 +75,7 @@ public class AltaProducto extends javax.swing.JFrame {
         cmbOfficialAgent = new javax.swing.JComboBox<>();
         btnCancelProduct = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblProducts = new javax.swing.JTable();
         btnModifyProduct = new javax.swing.JButton();
         btnNewProduct = new javax.swing.JButton();
         btnSearchProduct = new javax.swing.JButton();
@@ -107,7 +109,7 @@ public class AltaProducto extends javax.swing.JFrame {
 
         btnCancelProduct.setText("Cancelar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -118,7 +120,7 @@ public class AltaProducto extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblProducts);
 
         btnModifyProduct.setText("Modificar");
 
@@ -170,28 +172,28 @@ public class AltaProducto extends javax.swing.JFrame {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21))
-                    .addGroup(layout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
-                        .addComponent(txtSearchProduct)
+                        .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnSearchProduct)
                         .addGap(18, 18, 18)
                         .addComponent(btnCancelProduct)
                         .addGap(18, 18, 18)
                         .addComponent(btnModifyProduct)
-                        .addGap(17, 17, 17))))
+                        .addGap(17, 17, 17))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 903, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
@@ -216,7 +218,7 @@ public class AltaProducto extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(txtProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelProduct)
@@ -256,6 +258,7 @@ public class AltaProducto extends javax.swing.JFrame {
                     System.out.println(idAgente);
                 }
                 loadCmbProductType(gtp.getProductTypesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+                loadCmbProductCategory(gcp.getProductCategoriesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
             } catch (SQLException ex) {
                 Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -263,15 +266,7 @@ public class AltaProducto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
 
-//    public void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {
-//        
-////        try {
-////            idAgent = cmbOfficialAgent.getSelectedIndex()+1;
-////            loadCmbProductType(gtp.getProductTypesPerOfficialAgent(idAgent));
-////        } catch (SQLException ex) {
-////            Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
-////        }
-//    }
+
     /**
      * @param args the command line arguments
      */
@@ -330,7 +325,7 @@ public class AltaProducto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblProducts;
     private javax.swing.JTextField txtProductCode;
     private javax.swing.JTextField txtProductName;
     private javax.swing.JTextField txtProductPrice;
@@ -359,5 +354,16 @@ public class AltaProducto extends javax.swing.JFrame {
             model.addElement(productCategory.getPcName());
         }
         cmbProductCategory.setModel(model);
+    }
+    
+    private void loadTableProducts(){
+        DefaultTableModel model = new DefaultTableModel();
+        String[] columns = {"Id", "Producto", "Código", "Tipo Producto", "Categoría", "Precio Unitario", "Agente Oficial"};
+        model.setColumnIdentifiers(columns);
+        for (Producto product : products) {
+            Object[] rows = {product.getIdProduct(), product.getProductName(), product.getCode(), product.getIdProductType(), product.getIdProductCategory(), product.getUnitPrice(), product.getIdOfficialAgent()};
+            model.addRow(rows);
+        }
+        tblProducts.setModel(model);
     }
 }

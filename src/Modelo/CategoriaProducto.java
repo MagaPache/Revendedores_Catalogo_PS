@@ -13,6 +13,7 @@ public class CategoriaProducto {
     
     private int idProductCategory;
     private String pcName;
+    private int idAgenteOficial;
 
     public int getIdProductCategory() {
         return idProductCategory;
@@ -30,18 +31,32 @@ public class CategoriaProducto {
         this.pcName = pcName;
     }
 
+    public int getIdAgenteOficial() {
+        return idAgenteOficial;
+    }
+
+    public void setIdAgenteOficial(int idAgenteOficial) {
+        this.idAgenteOficial = idAgenteOficial;
+    }    
+    
+
     public CategoriaProducto() {
     }
 
-    public CategoriaProducto(int idProductCategory, String pcName) {
+    public CategoriaProducto(int idProductCategory, String pcName, int idAgenteOficial) {
         this.idProductCategory = idProductCategory;
         this.pcName = pcName;
+        this.idAgenteOficial = idAgenteOficial;
     }
 
     @Override
     public String toString() {
-        return "CategoriaProducto{" + "idProductCategory=" + idProductCategory + ", pcName=" + pcName + '}';
+        return "CategoriaProducto{" + "idProductCategory=" + idProductCategory + ", pcName=" + pcName + ", idAgenteOficial=" + idAgenteOficial + '}';
     }
+
+    
+
+  
     
     
     
