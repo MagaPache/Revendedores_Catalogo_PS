@@ -38,7 +38,7 @@ public class GestorProducto {
 
     public void modifyProduct(Producto p) throws SQLException {
         ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("exec_sp_update_product ?, ?, ?, ?, ?, ?, ?");//Where id = 
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_update_products ?, ?, ?, ?, ?, ?, ?");
         stmt.setInt(1, p.getIdProduct());
         stmt.setString(2, p.getProductName());
         stmt.setInt(3, p.getCode());

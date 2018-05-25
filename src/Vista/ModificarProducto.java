@@ -11,6 +11,7 @@ import Modelo.TipoProducto;
 import Controlador.GestorTipoProducto;
 import Modelo.AgenteOficial;
 import Modelo.CategoriaProducto;
+import Modelo.Producto;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -39,7 +40,7 @@ public class ModificarProducto extends javax.swing.JFrame {
 //        }
         loadCmbProductType(gtp.getProductTypes());
         loadCmbProductCategory(gcp.getProductCategories());
-        
+
     }
 
     /**
@@ -96,6 +97,11 @@ public class ModificarProducto extends javax.swing.JFrame {
         jLabel6.setText("Agente Oficial");
 
         btnModifyProduct.setText("Guardar");
+        btnModifyProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyProductActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Id");
 
@@ -117,7 +123,7 @@ public class ModificarProducto extends javax.swing.JFrame {
                                 .addComponent(cmbProductCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtProductCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(129, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -146,9 +152,9 @@ public class ModificarProducto extends javax.swing.JFrame {
                                         .addComponent(txtOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE))))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(227, 227, 227)
+                .addGap(186, 186, 186)
                 .addComponent(btnModifyProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 159, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,9 +190,9 @@ public class ModificarProducto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(28, 28, 28)
                 .addComponent(btnModifyProduct)
-                .addGap(44, 44, 44))
+                .addGap(34, 34, 34))
         );
 
         pack();
@@ -194,8 +200,25 @@ public class ModificarProducto extends javax.swing.JFrame {
 
     private void cmbOfficialAgentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOfficialAgentActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_cmbOfficialAgentActionPerformed
+
+    private void btnModifyProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyProductActionPerformed
+        try {
+            // TODO add your handling code here:
+            Producto p = new Producto();
+            p.setIdProduct(Integer.parseInt(txtIdProduct.getText()));
+            p.setProductName(txtProductName.getText());
+            p.setCode(Integer.parseInt(txtProductCode.getText()));
+            p.setIdProductType(((TipoProducto) cmbProductType.getSelectedItem()).getIdProductType());
+            p.setIdProductCategory(((CategoriaProducto) cmbProductCategory.getSelectedItem()).getIdProductCategory());
+            p.setUnitPrice(Float.parseFloat(txtProductPrice.getText()));
+            p.setIdOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent());
+            gp.modifyProduct(p);
+        } catch (SQLException ex) {
+            Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnModifyProductActionPerformed
 
     /**
      * @param args the command line arguments
@@ -264,7 +287,7 @@ public class ModificarProducto extends javax.swing.JFrame {
         }
         cmbOfficialAgent.setModel(model);
     }
-    
+
     private void loadCmbProductType(ArrayList<TipoProducto> productTypes) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (TipoProducto productType : productTypes) {
@@ -272,7 +295,7 @@ public class ModificarProducto extends javax.swing.JFrame {
         }
         cmbProductType.setModel(model);
     }
-    
+
     private void loadCmbProductCategory(ArrayList<CategoriaProducto> productCategories) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (CategoriaProducto productCategory : productCategories) {
