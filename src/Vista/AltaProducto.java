@@ -312,7 +312,7 @@ public class AltaProducto extends javax.swing.JFrame {
             float price = (Float) tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 5);
             String agent = (String) tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 6); 
             
-            vwmodify.txtIdProduct.setText(Integer.toString(id));
+            vwmodify.lblIdProduct.setText(Integer.toString(id));
             vwmodify.txtProductName.setText(productName);
             vwmodify.txtProductCode.setText(Integer.toString(code));
             vwmodify.txtProductType.setText(type);
