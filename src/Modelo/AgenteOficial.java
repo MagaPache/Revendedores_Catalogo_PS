@@ -80,7 +80,7 @@ public class AgenteOficial {
 
     @Override
     public String toString() {
-        return idOfficialAgent + " - " + agentName;
+        return agentName;
     }
     
     

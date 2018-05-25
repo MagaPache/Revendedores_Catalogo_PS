@@ -119,6 +119,11 @@ public class AltaProducto extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblProducts);
 
         btnModifyProduct.setText("Modificar");
+        btnModifyProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyProductActionPerformed(evt);
+            }
+        });
 
         btnNewProduct.setText("Agregar");
         btnNewProduct.addActionListener(new java.awt.event.ActionListener() {
@@ -294,6 +299,33 @@ public class AltaProducto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSearchProductActionPerformed
 
+    private void btnModifyProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyProductActionPerformed
+        try {
+            // TODO add your handling code here:
+            //id, producto, codigo, tipo, categoria, precio, agente
+            ModificarProducto vwmodify = new ModificarProducto();
+            int id = (int) tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 0);
+            String productName =  (String) tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 1);
+            int code = (int) tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 2);
+            String type = (String) tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 3);
+            String category = (String) tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 4);
+            float price = (Float) tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 5);
+            String agent = (String) tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 6); 
+            
+            vwmodify.txtIdProduct.setText(Integer.toString(id));
+            vwmodify.txtProductName.setText(productName);
+            vwmodify.txtProductCode.setText(Integer.toString(code));
+            vwmodify.txtProductType.setText(type);
+            vwmodify.txtProductCategory.setText(category);
+            vwmodify.txtProductPrice.setText(Float.toString(price));
+            vwmodify.txtOfficialAgent.setText(agent);
+            vwmodify.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnModifyProductActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -344,7 +376,7 @@ public class AltaProducto extends javax.swing.JFrame {
     private javax.swing.JButton btnUpdateTable;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
     private javax.swing.JComboBox<String> cmbProductCategory;
-    private javax.swing.JComboBox<String> cmbProductType;
+    public javax.swing.JComboBox<String> cmbProductType;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
