@@ -20,7 +20,6 @@ public class Pedido {
     private String deliveryDate;
     private boolean payed;
     private int idCampaign;
-    private int pageNumber;
     private String observations;
 
     public int getIdOrder() {
@@ -78,15 +77,7 @@ public class Pedido {
     public void setIdCampaign(int idCampaign) {
         this.idCampaign = idCampaign;
     }
-
-    public int getPageNumber() {
-        return pageNumber;
-    }
-
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-    }
-
+    
     public String getObservations() {
         return observations;
     }
@@ -98,7 +89,7 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(int idOrder, String orderDate, int idClient, boolean delivered, String deliveryDate, boolean payed, int idCampaign, int pageNumber, String observations) {
+    public Pedido(int idOrder, String orderDate, int idClient, boolean delivered, String deliveryDate, boolean payed, int idCampaign, String observations) {
         this.idOrder = idOrder;
         this.orderDate = orderDate;
         this.idClient = idClient;
@@ -106,13 +97,12 @@ public class Pedido {
         this.deliveryDate = deliveryDate;
         this.payed = payed;
         this.idCampaign = idCampaign;
-        this.pageNumber = pageNumber;
         this.observations = observations;
     }
 
     @Override
     public String toString() {
-        return "Pedido{" + "idOrder=" + idOrder + ", orderDate=" + orderDate + ", idClient=" + idClient + ", delivered=" + delivered + ", deliveryDate=" + deliveryDate + ", payed=" + payed + ", idCampaign=" + idCampaign + ", pageNumber=" + pageNumber + ", observations=" + observations + '}';
+        return "Pedido{" + "idOrder=" + idOrder + ", orderDate=" + orderDate + ", idClient=" + idClient + ", delivered=" + delivered + ", deliveryDate=" + deliveryDate + ", payed=" + payed + ", idCampaign=" + idCampaign + ", observations=" + observations + '}';
     }
     
     

@@ -9,11 +9,11 @@ package Modelo;
  *
  * @author Usuario
  */
-public class DetallePedido {
+public class VmDetallePedido {
     
     private int idOrderDetail;
     private int idOrder;
-    private int idProduct;
+    private String productName;
     private int amount;
     private float price;
     private int page;
@@ -34,12 +34,12 @@ public class DetallePedido {
         this.idOrder = idOrder;
     }
 
-    public int getIdProduct() {
-        return idProduct;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public int getAmount() {
@@ -64,26 +64,24 @@ public class DetallePedido {
 
     public void setPage(int page) {
         this.page = page;
-    }    
-    
-
-    public DetallePedido() {
     }
 
-    public DetallePedido(int idOrderDetail, int idOrder, int idProduct, int amount, float price, int page) {
+    public VmDetallePedido() {
+    }
+
+    public VmDetallePedido(int idOrderDetail, int idOrder, String productName, int amount, float price, int page) {
         this.idOrderDetail = idOrderDetail;
         this.idOrder = idOrder;
-        this.idProduct = idProduct;
+        this.productName = productName;
         this.amount = amount;
         this.price = price;
         this.page = page;
-    }    
+    }
 
     @Override
     public String toString() {
-        return "DetallePedido{" + "idOrderDetail=" + idOrderDetail + ", idOrder=" + idOrder + ", idProduct=" + idProduct + ", amount=" + amount + ", price=" + price + '}';
+        return "VmDetallePedido{" + "idOrderDetail=" + idOrderDetail + ", idOrder=" + idOrder + ", productName=" + productName + ", amount=" + amount + ", price=" + price + ", page=" + page + '}';
     }
-    
     
     
     
