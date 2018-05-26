@@ -14,15 +14,14 @@ import java.sql.Date;
 public class Pedido {
     
     private int idOrder;
-    private int pageNumber;
-    private Date orderDate;
+    private String orderDate;
     private int idClient;
-    private int idProduct; //VER
-    private String observations;
     private boolean delivered;
-    private Date deliveryDate;
+    private String deliveryDate;
     private boolean payed;
     private int idCampaign;
+    private int pageNumber;
+    private String observations;
 
     public int getIdOrder() {
         return idOrder;
@@ -32,19 +31,11 @@ public class Pedido {
         this.idOrder = idOrder;
     }
 
-    public int getPageNumber() {
-        return pageNumber;
-    }
-
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-    }
-
-    public Date getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -56,22 +47,6 @@ public class Pedido {
         this.idClient = idClient;
     }
 
-    public int getIdProduct() {
-        return idProduct;
-    }
-
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
-    }
-
-    public String getObservations() {
-        return observations;
-    }
-
-    public void setObservations(String observations) {
-        this.observations = observations;
-    }
-
     public boolean isDelivered() {
         return delivered;
     }
@@ -80,11 +55,11 @@ public class Pedido {
         this.delivered = delivered;
     }
 
-    public Date getDeliveryDate() {
+    public String getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(Date deliveryDate) {
+    public void setDeliveryDate(String deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
@@ -104,26 +79,43 @@ public class Pedido {
         this.idCampaign = idCampaign;
     }
 
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public String getObservations() {
+        return observations;
+    }
+
+    public void setObservations(String observations) {
+        this.observations = observations;
+    }
+
     public Pedido() {
     }
 
-    public Pedido(int idOrder, int pageNumber, Date orderDate, int idClient, int idProduct, String observations, boolean delivered, Date deliveryDate, boolean payed, int idCampaign) {
+    public Pedido(int idOrder, String orderDate, int idClient, boolean delivered, String deliveryDate, boolean payed, int idCampaign, int pageNumber, String observations) {
         this.idOrder = idOrder;
-        this.pageNumber = pageNumber;
         this.orderDate = orderDate;
         this.idClient = idClient;
-        this.idProduct = idProduct;
-        this.observations = observations;
         this.delivered = delivered;
         this.deliveryDate = deliveryDate;
         this.payed = payed;
         this.idCampaign = idCampaign;
+        this.pageNumber = pageNumber;
+        this.observations = observations;
     }
 
     @Override
     public String toString() {
-        return "Pedido{" + "idOrder=" + idOrder + ", pageNumber=" + pageNumber + ", orderDate=" + orderDate + ", idClient=" + idClient + ", idProduct=" + idProduct + ", observations=" + observations + ", delivered=" + delivered + ", deliveryDate=" + deliveryDate + ", payed=" + payed + ", idCampaign=" + idCampaign + '}';
+        return "Pedido{" + "idOrder=" + idOrder + ", orderDate=" + orderDate + ", idClient=" + idClient + ", delivered=" + delivered + ", deliveryDate=" + deliveryDate + ", payed=" + payed + ", idCampaign=" + idCampaign + ", pageNumber=" + pageNumber + ", observations=" + observations + '}';
     }
+    
+    
     
     
 }
