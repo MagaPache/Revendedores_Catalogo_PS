@@ -33,7 +33,7 @@ public class GestorDetallePedido {
         ad.cerrarConexion();
     }
 
-    public void modifyOrderDetail(DetallePedido dp) throws SQLException {
+    public void updateOrderDetail(DetallePedido dp) throws SQLException {
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_modify_order_detail ?, ?, ?, ?, ?, ?");
         stmt.setInt(1, dp.getIdOrderDetail());
