@@ -6,19 +6,22 @@
 package Controlador;
 
 import Modelo.Pedido;
+import Modelo.VmPedido;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
  * @author Usuario
  */
 public class GestorPedido {
-    
+
     AccesoDatos ad = new AccesoDatos();
-    
-    public void addOrder(Pedido p) throws SQLException{
+
+    public void addOrder(Pedido p) throws SQLException {
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_insert_order @pFecha = ?, @pCliente = ?, @pCampania = ?, @pObservac = ?");
         stmt.setString(1, p.getOrderDate());
@@ -29,8 +32,8 @@ public class GestorPedido {
         stmt.close();
         ad.cerrarConexion();
     }
-    
-    public void modifyOrder(Pedido p) throws SQLException{
+
+    public void updateOrder(Pedido p) throws SQLException {
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_update_order ?, ?, ?, ?");
         stmt.setInt(1, p.getIdOrder());
@@ -41,8 +44,8 @@ public class GestorPedido {
         stmt.close();
         ad.cerrarConexion();
     }
-    
-    public void deleteOrder(Pedido p) throws SQLException{
+
+    public void deleteOrder(Pedido p) throws SQLException {
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_delete_order ?");
         stmt.setInt(1, p.getIdOrder());
@@ -50,8 +53,8 @@ public class GestorPedido {
         stmt.close();
         ad.cerrarConexion();
     }
-    
-    public void closeOrder(Pedido p) throws SQLException{
+
+    public void closeOrder(Pedido p) throws SQLException {
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_close_order ?, ?, ?");
         stmt.setInt(1, p.getIdOrder());
@@ -61,14 +64,15 @@ public class GestorPedido {
         stmt.close();
         ad.cerrarConexion();
     }
+
     //Pedido completo con todos los campos
-    public Pedido getOrder(int id) throws SQLException{
+    public Pedido getOrder(int id) throws SQLException {
         Pedido p = new Pedido();
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_one_order ?");
         stmt.setInt(1, id);
         ResultSet query = stmt.executeQuery();
-        if(query.next()){
+        if (query.next()) {
             p.setIdOrder(query.getInt("idPedido"));
             p.setOrderDate(query.getString("fechaPedido"));
             p.setIdClient(query.getInt("idCliente"));
@@ -76,12 +80,35 @@ public class GestorPedido {
             p.setDeliveryDate(query.getString("fechaEntrega"));
             p.setPayed(query.getBoolean("estaPagado"));
             p.setIdCampaign(query.getInt("idCampania"));
-            p.setObservations(query.getString("observaciones"));            
+            p.setObservations(query.getString("observaciones"));
         }
         query.close();
         stmt.close();
         ad.cerrarConexion();
         return p;
     }
-    
+
+    //Obtener todos los pedidos con su detalle de pedido
+    public ArrayList<VmPedido> getOrdersWithDetails() throws SQLException {
+        ArrayList<VmPedido> orders = new ArrayList<>();
+        ad.abrirConexion();
+        Statement stmt = ad.getConn().createStatement();
+        ResultSet query = stmt.executeQuery("SELECT * FROM vw_get_orders_with_details");
+        while(query.next()){
+            VmPedido vp = new VmPedido();
+            vp.setIdOrder(query.getInt("pedido"));
+            vp.setClientName(query.getString("nombre"));
+            vp.setProductName(query.getString("producto"));
+            vp.setAmount(query.getInt("cantidad"));
+            vp.setPrice(query.getFloat("precio"));
+            vp.setPage(query.getInt("pagina"));
+            vp.setObservations(query.getString("observaciones"));
+            orders.add(vp);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return orders;
+    }
+
 }
