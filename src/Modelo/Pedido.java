@@ -21,6 +21,7 @@ public class Pedido {
     private boolean payed;
     private int idCampaign;
     private String observations;
+    private float totalAmount;
 
     public int getIdOrder() {
         return idOrder;
@@ -85,6 +86,15 @@ public class Pedido {
     public void setObservations(String observations) {
         this.observations = observations;
     }
+
+    public float getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(float totalAmount) {
+        this.totalAmount = totalAmount;
+    }  
+    
 
     public Pedido() {
     }
