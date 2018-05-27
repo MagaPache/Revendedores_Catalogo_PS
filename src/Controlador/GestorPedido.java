@@ -110,5 +110,9 @@ public class GestorPedido {
         ad.cerrarConexion();
         return orders;
     }
+    
+//    public float getTotalAmount(){
+//        
+//    }
 
 }
