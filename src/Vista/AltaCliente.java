@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -157,8 +158,18 @@ public class AltaCliente extends javax.swing.JFrame {
         });
 
         btnUpdateClient.setText("Modificar");
+        btnUpdateClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateClientActionPerformed(evt);
+            }
+        });
 
         btnUpdateTable.setText("Actualizar");
+        btnUpdateTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateTableActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -300,7 +311,7 @@ public class AltaCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
         enableRbt(2);
         if (rbtClientEmail.isSelected()) {
-            txtSearchName.setText("");            
+            txtSearchName.setText("");
             txtSearchName.setEnabled(false);
             btnSearchName.setEnabled(false);
             txtSearchEmail.setEnabled(true);
@@ -327,6 +338,44 @@ public class AltaCliente extends javax.swing.JFrame {
             Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSearchEmailActionPerformed
+
+    private void btnUpdateTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTableActionPerformed
+        try {
+            // TODO add your handling code here:
+            clients = gc.getAllClients();
+            loadTableClients();
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnUpdateTableActionPerformed
+
+    private void btnUpdateClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateClientActionPerformed
+        try {
+            // TODO add your handling code here:
+            ModificarCliente vmc;
+            vmc = new ModificarCliente();
+            int id = (int) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 0);
+            String clientName = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 1);
+            String clientAddress = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 2);
+            String clientPhone = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 3);
+            String clientEmail = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 4);
+            String clientBirthDate = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 5);
+            SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
+            Date fecha = formatoTexto.parse(clientBirthDate);            
+            vmc.lblIdClient.setText(Integer.toString(id));
+            vmc.txtClientName.setText(clientName);
+            vmc.txtClientAddress.setText(clientAddress);
+            vmc.txtClientPhone.setText(clientPhone);
+            vmc.txtClientEmail.setText(clientEmail);
+            vmc.jdcBirthDate.setDate(fecha);
+            vmc.setVisible(true);
+        } catch (ParseException ex) {
+            Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
+    }//GEN-LAST:event_btnUpdateClientActionPerformed
 
     /**
      * @param args the command line arguments
@@ -407,7 +456,7 @@ public class AltaCliente extends javax.swing.JFrame {
                 break;
         }
     }
-    
+
     private void loadTableClients() {
         DefaultTableModel model = new DefaultTableModel();
         String[] columns = {"Id", "Nombre", "Dirección", "Teléfono", "E-mail", "Fecha Nacimiento"};

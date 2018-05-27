@@ -12,7 +12,7 @@ package Vista;
 public class ModificarCliente extends javax.swing.JFrame {
 
     /**
-     * Creates new form ConsultaCliente
+     * Creates new form ModificarCliente
      */
     public ModificarCliente() {
         initComponents();
@@ -27,63 +27,107 @@ public class ModificarCliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jtClient = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         txtClientName = new javax.swing.JTextField();
-        btnSearchClientName = new javax.swing.JButton();
-        txtClientMail = new javax.swing.JTextField();
-        btnSearchClientMail = new javax.swing.JButton();
-        rbtClientByMail = new javax.swing.JRadioButton();
-        btnModifyClient = new javax.swing.JButton();
-        rbtClientByName = new javax.swing.JRadioButton();
+        txtClientAddress = new javax.swing.JTextField();
+        txtClientPhone = new javax.swing.JTextField();
+        txtClientEmail = new javax.swing.JTextField();
+        jdcBirthDate = new com.toedter.calendar.JDateChooser();
+        btnUpdateClient = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        lblIdClient = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(null);
 
-        jtClient.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jtClient);
+        jLabel1.setText("Nombre");
 
-        getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(10, 110, 561, 160);
+        jLabel2.setText("Dirección");
 
-        jLabel1.setText("Buscar Cliente");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(10, 10, 80, 14);
-        getContentPane().add(txtClientName);
-        txtClientName.setBounds(10, 70, 80, 20);
+        jLabel3.setText("Teléfono");
 
-        btnSearchClientName.setText("Buscar");
-        getContentPane().add(btnSearchClientName);
-        btnSearchClientName.setBounds(110, 70, 65, 23);
-        getContentPane().add(txtClientMail);
-        txtClientMail.setBounds(210, 70, 80, 20);
+        jLabel4.setText("E-mail");
 
-        btnSearchClientMail.setText("Buscar");
-        getContentPane().add(btnSearchClientMail);
-        btnSearchClientMail.setBounds(310, 70, 65, 23);
+        jLabel5.setText("Fecha Nacimiento");
 
-        rbtClientByMail.setText("E-mail");
-        getContentPane().add(rbtClientByMail);
-        rbtClientByMail.setBounds(210, 40, 53, 23);
+        jdcBirthDate.setDateFormatString("MMM-dd-yyyy");
 
-        btnModifyClient.setText("Modificar");
-        getContentPane().add(btnModifyClient);
-        btnModifyClient.setBounds(480, 300, 90, 23);
+        btnUpdateClient.setText("Guardar");
 
-        rbtClientByName.setText("Nombre");
-        getContentPane().add(rbtClientByName);
-        rbtClientByName.setBounds(10, 40, 63, 23);
+        jLabel6.setText("Id");
+
+        lblIdClient.setText("jLabel6");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel6))
+                                .addGap(65, 65, 65)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblIdClient)
+                                    .addComponent(txtClientName, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtClientPhone)
+                                    .addComponent(txtClientEmail)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jdcBirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(txtClientAddress)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(137, 137, 137)
+                        .addComponent(btnUpdateClient)))
+                .addContainerGap(64, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(lblIdClient))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtClientName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtClientAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtClientPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtClientEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(jdcBirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addComponent(btnUpdateClient)
+                .addGap(33, 33, 33))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -114,7 +158,6 @@ public class ModificarCliente extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -125,15 +168,18 @@ public class ModificarCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnModifyClient;
-    private javax.swing.JButton btnSearchClientMail;
-    private javax.swing.JButton btnSearchClientName;
+    private javax.swing.JButton btnUpdateClient;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jtClient;
-    private javax.swing.JRadioButton rbtClientByMail;
-    private javax.swing.JRadioButton rbtClientByName;
-    private javax.swing.JTextField txtClientMail;
-    private javax.swing.JTextField txtClientName;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    public com.toedter.calendar.JDateChooser jdcBirthDate;
+    public javax.swing.JLabel lblIdClient;
+    public javax.swing.JTextField txtClientAddress;
+    public javax.swing.JTextField txtClientEmail;
+    public javax.swing.JTextField txtClientName;
+    public javax.swing.JTextField txtClientPhone;
     // End of variables declaration//GEN-END:variables
 }
