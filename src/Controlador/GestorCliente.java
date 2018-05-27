@@ -36,7 +36,7 @@ public class GestorCliente {
 
     public void modifyClient(Cliente c) throws SQLException {
         ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("exec_sp_update_client ?, ?, ?, ?, ?, ?");//Where id = 
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_update_client ?, ?, ?, ?, ?, ?");
         stmt.setInt(1, c.getIdClient());
         stmt.setString(2, c.getClientName());
         stmt.setString(3, c.getAddress());

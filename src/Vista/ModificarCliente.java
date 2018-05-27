@@ -5,6 +5,16 @@
  */
 package Vista;
 
+import Controlador.GestorCliente;
+import Modelo.Cliente;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Usuario
@@ -14,6 +24,10 @@ public class ModificarCliente extends javax.swing.JFrame {
     /**
      * Creates new form ModificarCliente
      */
+    
+    DateFormat dfDateInstance = DateFormat.getDateInstance();
+    GestorCliente gc = new GestorCliente();
+    
     public ModificarCliente() {
         initComponents();
     }
@@ -56,6 +70,11 @@ public class ModificarCliente extends javax.swing.JFrame {
         jdcBirthDate.setDateFormatString("MMM-dd-yyyy");
 
         btnUpdateClient.setText("Guardar");
+        btnUpdateClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateClientActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Id");
 
@@ -131,6 +150,26 @@ public class ModificarCliente extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnUpdateClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateClientActionPerformed
+        try {
+            // TODO add your handling code here:
+            final JDialog dialog = new JDialog();
+            Cliente c = new Cliente();
+            c.setIdClient(Integer.parseInt(lblIdClient.getText()));
+            c.setClientName(txtClientName.getText());
+            c.setAddress(txtClientAddress.getText());
+            c.setTelephone(txtClientPhone.getText());
+            c.setEmail(txtClientEmail.getText());
+            Date birthDate = jdcBirthDate.getDate();
+            String fechaNac = dfDateInstance.format(birthDate);
+            c.setBirthDate(fechaNac);
+            gc.modifyClient(c);
+            JOptionPane.showMessageDialog(dialog, "Se ha modificado correctamente");
+        } catch (SQLException ex) {
+            Logger.getLogger(ModificarCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnUpdateClientActionPerformed
 
     /**
      * @param args the command line arguments
