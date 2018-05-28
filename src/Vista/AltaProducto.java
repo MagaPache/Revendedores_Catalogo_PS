@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import Controlador.GestorAgenteOficial;
 import Controlador.GestorCategoriaProducto;
 import Controlador.GestorProducto;
 import Controlador.GestorTipoProducto;
@@ -31,6 +32,7 @@ public class AltaProducto extends javax.swing.JFrame {
     /**
      * Creates new form VwProductos
      */
+    GestorAgenteOficial gao = new GestorAgenteOficial();
     GestorProducto gp = new GestorProducto();
     GestorTipoProducto gtp = new GestorTipoProducto();
     GestorCategoriaProducto gcp = new GestorCategoriaProducto();
@@ -39,7 +41,7 @@ public class AltaProducto extends javax.swing.JFrame {
 
     public AltaProducto() throws SQLException {
         initComponents();
-        loadCmbOfficialAgent(gp.getOfficialAgents());
+        loadCmbOfficialAgent(gao.getOfficialAgents());
         loadCmbProductType(gtp.getProductTypesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
         loadCmbProductCategory(gcp.getProductCategoriesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
         products = gp.getAllProducts();

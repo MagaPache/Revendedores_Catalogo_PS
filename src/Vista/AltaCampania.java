@@ -14,6 +14,7 @@ public class AltaCampania extends javax.swing.JFrame {
     /**
      * Creates new form AltaCampania
      */
+    
     public AltaCampania() {
         initComponents();
     }
