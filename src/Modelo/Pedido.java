@@ -20,7 +20,6 @@ public class Pedido {
     private String deliveryDate;
     private boolean payed;
     private int idCampaign;
-    private String observations;
     private float totalAmount;
 
     public int getIdOrder() {
@@ -77,15 +76,8 @@ public class Pedido {
 
     public void setIdCampaign(int idCampaign) {
         this.idCampaign = idCampaign;
-    }
+    }   
     
-    public String getObservations() {
-        return observations;
-    }
-
-    public void setObservations(String observations) {
-        this.observations = observations;
-    }
 
     public float getTotalAmount() {
         return totalAmount;
@@ -99,20 +91,19 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(int idOrder, String orderDate, int idClient, boolean delivered, String deliveryDate, boolean payed, int idCampaign, String observations) {
+    public Pedido(int idOrder, String orderDate, int idClient, boolean delivered, String deliveryDate, boolean payed, int idCampaign) {
         this.idOrder = idOrder;
         this.orderDate = orderDate;
         this.idClient = idClient;
         this.delivered = delivered;
         this.deliveryDate = deliveryDate;
         this.payed = payed;
-        this.idCampaign = idCampaign;
-        this.observations = observations;
+        this.idCampaign = idCampaign;        
     }
 
     @Override
     public String toString() {
-        return "Pedido{" + "idOrder=" + idOrder + ", orderDate=" + orderDate + ", idClient=" + idClient + ", delivered=" + delivered + ", deliveryDate=" + deliveryDate + ", payed=" + payed + ", idCampaign=" + idCampaign + ", observations=" + observations + '}';
+        return "Pedido{" + "idOrder=" + idOrder + ", orderDate=" + orderDate + ", idClient=" + idClient + ", delivered=" + delivered + ", deliveryDate=" + deliveryDate + ", payed=" + payed + ", idCampaign=" + idCampaign + '}';
     }
     
     

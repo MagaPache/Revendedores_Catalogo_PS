@@ -22,12 +22,13 @@ public class GestorDetallePedido {
 
     public void addOrderDetail(DetallePedido dp) throws SQLException {
         ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_insert_order_detail ?, ?, ?, ?, ?");
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_insert_order_detail ?, ?, ?, ?, ?, ?");
         stmt.setInt(1, dp.getIdOrder());
         stmt.setInt(2, dp.getIdProduct());
         stmt.setInt(3, dp.getAmount());
         stmt.setFloat(4, dp.getPrice());
         stmt.setInt(5, dp.getPage());
+        stmt.setString(6, dp.getObservations());
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
@@ -35,13 +36,14 @@ public class GestorDetallePedido {
 
     public void updateOrderDetail(DetallePedido dp) throws SQLException {
         ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_modify_order_detail ?, ?, ?, ?, ?, ?");
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_modify_order_detail ?,?,?,?,?,?,?");
         stmt.setInt(1, dp.getIdOrderDetail());
         stmt.setInt(2, dp.getIdOrder());
         stmt.setInt(3, dp.getIdProduct());
         stmt.setInt(4, dp.getAmount());
         stmt.setFloat(5, dp.getPrice());
         stmt.setInt(6, dp.getPage());
+        stmt.setString(7, dp.getObservations());
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
@@ -69,6 +71,7 @@ public class GestorDetallePedido {
             vdp.setAmount(query.getInt("cantidad"));
             vdp.setPrice(query.getFloat("precio"));
             vdp.setPage(query.getInt("pagina"));
+            vdp.setObservations(query.getString("observaciones"));
             orderDetails.add(vdp);
         }
         query.close();

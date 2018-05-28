@@ -17,6 +17,7 @@ public class VmDetallePedido {
     private int amount;
     private float price;
     private int page;
+    private String observations;
 
     public int getIdOrderDetail() {
         return idOrderDetail;
@@ -66,17 +67,28 @@ public class VmDetallePedido {
         this.page = page;
     }
 
+    public String getObservations() {
+        return observations;
+    }
+
+    public void setObservations(String observations) {
+        this.observations = observations;
+    }    
+    
+
     public VmDetallePedido() {
     }
 
-    public VmDetallePedido(int idOrderDetail, int idOrder, String productName, int amount, float price, int page) {
+    public VmDetallePedido(int idOrderDetail, int idOrder, String productName, int amount, float price, int page, String observations) {
         this.idOrderDetail = idOrderDetail;
         this.idOrder = idOrder;
         this.productName = productName;
         this.amount = amount;
         this.price = price;
         this.page = page;
+        this.observations = observations;
     }
+    
 
     @Override
     public String toString() {

@@ -20,6 +20,7 @@ public class Campania {
     private float availableCredit;
     private float totalCost; //Hace referencia al monto a abonar que llega en la factura por campaña al recibir la caja con los productos
     private int idOfficialAgent;
+    private String description;
 
     public int getIdCampaign() {
         return idCampaign;
@@ -77,10 +78,19 @@ public class Campania {
         this.idOfficialAgent = idOfficialAgent;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    
     public Campania() {
     }
 
-    public Campania(int idCampaign, Date startDate, Date closeDate, Date arrivalDate, float availableCredit, float totalCost, int idOfficialAgent) {
+    public Campania(int idCampaign, Date startDate, Date closeDate, Date arrivalDate, float availableCredit, float totalCost, int idOfficialAgent, String description) {
         this.idCampaign = idCampaign;
         this.startDate = startDate;
         this.closeDate = closeDate;
@@ -88,7 +98,8 @@ public class Campania {
         this.availableCredit = availableCredit;
         this.totalCost = totalCost;
         this.idOfficialAgent = idOfficialAgent;
-    }
+        this.description = description;
+    }    
 
     @Override
     public String toString() {
