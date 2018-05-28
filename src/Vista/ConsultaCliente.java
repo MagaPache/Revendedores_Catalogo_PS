@@ -5,6 +5,14 @@
  */
 package Vista;
 
+import Controlador.GestorCliente;
+import Modelo.Cliente;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Usuario
@@ -14,8 +22,17 @@ public class ConsultaCliente extends javax.swing.JFrame {
     /**
      * Creates new form ConsultaCliente
      */
-    public ConsultaCliente() {
+    GestorCliente gc = new GestorCliente();
+    ArrayList<Cliente> clients = new ArrayList<>();
+
+    public ConsultaCliente() throws SQLException {
         initComponents();
+        txtSearchName.setEnabled(false);
+        btnSearchClientName.setEnabled(false);
+        txtSearchEmail.setEnabled(false);
+        btnSearchClientMail.setEnabled(false);
+        clients = gc.getAllClients();
+        loadTableClients();
     }
 
     /**
@@ -28,19 +45,20 @@ public class ConsultaCliente extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jtClient = new javax.swing.JTable();
+        tblClients = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        txtClientName = new javax.swing.JTextField();
+        txtSearchName = new javax.swing.JTextField();
         btnSearchClientName = new javax.swing.JButton();
-        txtClientMail = new javax.swing.JTextField();
+        txtSearchEmail = new javax.swing.JTextField();
         btnSearchClientMail = new javax.swing.JButton();
         rbtClientByMail = new javax.swing.JRadioButton();
         rbtClientByName = new javax.swing.JRadioButton();
+        btnPrintClient = new javax.swing.JButton();
+        btnUpdateTable = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(null);
 
-        jtClient.setModel(new javax.swing.table.DefaultTableModel(
+        tblClients.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -51,37 +69,159 @@ public class ConsultaCliente extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jtClient);
-
-        getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(10, 140, 561, 200);
+        jScrollPane1.setViewportView(tblClients);
 
         jLabel1.setText("Buscar Cliente");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(10, 20, 80, 14);
-        getContentPane().add(txtClientName);
-        txtClientName.setBounds(10, 90, 80, 20);
 
         btnSearchClientName.setText("Buscar");
-        getContentPane().add(btnSearchClientName);
-        btnSearchClientName.setBounds(110, 90, 65, 23);
-        getContentPane().add(txtClientMail);
-        txtClientMail.setBounds(210, 90, 80, 20);
+        btnSearchClientName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchClientNameActionPerformed(evt);
+            }
+        });
 
         btnSearchClientMail.setText("Buscar");
-        getContentPane().add(btnSearchClientMail);
-        btnSearchClientMail.setBounds(300, 90, 65, 23);
+        btnSearchClientMail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchClientMailActionPerformed(evt);
+            }
+        });
 
         rbtClientByMail.setText("E-mail");
-        getContentPane().add(rbtClientByMail);
-        rbtClientByMail.setBounds(210, 50, 53, 23);
+        rbtClientByMail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtClientByMailActionPerformed(evt);
+            }
+        });
 
         rbtClientByName.setText("Nombre");
-        getContentPane().add(rbtClientByName);
-        rbtClientByName.setBounds(10, 50, 63, 23);
+        rbtClientByName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtClientByNameActionPerformed(evt);
+            }
+        });
+
+        btnPrintClient.setText("Imprimir");
+
+        btnUpdateTable.setText("Actualizar");
+        btnUpdateTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateTableActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(rbtClientByName)
+                        .addGap(137, 137, 137)
+                        .addComponent(rbtClientByMail))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(txtSearchName, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(btnSearchClientName)
+                        .addGap(35, 35, 35)
+                        .addComponent(txtSearchEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnSearchClientMail))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(403, 403, 403)
+                        .addComponent(btnUpdateTable, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(btnPrintClient))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(17, 17, 17))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rbtClientByName)
+                    .addComponent(rbtClientByMail))
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtSearchName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearchClientName)
+                    .addComponent(txtSearchEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearchClientMail))
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnUpdateTable)
+                    .addComponent(btnPrintClient)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void rbtClientByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtClientByNameActionPerformed
+        // TODO add your handling code here:
+        enableRbt(1);
+        if (rbtClientByName.isSelected()) {
+            txtSearchEmail.setText("");
+            txtSearchName.setEnabled(true);
+            btnSearchClientName.setEnabled(true);
+            txtSearchEmail.setEnabled(false);
+            btnSearchClientMail.setEnabled(false);
+        }
+    }//GEN-LAST:event_rbtClientByNameActionPerformed
+
+    private void rbtClientByMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtClientByMailActionPerformed
+        // TODO add your handling code here:
+        enableRbt(2);
+        if (rbtClientByMail.isSelected()) {
+            txtSearchName.setText("");
+            txtSearchName.setEnabled(false);
+            btnSearchClientName.setEnabled(false);
+            txtSearchEmail.setEnabled(true);
+            btnSearchClientMail.setEnabled(true);
+        }
+    }//GEN-LAST:event_rbtClientByMailActionPerformed
+
+    private void btnSearchClientNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchClientNameActionPerformed
+        try {
+            // TODO add your handling code here:
+            clients = gc.getClientByName(txtSearchName.getText());
+            loadTableClients();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchClientNameActionPerformed
+
+    private void btnSearchClientMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchClientMailActionPerformed
+        try {
+            // TODO add your handling code here:
+            clients = gc.getClientByEmail(txtSearchEmail.getText());
+            loadTableClients();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchClientMailActionPerformed
+
+    private void btnUpdateTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTableActionPerformed
+        try {
+            // TODO add your handling code here:
+            clients = gc.getAllClients();
+            loadTableClients();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnUpdateTableActionPerformed
 
     /**
      * @param args the command line arguments
@@ -116,20 +256,51 @@ public class ConsultaCliente extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConsultaCliente().setVisible(true);
+                try {
+                    new ConsultaCliente().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ConsultaCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnPrintClient;
     private javax.swing.JButton btnSearchClientMail;
     private javax.swing.JButton btnSearchClientName;
+    private javax.swing.JButton btnUpdateTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jtClient;
     private javax.swing.JRadioButton rbtClientByMail;
     private javax.swing.JRadioButton rbtClientByName;
-    private javax.swing.JTextField txtClientMail;
-    private javax.swing.JTextField txtClientName;
+    private javax.swing.JTable tblClients;
+    private javax.swing.JTextField txtSearchEmail;
+    private javax.swing.JTextField txtSearchName;
     // End of variables declaration//GEN-END:variables
+
+    private void enableRbt(int x) {
+        switch (x) {
+            case 1:
+                rbtClientByName.setSelected(true);
+                rbtClientByMail.setSelected(false);
+                break;
+            case 2:
+                rbtClientByName.setSelected(false);
+                rbtClientByMail.setSelected(true);
+                break;
+        }
+    }
+
+    private void loadTableClients() {
+        DefaultTableModel model = new DefaultTableModel();
+        String[] columns = {"Id", "Nombre", "Dirección", "Teléfono", "E-mail", "Fecha Nacimiento"};
+        model.setColumnIdentifiers(columns);
+        for (Cliente client : clients) {
+            Object[] rows = {client.getIdClient(), client.getClientName(), client.getAddress(), client.getTelephone(), client.getEmail(), client.getBirthDate()};
+            model.addRow(rows);
+        }
+        tblClients.setModel(model);
+    }
+
 }
