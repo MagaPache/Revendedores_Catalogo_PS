@@ -14,9 +14,9 @@ import java.sql.Date;
 public class Campania {
     
     private int idCampaign;
-    private Date startDate;
-    private Date closeDate;
-    private Date arrivalDate;
+    private String startDate;
+    private String closeDate;
+    private String arrivalDate;
     private float availableCredit;
     private float totalCost; //Hace referencia al monto a abonar que llega en la factura por campaña al recibir la caja con los productos
     private int idOfficialAgent;
@@ -30,27 +30,27 @@ public class Campania {
         this.idCampaign = idCampaign;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getCloseDate() {
+    public String getCloseDate() {
         return closeDate;
     }
 
-    public void setCloseDate(Date closeDate) {
+    public void setCloseDate(String closeDate) {
         this.closeDate = closeDate;
     }
 
-    public Date getArrivalDate() {
+    public String getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(Date arrivalDate) {
+    public void setArrivalDate(String arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
@@ -90,7 +90,7 @@ public class Campania {
     public Campania() {
     }
 
-    public Campania(int idCampaign, Date startDate, Date closeDate, Date arrivalDate, float availableCredit, float totalCost, int idOfficialAgent, String description) {
+    public Campania(int idCampaign, String startDate, String closeDate, String arrivalDate, float availableCredit, float totalCost, int idOfficialAgent, String description) {
         this.idCampaign = idCampaign;
         this.startDate = startDate;
         this.closeDate = closeDate;

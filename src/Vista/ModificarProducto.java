@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import Controlador.GestorAgenteOficial;
 import Controlador.GestorCategoriaProducto;
 import Controlador.GestorProducto;
 import Modelo.TipoProducto;
@@ -27,13 +28,14 @@ public class ModificarProducto extends javax.swing.JFrame {
     /**
      * Creates new form ModificarProducto
      */
+    GestorAgenteOficial gao = new GestorAgenteOficial();
     GestorProducto gp = new GestorProducto();
     GestorTipoProducto gtp = new GestorTipoProducto();
     GestorCategoriaProducto gcp = new GestorCategoriaProducto();
 
     public ModificarProducto() throws SQLException {
         initComponents();
-        loadCmbOfficialAgent(gp.getOfficialAgents());
+        loadCmbOfficialAgent(gao.getOfficialAgents());
 //        String texto = txtOfficialAgent.getText();        
 //        if(texto.equals(cmbOfficialAgent.getModel().getSelectedItem().toString())){
 //            cmbOfficialAgent.setSelectedIndex(+1);
