@@ -23,11 +23,10 @@ public class GestorPedido {
 
     public void addOrder(Pedido p) throws SQLException {
         ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_insert_order @pFecha = ?, @pCliente = ?, @pCampania = ?, @pObservac = ?");
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_insert_order @pFecha = ?, @pCliente = ?, @pCampania = ?");
         stmt.setString(1, p.getOrderDate());
         stmt.setInt(2, p.getIdClient());
-        stmt.setInt(3, p.getIdCampaign());
-        stmt.setString(4, p.getObservations());
+        stmt.setInt(3, p.getIdCampaign());        
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
@@ -35,11 +34,10 @@ public class GestorPedido {
 
     public void updateOrder(Pedido p) throws SQLException {
         ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_update_order ?, ?, ?, ?");
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_update_order ?, ?, ?");
         stmt.setInt(1, p.getIdOrder());
         stmt.setInt(2, p.getIdClient());
-        stmt.setInt(3, p.getIdCampaign());
-        stmt.setString(4, p.getObservations());
+        stmt.setInt(3, p.getIdCampaign());        
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
@@ -79,8 +77,7 @@ public class GestorPedido {
             p.setDelivered(query.getBoolean("entregado"));
             p.setDeliveryDate(query.getString("fechaEntrega"));
             p.setPayed(query.getBoolean("estaPagado"));
-            p.setIdCampaign(query.getInt("idCampania"));
-            p.setObservations(query.getString("observaciones"));
+            p.setIdCampaign(query.getInt("idCampania"));            
         }
         query.close();
         stmt.close();

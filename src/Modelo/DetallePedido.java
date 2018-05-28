@@ -17,6 +17,7 @@ public class DetallePedido {
     private int amount;
     private float price;
     private int page;
+    private String observations;
 
     public int getIdOrderDetail() {
         return idOrderDetail;
@@ -64,25 +65,35 @@ public class DetallePedido {
 
     public void setPage(int page) {
         this.page = page;
-    }    
+    }  
+
+    public String getObservations() {
+        return observations;
+    }
+
+    public void setObservations(String observations) {
+        this.observations = observations;
+    } 
+    
     
 
     public DetallePedido() {
     }
 
-    public DetallePedido(int idOrderDetail, int idOrder, int idProduct, int amount, float price, int page) {
+    public DetallePedido(int idOrderDetail, int idOrder, int idProduct, int amount, float price, int page, String observations) {
         this.idOrderDetail = idOrderDetail;
         this.idOrder = idOrder;
         this.idProduct = idProduct;
         this.amount = amount;
         this.price = price;
         this.page = page;
-    }    
+        this.observations = observations;
+    }       
 
     @Override
     public String toString() {
-        return "DetallePedido{" + "idOrderDetail=" + idOrderDetail + ", idOrder=" + idOrder + ", idProduct=" + idProduct + ", amount=" + amount + ", price=" + price + '}';
-    }
+        return "DetallePedido{" + "idOrderDetail=" + idOrderDetail + ", idOrder=" + idOrder + ", idProduct=" + idProduct + ", amount=" + amount + ", price=" + price + ", page=" + page + ", observations=" + observations + '}';
+    }  
     
     
     
