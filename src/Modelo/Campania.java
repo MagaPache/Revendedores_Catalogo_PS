@@ -104,7 +104,7 @@ public class Campania {
 
     @Override
     public String toString() {
-        return "Campania{" + "idCampaign=" + idCampaign + ", startDate=" + startDate + ", closeDate=" + closeDate + ", arrivalDate=" + arrivalDate + ", availableCredit=" + availableCredit + ", totalCost=" + totalCost + ", idOfficialAgent=" + idOfficialAgent + '}';
+        return description;
     }
     
     

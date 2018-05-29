@@ -5,6 +5,17 @@
  */
 package Vista;
 
+import Controlador.GestorAgenteOficial;
+import Controlador.GestorCampania;
+import Modelo.AgenteOficial;
+import Modelo.Campania;
+import java.awt.event.ItemEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author Usuario
@@ -14,8 +25,21 @@ public class CierreCampania extends javax.swing.JFrame {
     /**
      * Creates new form CierreCampania
      */
-    public CierreCampania() {
+    GestorAgenteOficial gao = new GestorAgenteOficial();
+    GestorCampania gc = new GestorCampania();
+
+    public CierreCampania() throws SQLException {
         initComponents();
+        loadCmbOfficialAgent(gao.getOfficialAgents());
+        loadCmbCampaignsPerOfficialAgent(gc.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+        int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+        Campania c = gc.getCampaign(idAgent, idCampaign);
+        lblStartDate.setText(c.getStartDate());
+        lblCloseDate.setText(c.getCloseDate());
+        lblArrivalDate.setText(c.getArrivalDate());
+        lblAvailableCredit.setText(Float.toString(c.getAvailableCredit()));
+
     }
 
     /**
@@ -48,10 +72,20 @@ public class CierreCampania extends javax.swing.JFrame {
         jLabel1.setText("Agente Oficial");
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOfficialAgent.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbOfficialAgentItemStateChanged(evt);
+            }
+        });
 
         jLabel2.setText("Campaña");
 
         cmbCampaign.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCampaign.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbCampaignItemStateChanged(evt);
+            }
+        });
 
         jLabel3.setText("Fecha Inicio");
 
@@ -72,6 +106,11 @@ public class CierreCampania extends javax.swing.JFrame {
         lblAvailableCredit.setText("jLabel8");
 
         btnSave.setText("Cerrar Campaña");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -83,15 +122,10 @@ public class CierreCampania extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7))
-                        .addGap(18, 18, 18)
+                            .addComponent(jLabel2))
+                        .addGap(37, 37, 37)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtTotalCost, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblAvailableCredit)
-                            .addComponent(lblArrivalDate)
                             .addComponent(lblStartDate)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(cmbCampaign, javax.swing.GroupLayout.Alignment.LEADING, 0, 169, Short.MAX_VALUE)
@@ -99,14 +133,26 @@ public class CierreCampania extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblCloseDate)
-                        .addGap(116, 116, 116))))
+                        .addGap(116, 332, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(141, 141, 141)
-                .addComponent(btnSave)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(141, 141, 141)
+                        .addComponent(btnSave))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel7))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCloseDate)
+                            .addComponent(lblArrivalDate)
+                            .addComponent(lblAvailableCredit))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -123,7 +169,9 @@ public class CierreCampania extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(lblStartDate)
+                    .addComponent(lblStartDate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(lblCloseDate))
                 .addGap(18, 18, 18)
@@ -135,16 +183,78 @@ public class CierreCampania extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(lblAvailableCredit))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel7)
-                    .addComponent(txtTotalCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtTotalCost, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addComponent(btnSave)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbCampaignItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCampaignItemStateChanged
+
+        // TODO add your handling code here:
+        int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbCampaign.getItemCount() > 0) {
+                    int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+                    System.out.println(idAgent);
+                    System.out.println(idCampaign);
+                    Campania c = gc.getCampaign(idAgent, idCampaign);
+                    lblStartDate.setText(c.getStartDate());
+                    lblCloseDate.setText(c.getCloseDate());
+                    lblArrivalDate.setText(c.getArrivalDate());
+                    lblAvailableCredit.setText(Float.toString(c.getAvailableCredit()));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+    }//GEN-LAST:event_cmbCampaignItemStateChanged
+
+    private void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOfficialAgentItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbOfficialAgent.getItemCount() > 0) {
+                    int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+                    loadCmbCampaignsPerOfficialAgent(gc.getCampaignPerOfficialAgent(idAgente));
+                    System.out.println(idAgente);
+                    int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+
+                    Campania c = gc.getCampaign(idAgente, idCampaign);
+                    lblStartDate.setText(c.getStartDate());
+                    lblCloseDate.setText(c.getCloseDate());
+                    lblArrivalDate.setText(c.getArrivalDate());
+                    lblAvailableCredit.setText(Float.toString(c.getAvailableCredit()));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        try {
+            // TODO add your handling code here:
+            int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+            int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+            Campania c = new Campania();
+            c.setIdOfficialAgent(idAgente);
+            c.setIdCampaign(idCampaign);
+            c.setTotalCost(Float.parseFloat(txtTotalCost.getText()));
+            gc.closeCampaign(c);
+        } catch (SQLException ex) {
+            Logger.getLogger(CierreCampania.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,7 +286,11 @@ public class CierreCampania extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CierreCampania().setVisible(true);
+                try {
+                    new CierreCampania().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(CierreCampania.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -198,4 +312,21 @@ public class CierreCampania extends javax.swing.JFrame {
     private javax.swing.JLabel lblStartDate;
     private javax.swing.JTextField txtTotalCost;
     // End of variables declaration//GEN-END:variables
+
+    private void loadCmbOfficialAgent(ArrayList<AgenteOficial> getOfficialAgents) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (AgenteOficial officialAgent : getOfficialAgents) {
+            model.addElement(officialAgent);
+        }
+        cmbOfficialAgent.setModel(model);
+    }
+
+    private void loadCmbCampaignsPerOfficialAgent(ArrayList<Campania> campaigns) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (Campania campaign : campaigns) {
+            model.addElement(campaign);
+        }
+        cmbCampaign.setModel(model);
+    }
+
 }
