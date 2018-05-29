@@ -8,7 +8,9 @@ package Controlador;
 import Modelo.Campania;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -30,23 +32,8 @@ public class GestorCampania {
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
-    }
+    }  
     
-    public void addCampaigns(Campania c) throws SQLException {
-        ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_insert_campaign ?, ?, ?, ?, ?, ?, ?");
-        stmt.setString(1, c.getStartDate());
-        stmt.setString(2, c.getCloseDate());
-        stmt.setString(3, c.getArrivalDate());
-        stmt.setFloat(4, c.getAvailableCredit());
-        stmt.setFloat(5, c.getTotalCost());
-        stmt.setInt(6, c.getIdOfficialAgent());
-        stmt.setString(7, c.getDescription());
-        stmt.executeUpdate();
-        stmt.close();
-        ad.cerrarConexion();
-    }
-
     public void closeCampaign(Campania c) throws SQLException {
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_close_campaign ?, ?, ?");
@@ -56,5 +43,50 @@ public class GestorCampania {
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
+    }
+    
+    public Campania getCampaign(int agent, int id) throws SQLException{
+        Campania c = new Campania();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_campaign ?, ?");
+        stmt.setInt(1, agent);
+        stmt.setInt(2, id);
+        ResultSet query = stmt.executeQuery();
+        if(query.next()){
+            c.setIdCampaign(query.getInt("idCampania"));
+            c.setStartDate(query.getString("fechaInicio"));
+            c.setCloseDate(query.getString("fechaCierre"));
+            c.setArrivalDate(query.getString("fechaArribo"));
+            c.setAvailableCredit(query.getFloat("creditoDisponible"));
+            c.setIdOfficialAgent(query.getInt("idAgenteOficial"));
+            c.setDescription(query.getString("descripcion"));
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return c;
+    }
+    
+    public ArrayList<Campania> getCampaignPerOfficialAgent(int agent) throws SQLException{
+        ArrayList<Campania> campaigns = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_campaigns_per_official_agent ?");
+        stmt.setInt(1, agent);
+        ResultSet query = stmt.executeQuery();
+        while(query.next()){
+            Campania c = new Campania();
+            c.setIdCampaign(query.getInt("idCampania"));
+            c.setStartDate(query.getString("fechaInicio"));
+            c.setCloseDate(query.getString("fechaCierre"));
+            c.setArrivalDate(query.getString("fechaArribo"));
+            c.setAvailableCredit(query.getFloat("creditoDisponible"));
+            c.setIdOfficialAgent(query.getInt("idAgenteOficial"));
+            c.setDescription(query.getString("descripcion"));
+            campaigns.add(c);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return campaigns;
     }
 }
