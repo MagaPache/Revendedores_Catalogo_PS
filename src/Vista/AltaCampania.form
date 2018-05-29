@@ -36,11 +36,13 @@
                       </Group>
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jdcCloseDate" min="-2" max="-2" attributes="0"/>
-                          <Component id="jdcArrivalDate" min="-2" max="-2" attributes="0"/>
-                          <Component id="jdcStartDate" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="txtDescription" alignment="0" min="-2" pref="133" max="-2" attributes="0"/>
                           <Component id="cmbOfficialAgent" min="-2" pref="185" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="jdcArrivalDate" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jdcCloseDate" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jdcStartDate" alignment="0" pref="170" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -150,10 +152,19 @@
     <Component class="javax.swing.JTextField" name="txtDescription">
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="jdcStartDate">
+      <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="MMM-dd-yyyy"/>
+      </Properties>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="jdcCloseDate">
+      <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="MMM-dd-yyyy"/>
+      </Properties>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="jdcArrivalDate">
+      <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="MMM-dd-yyyy"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
@@ -166,6 +177,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Guardar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSaveCampaignActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnCancel">
       <Properties>

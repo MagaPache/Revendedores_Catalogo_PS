@@ -100,6 +100,7 @@ public class Campania {
         this.idOfficialAgent = idOfficialAgent;
         this.description = description;
     }    
+    
 
     @Override
     public String toString() {
