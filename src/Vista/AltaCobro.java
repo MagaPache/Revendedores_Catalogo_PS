@@ -5,6 +5,19 @@
  */
 package Vista;
 
+import Controlador.GestorAgenteOficial;
+import Controlador.GestorCampania;
+import Controlador.GestorPedido;
+import Modelo.AgenteOficial;
+import Modelo.Campania;
+import Modelo.VmPedidoCliente;
+import java.awt.event.ItemEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author Usuario
@@ -14,8 +27,20 @@ public class AltaCobro extends javax.swing.JFrame {
     /**
      * Creates new form AltaPago
      */
-    public AltaCobro() {
+    GestorAgenteOficial gao = new GestorAgenteOficial();
+    GestorCampania gc = new GestorCampania();
+    GestorPedido gp = new GestorPedido();
+
+    public AltaCobro() throws SQLException {
         initComponents();
+        loadCmbOfficialAgent(gao.getOfficialAgents());
+        loadCmbCampaignsPerOfficialAgent(gc.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+        int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+        loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
+        int idPedido = ((VmPedidoCliente) cmbClientOrder.getSelectedItem()).getIdOrder();
+        lblOrderNumber.setText(Integer.toString(idPedido));
+
     }
 
     /**
@@ -38,7 +63,7 @@ public class AltaCobro extends javax.swing.JFrame {
         jdcPaymentDate = new com.toedter.calendar.JDateChooser();
         btnSavePayment = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
-        cmbClientName = new javax.swing.JComboBox<>();
+        cmbClientOrder = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientOrder = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
@@ -49,10 +74,20 @@ public class AltaCobro extends javax.swing.JFrame {
         jLabel1.setText("Agente Oficial");
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOfficialAgent.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbOfficialAgentItemStateChanged(evt);
+            }
+        });
 
         jLabel2.setText("Campaña");
 
         cmbCampaign.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCampaign.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbCampaignItemStateChanged(evt);
+            }
+        });
 
         jLabel3.setText("Cliente");
 
@@ -64,7 +99,12 @@ public class AltaCobro extends javax.swing.JFrame {
 
         btnCancel.setText("Cancelar");
 
-        cmbClientName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbClientOrder.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbClientOrder.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbClientOrderItemStateChanged(evt);
+            }
+        });
 
         tblClientOrder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -110,7 +150,7 @@ public class AltaCobro extends javax.swing.JFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                         .addComponent(jLabel3)
                                         .addGap(18, 18, 18)
-                                        .addComponent(cmbClientName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(cmbClientOrder, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(80, 80, 80)
@@ -138,7 +178,7 @@ public class AltaCobro extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(cmbClientName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbClientOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -161,6 +201,57 @@ public class AltaCobro extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbCampaignItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCampaignItemStateChanged
+        try {
+            // TODO add your handling code here:
+            loadCmbOfficialAgent(gao.getOfficialAgents());
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbCampaign.getItemCount() > 0) {
+                    int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+                    System.out.println(idAgent);
+                    System.out.println(idCampaign);
+                    loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+    }//GEN-LAST:event_cmbCampaignItemStateChanged
+
+    private void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOfficialAgentItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbOfficialAgent.getItemCount() > 0) {
+                    int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+                    loadCmbCampaignsPerOfficialAgent(gc.getCampaignPerOfficialAgent(idAgente));
+                    System.out.println(idAgente);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
+
+    private void cmbClientOrderItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbClientOrderItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            if (cmbCampaign.getItemCount() > 0) {
+                int idPedido = ((VmPedidoCliente) cmbClientOrder.getSelectedItem()).getIdOrder();
+                lblOrderNumber.setText(Integer.toString(idPedido));
+            }
+
+        }
+    }//GEN-LAST:event_cmbClientOrderItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -193,7 +284,11 @@ public class AltaCobro extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AltaCobro().setVisible(true);
+                try {
+                    new AltaCobro().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -202,7 +297,7 @@ public class AltaCobro extends javax.swing.JFrame {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSavePayment;
     private javax.swing.JComboBox<String> cmbCampaign;
-    private javax.swing.JComboBox<String> cmbClientName;
+    private javax.swing.JComboBox<String> cmbClientOrder;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -216,4 +311,29 @@ public class AltaCobro extends javax.swing.JFrame {
     private javax.swing.JTable tblClientOrder;
     private javax.swing.JTextField txtAmountCharged;
     // End of variables declaration//GEN-END:variables
+
+    private void loadCmbOfficialAgent(ArrayList<AgenteOficial> getOfficialAgents) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (AgenteOficial officialAgent : getOfficialAgents) {
+            model.addElement(officialAgent);
+        }
+        cmbOfficialAgent.setModel(model);
+    }
+
+    private void loadCmbCampaignsPerOfficialAgent(ArrayList<Campania> campaigns) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (Campania campaign : campaigns) {
+            model.addElement(campaign);
+        }
+        cmbCampaign.setModel(model);
+    }
+
+    private void loadCmbClientOrder(ArrayList<VmPedidoCliente> clientsOrders) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (VmPedidoCliente order : clientsOrders) {
+            model.addElement(order);
+        }
+        cmbClientOrder.setModel(model);
+    }
+
 }
