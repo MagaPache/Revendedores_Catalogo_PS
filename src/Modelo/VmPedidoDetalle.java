@@ -9,7 +9,7 @@ package Modelo;
  *
  * @author Usuario
  */
-public class VmPedido {
+public class VmPedidoDetalle {
     
     private int idOrder;
     private String clientName;
@@ -75,10 +75,10 @@ public class VmPedido {
         this.observations = observations;
     }
 
-    public VmPedido() {
+    public VmPedidoDetalle() {
     }
 
-    public VmPedido(int idOrder, String clientName, String productName, int amount, float price, int page, String observations) {
+    public VmPedidoDetalle(int idOrder, String clientName, String productName, int amount, float price, int page, String observations) {
         this.idOrder = idOrder;
         this.clientName = clientName;
         this.productName = productName;

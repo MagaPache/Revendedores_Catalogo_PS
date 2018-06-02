@@ -6,7 +6,8 @@
 package Controlador;
 
 import Modelo.Pedido;
-import Modelo.VmPedido;
+import Modelo.VmPedidoDetalle;
+import Modelo.VmPedidoCliente;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +27,7 @@ public class GestorPedido {
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_insert_order @pFecha = ?, @pCliente = ?, @pCampania = ?");
         stmt.setString(1, p.getOrderDate());
         stmt.setInt(2, p.getIdClient());
-        stmt.setInt(3, p.getIdCampaign());        
+        stmt.setInt(3, p.getIdCampaign());
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
@@ -37,7 +38,7 @@ public class GestorPedido {
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_update_order ?, ?, ?");
         stmt.setInt(1, p.getIdOrder());
         stmt.setInt(2, p.getIdClient());
-        stmt.setInt(3, p.getIdCampaign());        
+        stmt.setInt(3, p.getIdCampaign());
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
@@ -77,7 +78,7 @@ public class GestorPedido {
             p.setDelivered(query.getBoolean("entregado"));
             p.setDeliveryDate(query.getString("fechaEntrega"));
             p.setPayed(query.getBoolean("estaPagado"));
-            p.setIdCampaign(query.getInt("idCampania"));            
+            p.setIdCampaign(query.getInt("idCampania"));
         }
         query.close();
         stmt.close();
@@ -86,13 +87,13 @@ public class GestorPedido {
     }
 
     //Obtener todos los pedidos con su detalle de pedido
-    public ArrayList<VmPedido> getOrdersWithDetails() throws SQLException {
-        ArrayList<VmPedido> orders = new ArrayList<>();
+    public ArrayList<VmPedidoDetalle> getOrdersWithDetails() throws SQLException {
+        ArrayList<VmPedidoDetalle> orders = new ArrayList<>();
         ad.abrirConexion();
-        Statement stmt = ad.getConn().createStatement();
-        ResultSet query = stmt.executeQuery("SELECT * FROM vw_get_orders_with_details");
-        while(query.next()){
-            VmPedido vp = new VmPedido();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_orders_with_details ?");
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {
+            VmPedidoDetalle vp = new VmPedidoDetalle();
             vp.setIdOrder(query.getInt("pedido"));
             vp.setClientName(query.getString("nombre"));
             vp.setProductName(query.getString("producto"));
@@ -107,9 +108,28 @@ public class GestorPedido {
         ad.cerrarConexion();
         return orders;
     }
-    
+
+    public ArrayList<VmPedidoCliente> getClientOrderByCampaign(int campania, int agent) throws SQLException {
+        ArrayList<VmPedidoCliente> orders = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC get_client_order_by_campaign ?, ?");
+        stmt.setInt(1, campania);
+        stmt.setInt(2, agent);
+        ResultSet query = stmt.executeQuery();
+        while(query.next()){
+            VmPedidoCliente vpc = new VmPedidoCliente();
+            vpc.setIdOrder(query.getInt("idPedido"));           
+            vpc.setClientName(query.getString("nombre"));
+            vpc.setOrderDate(query.getString("fechaPedido"));
+            orders.add(vpc);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return orders;
+    }
+
 //    public float getTotalAmount(){
 //        
 //    }
-
 }

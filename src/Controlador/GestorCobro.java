@@ -22,7 +22,7 @@ public class GestorCobro {
     
     public void addPayment(Cobro c) throws SQLException{
         ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("exec_sp_insert_payment ?, ?, ?"); //hacer sp
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_insert_payment ?, ?, ?");
         stmt.setInt(1, c.getIdOrder());
         stmt.setFloat(2, c.getAmountCharged());
         stmt.setString(3, c.getPaymentDate());
@@ -33,7 +33,7 @@ public class GestorCobro {
     
     public void modifyPayment(Cobro c) throws SQLException{
         ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("exec_sp_update_payment ?, ?, ?, ?"); //where id = 
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_update_payment ?, ?, ?, ?");
         stmt.setInt(1, c.getIdPayment());
         stmt.setInt(2, c.getIdOrder());
         stmt.setFloat(3, c.getAmountCharged());
@@ -45,7 +45,7 @@ public class GestorCobro {
     
     public void deletePayment(Cobro c) throws SQLException{
         ad.abrirConexion();
-        PreparedStatement stmt = ad.getConn().prepareStatement("exec sp_delete_payment ?");
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_delete_payment ?");
         stmt.setInt(1, c.getIdPayment());
         stmt.executeUpdate();
         stmt.close();
