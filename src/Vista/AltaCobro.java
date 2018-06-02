@@ -7,16 +7,22 @@ package Vista;
 
 import Controlador.GestorAgenteOficial;
 import Controlador.GestorCampania;
+import Controlador.GestorCobro;
 import Controlador.GestorPedido;
 import Modelo.AgenteOficial;
 import Modelo.Campania;
+import Modelo.Cobro;
 import Modelo.VmPedidoCliente;
+import Modelo.VmPedidoDetalle;
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -30,6 +36,10 @@ public class AltaCobro extends javax.swing.JFrame {
     GestorAgenteOficial gao = new GestorAgenteOficial();
     GestorCampania gc = new GestorCampania();
     GestorPedido gp = new GestorPedido();
+    GestorCobro gco = new GestorCobro();
+    ArrayList<VmPedidoDetalle> orderDetailed = new ArrayList<>();
+    Date paymentDate;
+    String fechaPago;
 
     public AltaCobro() throws SQLException {
         initComponents();
@@ -40,6 +50,8 @@ public class AltaCobro extends javax.swing.JFrame {
         loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
         int idPedido = ((VmPedidoCliente) cmbClientOrder.getSelectedItem()).getIdOrder();
         lblOrderNumber.setText(Integer.toString(idPedido));
+        orderDetailed = gp.getOrdersWithDetails(idPedido);
+        loadTableClientOrderDetail();
 
     }
 
@@ -65,7 +77,7 @@ public class AltaCobro extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
         cmbClientOrder = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblClientOrder = new javax.swing.JTable();
+        tblClientOrderDetail = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         lblOrderNumber = new javax.swing.JLabel();
 
@@ -96,6 +108,11 @@ public class AltaCobro extends javax.swing.JFrame {
         jLabel6.setText("Fecha Pago");
 
         btnSavePayment.setText("Guardar");
+        btnSavePayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSavePaymentActionPerformed(evt);
+            }
+        });
 
         btnCancel.setText("Cancelar");
 
@@ -106,7 +123,7 @@ public class AltaCobro extends javax.swing.JFrame {
             }
         });
 
-        tblClientOrder.setModel(new javax.swing.table.DefaultTableModel(
+        tblClientOrderDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -117,7 +134,7 @@ public class AltaCobro extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblClientOrder);
+        jScrollPane1.setViewportView(tblClientOrderDetail);
 
         jLabel4.setText("Número de Pedido");
 
@@ -246,12 +263,36 @@ public class AltaCobro extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             if (cmbCampaign.getItemCount() > 0) {
-                int idPedido = ((VmPedidoCliente) cmbClientOrder.getSelectedItem()).getIdOrder();
-                lblOrderNumber.setText(Integer.toString(idPedido));
+                try {
+                    int idPedido = ((VmPedidoCliente) cmbClientOrder.getSelectedItem()).getIdOrder();
+                    lblOrderNumber.setText(Integer.toString(idPedido));
+                    orderDetailed = gp.getOrdersWithDetails(idPedido);
+                    loadTableClientOrderDetail();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
         }
     }//GEN-LAST:event_cmbClientOrderItemStateChanged
+
+    private void btnSavePaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePaymentActionPerformed
+        try {
+            // TODO add your handling code here:
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            paymentDate = jdcPaymentDate.getDate();
+            fechaPago= sdf.format(paymentDate);
+            
+            Cobro c = new Cobro();
+            c.setIdOrder(Integer.parseInt(lblOrderNumber.getText()));
+            c.setAmountCharged(Float.parseFloat(txtAmountCharged.getText()));
+            c.setPaymentDate(fechaPago);
+            gco.addPayment(c);
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnSavePaymentActionPerformed
 
     /**
      * @param args the command line arguments
@@ -308,7 +349,7 @@ public class AltaCobro extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private com.toedter.calendar.JDateChooser jdcPaymentDate;
     private javax.swing.JLabel lblOrderNumber;
-    private javax.swing.JTable tblClientOrder;
+    private javax.swing.JTable tblClientOrderDetail;
     private javax.swing.JTextField txtAmountCharged;
     // End of variables declaration//GEN-END:variables
 
@@ -334,6 +375,17 @@ public class AltaCobro extends javax.swing.JFrame {
             model.addElement(order);
         }
         cmbClientOrder.setModel(model);
+    }
+
+    private void loadTableClientOrderDetail() {
+        DefaultTableModel model = new DefaultTableModel();
+        String[] columns = {"Producto", "Cantidad", "Precio", "Página", "Observaciones"};
+        model.setColumnIdentifiers(columns);
+        for (VmPedidoDetalle detail : orderDetailed) {
+            Object[] rows = {detail.getProductName(), detail.getAmount(), detail.getPrice(), detail.getPage(), detail.getObservations()};
+            model.addRow(rows);
+        }
+        tblClientOrderDetail.setModel(model);
     }
 
 }

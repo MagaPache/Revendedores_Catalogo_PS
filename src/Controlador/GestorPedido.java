@@ -87,10 +87,11 @@ public class GestorPedido {
     }
 
     //Obtener todos los pedidos con su detalle de pedido
-    public ArrayList<VmPedidoDetalle> getOrdersWithDetails() throws SQLException {
+    public ArrayList<VmPedidoDetalle> getOrdersWithDetails(int idPedido) throws SQLException {
         ArrayList<VmPedidoDetalle> orders = new ArrayList<>();
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_orders_with_details ?");
+        stmt.setInt(1, idPedido);
         ResultSet query = stmt.executeQuery();
         while (query.next()) {
             VmPedidoDetalle vp = new VmPedidoDetalle();
