@@ -6,6 +6,7 @@
 package Controlador;
 
 import Modelo.Cobro;
+import Modelo.VmCobro;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,18 +70,21 @@ public class GestorCobro {
         return c;
     }
     
-    public ArrayList<Cobro> getAllPayments() throws SQLException{
-        ArrayList<Cobro> payments = new ArrayList<>();
+    public ArrayList<VmCobro> getAllPayments() throws SQLException{
+        ArrayList<VmCobro> payments = new ArrayList<>();
         ad.abrirConexion();
         Statement stmt = ad.getConn().createStatement();
-        ResultSet query = stmt.executeQuery("select * from COBROS");
+        ResultSet query = stmt.executeQuery("SELECT * FROM vw_get_all_payments");
         while(query.next()){
-            Cobro c = new Cobro();
-            c.setIdPayment(query.getInt("idCobro"));
-            c.setIdOrder(query.getInt("idPedido"));
-            c.setAmountCharged(query.getFloat("montoCobrado"));
-            c.setPaymentDate(query.getString("fechaPago"));
-            payments.add(c);
+            VmCobro vc = new VmCobro();
+            vc.setIdPayment(query.getInt("idCobro"));
+            vc.setIdOrder(query.getInt("pedido"));
+            vc.setClientName(query.getString("cliente"));
+            vc.setAmount(query.getFloat("monto"));
+            vc.setPaymentDate(query.getString("fecha"));
+            vc.setCampaignName(query.getString("descripcion"));
+            vc.setAgentName(query.getString("agente"));
+            payments.add(vc);
         }
         query.close();
         stmt.close();
