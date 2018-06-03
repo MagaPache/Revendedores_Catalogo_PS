@@ -53,7 +53,7 @@ public class VmPedidoCliente {
     @Override
     public String toString() {
         return clientName;
-    }
+    }  
     
     
     

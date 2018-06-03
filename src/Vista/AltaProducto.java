@@ -326,8 +326,7 @@ public class AltaProducto extends javax.swing.JFrame {
             vwmodify.cmbProductType.setEditable(false);   
             vwmodify.cmbProductCategory.setEditable(true);
             vwmodify.cmbProductCategory.setSelectedItem(gcp.getProductCategory(category).getPcName());
-            vwmodify.cmbProductCategory.setEditable(false);
-            vwmodify.txtProductCategory.setText(category);
+            vwmodify.cmbProductCategory.setEditable(false);            
             vwmodify.txtProductPrice.setText(Float.toString(price));
             //vwmodify.txtOfficialAgent.setText(agent);
             vwmodify.setVisible(true);

@@ -34,13 +34,9 @@
                       <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txtProductPrice" min="-2" pref="78" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="cmbProductCategory" min="-2" pref="130" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="txtProductCategory" min="-2" pref="96" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="cmbProductCategory" min="-2" pref="130" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="129" max="32767" attributes="0"/>
+                      <EmptySpace pref="243" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -115,7 +111,6 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmbProductCategory" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtProductCategory" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -238,11 +233,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Id"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtProductCategory">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblIdProduct">
       <Properties>

@@ -5,6 +5,21 @@
  */
 package Vista;
 
+import Controlador.GestorAgenteOficial;
+import Controlador.GestorCampania;
+import Controlador.GestorPedido;
+import Modelo.AgenteOficial;
+import Modelo.Campania;
+import Modelo.VmPedidoCliente;
+import Modelo.VmPedidoDetalle;
+import java.awt.event.ItemEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Usuario
@@ -14,8 +29,24 @@ public class ModificarPedido extends javax.swing.JFrame {
     /**
      * Creates new form ModificarPedido
      */
-    public ModificarPedido() {
+    GestorAgenteOficial gao = new GestorAgenteOficial();
+    GestorCampania gca = new GestorCampania();
+    GestorPedido gp = new GestorPedido();
+    ArrayList<VmPedidoDetalle> details = new ArrayList<>();
+
+    public ModificarPedido() throws SQLException {
         initComponents();
+        loadCmbOfficialAgent(gao.getOfficialAgents());
+        loadCmbCampaign(gca.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+        int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+        loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
+        int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
+        details = gp.getOrdersWithDetails(idPedido);
+        loadTableClientOrderDetail();
+        String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
+        lblOrderDate.setText(fechaPedido);
+
     }
 
     /**
@@ -46,14 +77,29 @@ public class ModificarPedido extends javax.swing.JFrame {
         jLabel1.setText("Agente Oficial");
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOfficialAgent.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbOfficialAgentItemStateChanged(evt);
+            }
+        });
 
         jLabel2.setText("Campaña");
 
         cmbCampaign.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCampaign.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbCampaignItemStateChanged(evt);
+            }
+        });
 
         jLabel3.setText("Pedido");
 
         cmbOrder.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOrder.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbOrderItemStateChanged(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Productos Solicitados"));
 
@@ -160,6 +206,55 @@ public class ModificarPedido extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOfficialAgentItemStateChanged
+        // TODO add your handling code here:
+        try {
+            loadCmbCampaign(gca.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+            //String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
+            //lblOrderDate.setText(fechaPedido);
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
+
+    private void cmbCampaignItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCampaignItemStateChanged
+        // TODO add your handling code here:
+        int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbCampaign.getItemCount() > 0) {
+                    int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+                    System.out.println(idAgent);
+                    System.out.println(idCampaign);
+                    loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
+                    //String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
+                    //lblOrderDate.setText(fechaPedido);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_cmbCampaignItemStateChanged
+
+    private void cmbOrderItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOrderItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            if (cmbCampaign.getItemCount() > 0) {
+                try {
+                    String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
+                    lblOrderDate.setText(fechaPedido);
+                    int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
+                    details = gp.getOrdersWithDetails(idPedido);
+                    loadTableClientOrderDetail();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+    }//GEN-LAST:event_cmbOrderItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -190,7 +285,11 @@ public class ModificarPedido extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ModificarPedido().setVisible(true);
+                try {
+                    new ModificarPedido().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ModificarPedido.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -210,4 +309,40 @@ public class ModificarPedido extends javax.swing.JFrame {
     private javax.swing.JLabel lblOrderDate;
     private javax.swing.JTable tblOrderDetail;
     // End of variables declaration//GEN-END:variables
+
+    private void loadCmbOfficialAgent(ArrayList<AgenteOficial> getOfficialAgents) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (AgenteOficial officialAgent : getOfficialAgents) {
+            model.addElement(officialAgent);
+        }
+        cmbOfficialAgent.setModel(model);
+    }
+
+    private void loadCmbCampaign(ArrayList<Campania> campaigns) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (Campania campaign : campaigns) {
+            model.addElement(campaign);
+        }
+        cmbCampaign.setModel(model);
+    }
+
+    private void loadCmbClientOrder(ArrayList<VmPedidoCliente> clientsOrders) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (VmPedidoCliente order : clientsOrders) {
+            model.addElement(order);
+        }
+        cmbOrder.setModel(model);
+    }
+
+    private void loadTableClientOrderDetail() {
+        DefaultTableModel model = new DefaultTableModel();
+        String[] columns = {"Producto", "Cantidad", "Precio", "Página", "Observaciones"};
+        model.setColumnIdentifiers(columns);
+        for (VmPedidoDetalle detail : details) {
+            Object[] rows = {detail.getProductName(), detail.getAmount(), detail.getPrice(), detail.getPage(), detail.getObservations()};
+            model.addRow(rows);
+        }
+        tblOrderDetail.setModel(model);
+    }
+
 }
