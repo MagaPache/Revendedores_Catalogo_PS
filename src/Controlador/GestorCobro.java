@@ -92,4 +92,27 @@ public class GestorCobro {
         return payments;
     }
     
+    public ArrayList<VmCobro> getPaymentsByClient(String cliente) throws SQLException{
+        ArrayList<VmCobro> payments = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_payment_by_client ?");
+        stmt.setString(1, cliente);
+        ResultSet query = stmt.executeQuery();
+        while(query.next()){
+            VmCobro vc = new VmCobro();
+            vc.setIdPayment(query.getInt("cobro"));
+            vc.setIdOrder(query.getInt("pedido"));
+            vc.setClientName(query.getString("cliente"));
+            vc.setAmount(query.getFloat("monto"));
+            vc.setPaymentDate(query.getString("fecha"));
+            vc.setCampaignName(query.getString("descripcion"));
+            vc.setAgentName(query.getString("agente"));
+            payments.add(vc);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return payments;
+    }
+    
 }

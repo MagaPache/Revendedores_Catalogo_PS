@@ -302,6 +302,8 @@
                       <Component id="jScrollPane2" pref="506" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="btnUpdateTable" min="-2" pref="100" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="btnModifyPayment" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="txtSearchPayment" min="-2" pref="128" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -322,6 +324,7 @@
                       <Component id="btnSearchPayment" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtSearchPayment" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnUpdateTable" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnModifyPayment" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -354,6 +357,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Buscar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSearchPaymentActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtSearchPayment">
         </Component>
@@ -363,6 +369,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateTableActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnModifyPayment">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Modificar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnModifyPaymentActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
