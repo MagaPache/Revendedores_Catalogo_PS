@@ -55,4 +55,20 @@ public class GestorTipoProducto {
         ad.cerrarConexion();
         return types;
     }
+    
+    public TipoProducto getProductType(String tipo) throws SQLException{
+        TipoProducto tp = new TipoProducto();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_product_type_by_name ?");
+        stmt.setString(1, tipo);
+        ResultSet query = stmt.executeQuery();
+        if (query.next()) {
+            tp.setIdProductType(query.getInt("idTipoProducto"));
+            tp.setPtName(query.getString("tipoProducto"));
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return tp;
+    }
 }

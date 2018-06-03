@@ -315,12 +315,21 @@ public class AltaProducto extends javax.swing.JFrame {
             String agent = (String) tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 6); 
             
             vwmodify.lblIdProduct.setText(Integer.toString(id));
+            //vwmodify.cmbOfficialAgent.setSelectedIndex((gao.getAgent(agent).getIdOfficialAgent())-1);
+            vwmodify.cmbOfficialAgent.setEditable(true);
+            vwmodify.cmbOfficialAgent.setSelectedItem((gao.getAgent(agent).getAgentName()));
+            vwmodify.cmbOfficialAgent.setEditable(false);
             vwmodify.txtProductName.setText(productName);
             vwmodify.txtProductCode.setText(Integer.toString(code));
-            vwmodify.txtProductType.setText(type);
+            vwmodify.cmbProductType.setEditable(true);
+            vwmodify.cmbProductType.setSelectedItem(gtp.getProductType(type).getPtName());
+            vwmodify.cmbProductType.setEditable(false);   
+            vwmodify.cmbProductCategory.setEditable(true);
+            vwmodify.cmbProductCategory.setSelectedItem(gcp.getProductCategory(category).getPcName());
+            vwmodify.cmbProductCategory.setEditable(false);
             vwmodify.txtProductCategory.setText(category);
             vwmodify.txtProductPrice.setText(Float.toString(price));
-            vwmodify.txtOfficialAgent.setText(agent);
+            //vwmodify.txtOfficialAgent.setText(agent);
             vwmodify.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);

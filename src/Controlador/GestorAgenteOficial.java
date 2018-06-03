@@ -6,6 +6,7 @@
 package Controlador;
 
 import Modelo.AgenteOficial;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -38,6 +39,22 @@ public class GestorAgenteOficial {
         stmt.close();
         ad.cerrarConexion();
         return agents;
+    }
+    
+    public AgenteOficial getAgent (String nombre) throws SQLException{
+        AgenteOficial ao = new AgenteOficial();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_agent_by_name ?");
+        stmt.setString(1, nombre);
+        ResultSet query = stmt.executeQuery();
+        if (query.next()) {
+            ao.setIdOfficialAgent(query.getInt("idAgenteOficial"));
+            ao.setAgentName(query.getString("nombreAgente"));
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return ao;
     }
     
 }
