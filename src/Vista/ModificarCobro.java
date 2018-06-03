@@ -5,6 +5,13 @@
  */
 package Vista;
 
+import Controlador.GestorCobro;
+import Modelo.Cobro;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Usuario
@@ -14,6 +21,8 @@ public class ModificarCobro extends javax.swing.JFrame {
     /**
      * Creates new form ModificarCobro
      */
+    GestorCobro gco = new GestorCobro();
+    
     public ModificarCobro() {
         initComponents();
     }
@@ -31,14 +40,17 @@ public class ModificarCobro extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        cmbOfficialAgent = new javax.swing.JComboBox<>();
-        cmbCampaign = new javax.swing.JComboBox<>();
-        cmbClient = new javax.swing.JComboBox<>();
-        cmbOrder = new javax.swing.JComboBox<>();
-        cmbSearchPayment = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tmbPayment = new javax.swing.JTable();
         btnModifyPayment = new javax.swing.JButton();
+        lblOfficialAgent = new javax.swing.JLabel();
+        lblCampaign = new javax.swing.JLabel();
+        lblClientName = new javax.swing.JLabel();
+        lblOrderNumber = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        txtAmountCharged = new javax.swing.JTextField();
+        jdcPaymentDate = new com.toedter.calendar.JDateChooser();
+        jLabel5 = new javax.swing.JLabel();
+        lblPaymentNumber = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,37 +60,30 @@ public class ModificarCobro extends javax.swing.JFrame {
 
         jLabel3.setText("Cliente");
 
-        jLabel4.setText("Pedido");
+        jLabel4.setText("N° Pedido");
 
-        cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cmbCampaign.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cmbClient.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cmbOrder.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cmbSearchPayment.setText("Buscar");
-
-        tmbPayment.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(tmbPayment);
-
-        btnModifyPayment.setText("Modificar");
+        btnModifyPayment.setText("Guardar");
         btnModifyPayment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModifyPaymentActionPerformed(evt);
             }
         });
+
+        lblOfficialAgent.setText("jLabel5");
+
+        lblCampaign.setText("jLabel5");
+
+        lblClientName.setText("jLabel5");
+
+        lblOrderNumber.setText("jLabel5");
+
+        jLabel9.setText("Fecha Pago");
+
+        jLabel10.setText("Monto Cobrado");
+
+        jLabel5.setText("N° Cobro");
+
+        lblPaymentNumber.setText("jLabel6");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,27 +91,35 @@ public class ModificarCobro extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnModifyPayment)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cmbSearchPayment, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cmbOfficialAgent, 0, 108, Short.MAX_VALUE)
-                            .addComponent(cmbClient, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cmbCampaign, 0, 108, Short.MAX_VALUE)
-                            .addComponent(cmbOrder, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(32, Short.MAX_VALUE))
+                            .addComponent(btnModifyPayment)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblOfficialAgent)
+                                    .addComponent(lblClientName)
+                                    .addComponent(txtAmountCharged, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblPaymentNumber))
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel2))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblOrderNumber)
+                            .addComponent(jdcPaymentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCampaign))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,29 +127,48 @@ public class ModificarCobro extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(lblOfficialAgent)
+                    .addComponent(lblCampaign))
+                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(cmbClient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblClientName)
                     .addComponent(jLabel4)
-                    .addComponent(cmbOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addComponent(cmbSearchPayment)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                    .addComponent(lblOrderNumber))
+                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(lblPaymentNumber))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel10)
+                        .addComponent(txtAmountCharged, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9))
+                    .addComponent(jdcPaymentDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(btnModifyPayment)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModifyPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyPaymentActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            Cobro c = new Cobro();
+            c.setIdPayment(Integer.parseInt(lblPaymentNumber.getText()));
+            c.setIdOrder(Integer.parseInt(lblOrderNumber.getText()));
+            c.setAmountCharged(Float.parseFloat(txtAmountCharged.getText()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String fechaPago = sdf.format(jdcPaymentDate.getDate());
+            c.setPaymentDate(fechaPago);
+            gco.modifyPayment(c);
+        } catch (SQLException ex) {
+            Logger.getLogger(ModificarCobro.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnModifyPaymentActionPerformed
 
     /**
@@ -176,16 +208,19 @@ public class ModificarCobro extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModifyPayment;
-    private javax.swing.JComboBox<String> cmbCampaign;
-    private javax.swing.JComboBox<String> cmbClient;
-    private javax.swing.JComboBox<String> cmbOfficialAgent;
-    private javax.swing.JComboBox<String> cmbOrder;
-    private javax.swing.JButton cmbSearchPayment;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tmbPayment;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel9;
+    public com.toedter.calendar.JDateChooser jdcPaymentDate;
+    public javax.swing.JLabel lblCampaign;
+    public javax.swing.JLabel lblClientName;
+    public javax.swing.JLabel lblOfficialAgent;
+    public javax.swing.JLabel lblOrderNumber;
+    public javax.swing.JLabel lblPaymentNumber;
+    public javax.swing.JTextField txtAmountCharged;
     // End of variables declaration//GEN-END:variables
 }

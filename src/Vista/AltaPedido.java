@@ -5,6 +5,32 @@
  */
 package Vista;
 
+import Controlador.GestorAgenteOficial;
+import Controlador.GestorCampania;
+import Controlador.GestorCliente;
+import Controlador.GestorDetallePedido;
+import Controlador.GestorPedido;
+import Controlador.GestorProducto;
+import Modelo.AgenteOficial;
+import Modelo.Campania;
+import Modelo.Cliente;
+import Modelo.DetallePedido;
+import Modelo.Pedido;
+import Modelo.VmProducto;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Usuario
@@ -14,8 +40,35 @@ public class AltaPedido extends javax.swing.JFrame {
     /**
      * Creates new form AltaPedido
      */
-    public AltaPedido() {
+    GestorProducto gpr = new GestorProducto();
+    GestorCliente gc = new GestorCliente();
+    GestorCampania gca = new GestorCampania();
+    GestorAgenteOficial gao = new GestorAgenteOficial();
+    GestorPedido gp = new GestorPedido();
+    GestorDetallePedido gdp = new GestorDetallePedido();
+
+    ArrayList<Object[]> listado = new ArrayList<>();
+    ArrayList<VmProducto> products = new ArrayList<>();
+    ArrayList<Cliente> clients = new ArrayList<>();
+    Object[] datos;
+    final JDialog dialog = new JDialog();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    Date fecha = new Date();
+    int codigoPedido;
+    String fechaActual;
+
+    public AltaPedido() throws SQLException {
         initComponents();
+        loadOfficialAgent(gao.getOfficialAgents());
+        loadCmbCampaign(gca.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        clients = gc.getAllClients();
+        products = gpr.getAllProducts();
+        codigoPedido = gp.getMaxCodigo() + 1;
+        loadTableProducts();
+        loadTableClients();
+        fechaActual = sdf.format(fecha);
+        lblDate.setText(fechaActual);
+
     }
 
     /**
@@ -34,7 +87,7 @@ public class AltaPedido extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         cmbOfficialAgent = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        cmbCampaign = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProducts = new javax.swing.JTable();
@@ -69,10 +122,15 @@ public class AltaPedido extends javax.swing.JFrame {
         jLabel9.setText("Agente Oficial");
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOfficialAgent.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbOfficialAgentItemStateChanged(evt);
+            }
+        });
 
         jLabel10.setText("Campaña");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCampaign.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Productos"));
 
@@ -90,12 +148,22 @@ public class AltaPedido extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblProducts);
 
         btnSearchProduct.setText("Buscar");
+        btnSearchProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchProductActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Precio Catálogo");
 
         jLabel5.setText("Cantidad");
 
         btnNewProduct.setText("Agregar");
+        btnNewProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewProductActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -154,6 +222,11 @@ public class AltaPedido extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tblClients);
 
         btnNewClient.setText("Agregar");
+        btnNewClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewClientActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -177,8 +250,18 @@ public class AltaPedido extends javax.swing.JFrame {
         );
 
         btnAddToOrder.setText("Agregar a Pedido");
+        btnAddToOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddToOrderActionPerformed(evt);
+            }
+        });
 
         btnSaveOrder.setText("Finalizar Pedido");
+        btnSaveOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveOrderActionPerformed(evt);
+            }
+        });
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Detalle de Pedido"));
 
@@ -195,7 +278,7 @@ public class AltaPedido extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -221,9 +304,6 @@ public class AltaPedido extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnSaveOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -245,12 +325,16 @@ public class AltaPedido extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel10)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(spnPageNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(lblDate)))
+                                .addComponent(lblDate))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnSaveOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(9, 9, 9)))
                         .addGap(50, 50, 50))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,8 +343,8 @@ public class AltaPedido extends javax.swing.JFrame {
                                 .addGap(8, 8, 8)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 559, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 661, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,7 +354,7 @@ public class AltaPedido extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(lblDate))
                 .addGap(18, 18, 18)
@@ -287,16 +371,133 @@ public class AltaPedido extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addComponent(btnAddToOrder)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSaveOrder)
-                .addContainerGap())
+                .addContainerGap(87, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOfficialAgentItemStateChanged
+        // TODO add your handling code here:
+        try {
+            loadCmbCampaign(gca.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
+
+    private void btnSearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchProductActionPerformed
+        // TODO add your handling code here:
+        try {
+            if (!txtProductName.getText().equals("")) {
+                String search = txtProductName.getText();
+                loadTableProductsSearch(search);
+            } else {
+                JOptionPane.showMessageDialog(dialog, "No se ha encontrado un Producto con ese nombre");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }//GEN-LAST:event_btnSearchProductActionPerformed
+
+    private void btnNewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewProductActionPerformed
+        // TODO add your handling code here:
+        datos = new Object[9];
+
+        datos[1] = spnPageNumber.getValue();
+        datos[2] = tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 0);
+        //datos[2] = tblProducts.getValueAt(tblProducts.getSelectedRow(), 0);
+        datos[3] = tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 1);
+        //datos[3] = tblProducts.getValueAt(tblProducts.getSelectedRow(), 1);        
+        datos[4] = Float.parseFloat(txtPrice.getText());
+        datos[5] = spnAmount.getValue();
+
+    }//GEN-LAST:event_btnNewProductActionPerformed
+
+    private void btnNewClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewClientActionPerformed
+        // TODO add your handling code here:
+        if (datos != null) {
+            //datos[6] = tblClients.getValueAt(tblProducts.getSelectedRow(), 0);
+            //datos[7] = tblClients.getValueAt(tblProducts.getSelectedRow(), 1);
+            datos[6] = tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 0);
+            datos[7] = tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 1);
+//            for (Object[] objects : listado) {
+//                if(objects[6] != datos[6]){
+//                    codigoPedido++; 
+//                    break;
+//                }                
+//                
+//            }
+            //codigoPedido++;
+        } else {
+            JOptionPane.showMessageDialog(dialog, "Debe seleccionar un producto antes de elegir un cliente");
+        }
+    }//GEN-LAST:event_btnNewClientActionPerformed
+
+    private void btnAddToOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToOrderActionPerformed
+        // TODO add your handling code here:
+        boolean exists = false;
+        int valor = 0;
+        datos[0] = codigoPedido;
+        datos[8] = txtaObservations.getText();
+        if (Validate()) {
+            for (Object[] objects : listado) {
+                if (objects[6] == datos[6]) {
+//                    datos[0] = objects[0];                     
+//                    break;
+                    exists = true;
+                    valor = (int) objects[0];
+                }
+
+//                }else{
+//                    datos[0] = codigoPedido;
+//                    break;
+//                }
+            }
+            if (exists) {
+                datos[0] = valor;
+            } else {
+                datos[0] = codigoPedido;
+                codigoPedido++;
+            }
+            listado.add(datos);
+            loadlstOrderDetail(listado);
+        }
+    }//GEN-LAST:event_btnAddToOrderActionPerformed
+
+    private void btnSaveOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveOrderActionPerformed
+        // TODO add your handling code here:
+        DetallePedido dp = new DetallePedido();
+        Pedido p = new Pedido();
+        Pedido p2 = null;
+        try {
+            for (Object[] objects : listado) {
+                p.setIdOrder(Integer.parseInt(objects[0].toString()));
+                p.setIdClient(Integer.parseInt(objects[6].toString()));
+                p.setOrderDate(lblDate.getText());
+                p.setIdCampaign(((Campania) cmbCampaign.getSelectedItem()).getIdCampaign());
+                dp.setPage(Integer.parseInt(objects[1].toString()));
+                dp.setIdProduct(Integer.parseInt(objects[2].toString()));
+                dp.setPrice(Float.parseFloat(objects[4].toString()));
+                dp.setAmount(Integer.parseInt(objects[5].toString()));
+                dp.setObservations(objects[8].toString());
+                p2 = gp.getOrder(p.getIdOrder());
+                if (p2.getIdOrder() == 0) {
+                    gp.addOrder(p);
+                }
+                dp.setIdOrder(Integer.parseInt(objects[0].toString()));
+                gdp.addOrderDetail(dp);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }//GEN-LAST:event_btnSaveOrderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -328,7 +529,11 @@ public class AltaPedido extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AltaPedido().setVisible(true);
+                try {
+                    new AltaPedido().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AltaPedido.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -339,8 +544,8 @@ public class AltaPedido extends javax.swing.JFrame {
     private javax.swing.JButton btnNewProduct;
     private javax.swing.JButton btnSaveOrder;
     private javax.swing.JButton btnSearchProduct;
+    private javax.swing.JComboBox<String> cmbCampaign;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -365,4 +570,85 @@ public class AltaPedido extends javax.swing.JFrame {
     private javax.swing.JTextField txtProductName;
     private javax.swing.JTextArea txtaObservations;
     // End of variables declaration//GEN-END:variables
+
+    private void loadlstOrderDetail(ArrayList<Object[]> listado) {
+        DefaultListModel model = new DefaultListModel();
+        for (Object[] object : listado) {
+            String view = object[0].toString() + "- " + object[2].toString() + "- " + object[3].toString() + object[4].toString() + "- " + object[5].toString() + ", " + object[6].toString() + "- " + object[7].toString() + " Obs: " + object[8].toString();
+            model.addElement(view);
+        }
+        lstOrderDetail.setModel(model);
+    }
+
+    private void loadCmbCampaign(ArrayList<Campania> campaigns) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (Campania campaign : campaigns) {
+            model.addElement(campaign);
+        }
+        cmbCampaign.setModel(model);
+    }
+
+    private void loadOfficialAgent(ArrayList<AgenteOficial> OfficialAgents) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (AgenteOficial officialAgent : OfficialAgents) {
+            model.addElement(officialAgent);
+        }
+        cmbOfficialAgent.setModel(model);
+    }
+
+    private void loadTableProductsSearch(String nameProduct) throws SQLException {
+        DefaultTableModel model = new DefaultTableModel();
+        String[] columns = {"Id", "Producto", "Código", "Tipo Producto", "Categoría", "Precio Unitario", "Agente Oficial"};
+        model.setColumnIdentifiers(columns);
+        products = gpr.getProductByName(nameProduct);
+        for (VmProducto product : products) {
+            Object[] rows = {product.getIdProduct(), product.getProductName(), product.getProductCode(), product.getProductType(), product.getProductCategory(), product.getUnitPrice(), product.getAgentName()};
+            model.addRow(rows);
+        }
+        tblProducts.setModel(model);
+    }
+
+    private void loadTableProducts() {
+        DefaultTableModel model = new DefaultTableModel();
+        String[] columns = {"Id", "Producto", "Código", "Tipo Producto", "Categoría", "Precio Unitario", "Agente Oficial"};
+        model.setColumnIdentifiers(columns);
+        for (VmProducto product : products) {
+            Object[] rows = {product.getIdProduct(), product.getProductName(), product.getProductCode(), product.getProductType(), product.getProductCategory(), product.getUnitPrice(), product.getAgentName()};
+            model.addRow(rows);
+        }
+        tblProducts.setModel(model);
+    }
+
+    private void loadTableClients() {
+        DefaultTableModel model = new DefaultTableModel();
+        String[] columns = {"Id", "Nombre", " Email", "Dirección", "Teléfono"};
+        model.setColumnIdentifiers(columns);
+        for (Cliente client : clients) {
+            Object[] rows = {client.getIdClient(), client.getClientName(), client.getEmail(), client.getAddress(), client.getTelephone()};
+            model.addRow(rows);
+        }
+        tblClients.setModel(model);
+    }
+
+    private boolean Validate() {
+        if ((int) spnPageNumber.getValue() == -1) {
+            JOptionPane.showMessageDialog(dialog, "Debe seleccionar una página valida");
+            return false;
+        }
+        if (datos[1] == null || datos[2] == null || datos[3] == null || datos[4] == null || datos[5] == null) {
+            JOptionPane.showMessageDialog(dialog, "Debe completar correctamente los datos del producto");
+            return false;
+        }
+        if (datos[6] == null || datos[7] == null) {
+            JOptionPane.showMessageDialog(dialog, "Debe seleccionar un cliente valido");
+            return false;
+        }
+        if (datos[8] == null) {
+            JOptionPane.showMessageDialog(dialog, "Debe agregar una observación");
+            return false;
+        }
+
+        return true;
+    }
+
 }

@@ -117,9 +117,9 @@ public class GestorPedido {
         stmt.setInt(1, campania);
         stmt.setInt(2, agent);
         ResultSet query = stmt.executeQuery();
-        while(query.next()){
+        while (query.next()) {
             VmPedidoCliente vpc = new VmPedidoCliente();
-            vpc.setIdOrder(query.getInt("idPedido"));           
+            vpc.setIdOrder(query.getInt("idPedido"));
             vpc.setClientName(query.getString("nombre"));
             vpc.setOrderDate(query.getString("fechaPedido"));
             orders.add(vpc);
@@ -128,6 +128,39 @@ public class GestorPedido {
         stmt.close();
         ad.cerrarConexion();
         return orders;
+    }
+
+    public int getMaxCodigo() throws SQLException {
+        ad.abrirConexion();
+        int codigo = 0;
+        Statement stmt = ad.getConn().createStatement();
+        ResultSet query = stmt.executeQuery("SELECT * FROM vw_get_max_pedidos");
+        if (query.next()) {
+            codigo = query.getInt("ultimo");
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return codigo;
+    }
+
+    public int[] getClientLastOrder() throws SQLException {
+        int ultimo = 0;
+        int idCliente = 0;
+        ad.abrirConexion();
+        int[] resultados = new int[2];
+        Statement stmt = ad.getConn().createStatement();
+        ResultSet query = stmt.executeQuery("SELECT * FROM vw_get_client_last_order");
+        if (query.next()) {
+            ultimo = query.getInt("ultimo");
+            idCliente = query.getInt(idCliente);
+            resultados[0] = ultimo;
+            resultados[1] = idCliente;
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return resultados;
     }
 
 //    public float getTotalAmount(){

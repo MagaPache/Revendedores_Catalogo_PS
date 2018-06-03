@@ -17,6 +17,7 @@ import Modelo.VmPedidoCliente;
 import Modelo.VmPedidoDetalle;
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -91,6 +92,7 @@ public class AltaCobro extends javax.swing.JFrame {
         btnSearchPayment = new javax.swing.JButton();
         txtSearchPayment = new javax.swing.JTextField();
         btnUpdateTable = new javax.swing.JButton();
+        btnModifyPayment = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -246,11 +248,23 @@ public class AltaCobro extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tblPayments);
 
         btnSearchPayment.setText("Buscar");
+        btnSearchPayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchPaymentActionPerformed(evt);
+            }
+        });
 
         btnUpdateTable.setText("Actualizar");
         btnUpdateTable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateTableActionPerformed(evt);
+            }
+        });
+
+        btnModifyPayment.setText("Modificar");
+        btnModifyPayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyPaymentActionPerformed(evt);
             }
         });
 
@@ -264,6 +278,8 @@ public class AltaCobro extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnUpdateTable, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnModifyPayment)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -279,7 +295,8 @@ public class AltaCobro extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSearchPayment)
                     .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnUpdateTable))
+                    .addComponent(btnUpdateTable)
+                    .addComponent(btnModifyPayment))
                 .addContainerGap())
         );
 
@@ -392,6 +409,42 @@ public class AltaCobro extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnUpdateTableActionPerformed
 
+    private void btnSearchPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPaymentActionPerformed
+        try {
+            // TODO add your handling code here:
+            payments = gco.getPaymentsByClient(txtSearchPayment.getText());
+            loadTablePayments();
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchPaymentActionPerformed
+
+    private void btnModifyPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyPaymentActionPerformed
+        try {
+            // TODO add your handling code here:
+            ModificarCobro mc = new ModificarCobro();
+            int cobro = (int) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 0);
+            int pedido = (int) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 1);
+            String cliente = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 2);
+            float montoAbonado = (float) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 3);
+            String fechaPago = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 4);
+            String campania = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 5);
+            String agente = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 6);
+            SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
+            Date payDate = formatoTexto.parse(fechaPago);
+            mc.lblOfficialAgent.setText(agente);
+            mc.lblCampaign.setText(campania);
+            mc.lblClientName.setText(cliente);
+            mc.lblOrderNumber.setText(Integer.toString(pedido));
+            mc.lblPaymentNumber.setText(Integer.toString(cobro));
+            mc.txtAmountCharged.setText(Float.toString(montoAbonado));
+            mc.jdcPaymentDate.setDate(payDate);
+            mc.setVisible(true);
+        } catch (ParseException ex) {
+            Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnModifyPaymentActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -434,6 +487,7 @@ public class AltaCobro extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnModifyPayment;
     private javax.swing.JButton btnSavePayment;
     private javax.swing.JButton btnSearchPayment;
     private javax.swing.JButton btnUpdateTable;
@@ -495,10 +549,10 @@ public class AltaCobro extends javax.swing.JFrame {
     
     private void loadTablePayments() {
         DefaultTableModel model = new DefaultTableModel();
-        String[] columns = {"Número Pedido", "Cliente", "Monto Abonado", "Fecha Pago", "Campaña", "Agente Oficial"};
+        String[] columns = {"Número Cobro","Número Pedido", "Cliente", "Monto Abonado", "Fecha Pago", "Campaña", "Agente Oficial"};
         model.setColumnIdentifiers(columns);
         for (VmCobro pay : payments) {
-            Object[] rows = {pay.getIdOrder(), pay.getClientName(), pay.getAmount(), pay.getPaymentDate(), pay.getCampaignName(), pay.getAgentName()};
+            Object[] rows = {pay.getIdPayment(), pay.getIdOrder(), pay.getClientName(), pay.getAmount(), pay.getPaymentDate(), pay.getCampaignName(), pay.getAgentName()};
             model.addRow(rows);
         }
         tblPayments.setModel(model);
