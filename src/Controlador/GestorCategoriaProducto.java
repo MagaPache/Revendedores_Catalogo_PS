@@ -55,4 +55,22 @@ public class GestorCategoriaProducto {
         return categories;
     }
     
+    public CategoriaProducto getProductCategory(String categoria) throws SQLException{
+        CategoriaProducto cp = new CategoriaProducto();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_product_category_by_name ?");
+        stmt.setString(1, categoria);
+        ResultSet query = stmt.executeQuery();
+        if (query.next()) {
+            cp.setIdProductCategory(query.getInt("idCategoriaProducto"));
+            cp.setPcName(query.getString("categoriaProducto"));
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return cp;
+    }   
+
+
+    
 }
