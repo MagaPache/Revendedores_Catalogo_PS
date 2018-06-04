@@ -8,6 +8,7 @@ package Controlador;
 import Modelo.AgenteOficial;
 import Modelo.Condicion;
 import Modelo.Premio;
+import Modelo.VmPremio;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +33,19 @@ public class GestorPremio {
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
-    }    
+    }   
+    
+    public void updatePrice(Premio p) throws SQLException {
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_update_price ?, ?, ?, ?");
+        stmt.setInt(1, p.getIdPrice());
+        stmt.setInt(2, p.getIdOfficialAgent());
+        stmt.setInt(3, p.getIdCondition());
+        stmt.setString(4, p.getLimitDate());
+        stmt.executeUpdate();
+        stmt.close();
+        ad.cerrarConexion();
+    }
 
     public void deletePrice(int id) throws SQLException {
         ad.abrirConexion();
@@ -44,5 +57,22 @@ public class GestorPremio {
 
     }    
     
+    public ArrayList<VmPremio> getPricePerOfficialAgent(int agente) throws SQLException {
+        ArrayList<VmPremio> prices = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_search_price_by_agent ?");
+        stmt.setInt(1, agente);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {
+            VmPremio vp = new VmPremio();
+            vp.setIdPrice(query.getInt("idPremio"));
+            vp.setPriceName(query.getString("premio"));            
+            prices.add(vp);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return prices;
+    }
 
 }

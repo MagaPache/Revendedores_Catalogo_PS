@@ -5,6 +5,23 @@
  */
 package Vista;
 
+import Controlador.GestorAgenteOficial;
+import Controlador.GestorCondicion;
+import Controlador.GestorPremio;
+import Modelo.AgenteOficial;
+import Modelo.Premio;
+import Modelo.VmCondicion;
+import Modelo.VmPremio;
+import java.awt.event.ItemEvent;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Usuario
@@ -14,8 +31,17 @@ public class ModificarPremio extends javax.swing.JFrame {
     /**
      * Creates new form ModificarPremio
      */
-    public ModificarPremio() {
+    GestorAgenteOficial gao = new GestorAgenteOficial();
+    GestorCondicion gco = new GestorCondicion();
+    GestorPremio gpr = new GestorPremio();
+    ArrayList<VmCondicion> conditions = new ArrayList<>();
+
+    public ModificarPremio() throws SQLException {
         initComponents();
+        loadCmbOfficialAgent(gao.getOfficialAgents());
+        loadCmbPrice(gpr.getPricePerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        conditions = gco.getConditions();
+        loadTableConditions();
     }
 
     /**
@@ -27,16 +53,35 @@ public class ModificarPremio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jtPrices = new javax.swing.JTable();
-        btnDropPrice = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         cmbOfficialAgent = new javax.swing.JComboBox<>();
-        btnAddPrice = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        cmbPrice = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblConditions = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        jdcLimitDate = new com.toedter.calendar.JDateChooser();
+        btnSavePrice = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jtPrices.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel1.setText("Agente Oficial");
+
+        cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOfficialAgent.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbOfficialAgentItemStateChanged(evt);
+            }
+        });
+
+        jLabel2.setText("Premio");
+
+        cmbPrice.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Condiciones"));
+
+        tblConditions.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -47,54 +92,118 @@ public class ModificarPremio extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jtPrices);
+        jScrollPane1.setViewportView(tblConditions);
 
-        btnDropPrice.setText("Quitar");
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 8, Short.MAX_VALUE))
+        );
 
-        jLabel1.setText("Seleccione un Agente Oficial");
+        jLabel3.setText("Fecha Limite");
 
-        cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        btnAddPrice.setText("Agregar");
+        btnSavePrice.setText("Guardar");
+        btnSavePrice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSavePriceActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnAddPrice)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDropPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jdcLimitDate, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(216, 216, 216)
+                        .addComponent(btnSavePrice)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(26, 26, 26)
-                .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDropPrice)
-                    .addComponent(btnAddPrice))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(cmbPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3))
+                    .addComponent(jdcLimitDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(btnSavePrice)
+                .addGap(24, 24, 24))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOfficialAgentItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbOfficialAgent.getItemCount() > 0) {
+                    int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+                    System.out.println(idAgente);
+                    loadCmbPrice(gpr.getPricePerOfficialAgent(idAgente));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
+
+    private void btnSavePriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePriceActionPerformed
+        try {
+            // TODO add your handling code here:
+            Premio p = new Premio();
+            p.setIdPrice(((VmPremio) cmbPrice.getSelectedItem()).getIdPrice());
+            p.setIdOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent());
+            p.setIdCondition((int) tblConditions.getModel().getValueAt(tblConditions.getSelectedRow(), 0));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date limitDate = jdcLimitDate.getDate();
+            String fechaLimite = sdf.format(limitDate);
+            p.setLimitDate(fechaLimite);
+            gpr.updatePrice(p);
+        } catch (SQLException ex) {
+            Logger.getLogger(ModificarPremio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSavePriceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -126,17 +235,52 @@ public class ModificarPremio extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ModificarPremio().setVisible(true);
+                try {
+                    new ModificarPremio().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ModificarPremio.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddPrice;
-    private javax.swing.JButton btnDropPrice;
+    private javax.swing.JButton btnSavePrice;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
+    private javax.swing.JComboBox<String> cmbPrice;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jtPrices;
+    private com.toedter.calendar.JDateChooser jdcLimitDate;
+    private javax.swing.JTable tblConditions;
     // End of variables declaration//GEN-END:variables
+
+    private void loadCmbOfficialAgent(ArrayList<AgenteOficial> getOfficialAgents) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (AgenteOficial officialAgent : getOfficialAgents) {
+            model.addElement(officialAgent);
+        }
+        cmbOfficialAgent.setModel(model);
+    }
+
+    private void loadCmbPrice(ArrayList<VmPremio> prices) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (VmPremio price : prices) {
+            model.addElement(price);
+        }
+        cmbPrice.setModel(model);
+    }
+
+    private void loadTableConditions() {
+        DefaultTableModel model = new DefaultTableModel();
+        String[] columns = {"Código", "Categoría Producto", "Cantidad"};
+        model.setColumnIdentifiers(columns);
+        for (VmCondicion condition : conditions) {
+            Object[] rows = {condition.getIdCondition(), condition.getProductCategoryName(), condition.getAmount()};
+            model.addRow(rows);
+        }
+        tblConditions.setModel(model);
+    }
 }
