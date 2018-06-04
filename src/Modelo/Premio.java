@@ -17,7 +17,7 @@ public class Premio {
     private int idCondition;
     private String priceName;
     private int idOfficialAgent;
-    private Date limitDate;
+    private String limitDate;
 
     public int getIdPrice() {
         return idPrice;
@@ -51,18 +51,18 @@ public class Premio {
         this.idOfficialAgent = idOfficialAgent;
     }
 
-    public Date getLimitDate() {
+    public String getLimitDate() {
         return limitDate;
     }
 
-    public void setLimitDate(Date limitDate) {
+    public void setLimitDate(String limitDate) {
         this.limitDate = limitDate;
     }
 
     public Premio() {
     }
 
-    public Premio(int idPrice, int idCondition, String priceName, int idOfficialAgent, Date limitDate) {
+    public Premio(int idPrice, int idCondition, String priceName, int idOfficialAgent, String limitDate) {
         this.idPrice = idPrice;
         this.idCondition = idCondition;
         this.priceName = priceName;
