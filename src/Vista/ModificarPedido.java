@@ -10,6 +10,7 @@ import Controlador.GestorCampania;
 import Controlador.GestorPedido;
 import Modelo.AgenteOficial;
 import Modelo.Campania;
+import Modelo.DetallePedido;
 import Modelo.VmPedidoCliente;
 import Modelo.VmPedidoDetalle;
 import java.awt.event.ItemEvent;
@@ -140,6 +141,11 @@ public class ModificarPedido extends javax.swing.JFrame {
         btnAddItem.setText("Agregar");
 
         btnDropItem.setText("Quitar");
+        btnDropItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDropItemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -254,6 +260,12 @@ public class ModificarPedido extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_cmbOrderItemStateChanged
+
+    private void btnDropItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDropItemActionPerformed
+        // TODO add your handling code here:
+//        DetallePedido dp = new DetallePedido();
+//        dp.setIdOrderDetail(PROPERTIES);
+    }//GEN-LAST:event_btnDropItemActionPerformed
 
     /**
      * @param args the command line arguments

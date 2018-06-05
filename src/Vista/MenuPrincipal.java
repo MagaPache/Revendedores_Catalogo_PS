@@ -5,6 +5,10 @@
  */
 package Vista;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Usuario
@@ -32,21 +36,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmFile = new javax.swing.JMenu();
         jmFileClients = new javax.swing.JMenu();
         miNewClient = new javax.swing.JMenuItem();
-        miModifyClient = new javax.swing.JMenuItem();
         miClientConsult = new javax.swing.JMenuItem();
         jmFileProducts = new javax.swing.JMenu();
         miNewProduct = new javax.swing.JMenuItem();
-        miModifyProduct = new javax.swing.JMenuItem();
-        miNewProductCategory = new javax.swing.JMenuItem();
-        miNewProductType = new javax.swing.JMenuItem();
         jmFileOrders = new javax.swing.JMenu();
         miNewOrder = new javax.swing.JMenuItem();
-        miModifyOrder = new javax.swing.JMenuItem();
         miRemoveOrder = new javax.swing.JMenuItem();
         miPrintOrder = new javax.swing.JMenuItem();
         jmFilePayments = new javax.swing.JMenu();
         miNewPayment = new javax.swing.JMenuItem();
-        miModifyPayment = new javax.swing.JMenuItem();
         jmFilePrizes = new javax.swing.JMenu();
         miNewPrize = new javax.swing.JMenuItem();
         miModifyPrize = new javax.swing.JMenuItem();
@@ -74,9 +72,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         jmFileClients.add(miNewClient);
 
-        miModifyClient.setText("Modificar");
-        jmFileClients.add(miModifyClient);
-
         miClientConsult.setText("Consultar");
         miClientConsult.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,36 +85,34 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmFileProducts.setText("Productos");
 
         miNewProduct.setText("Nuevo");
-        jmFileProducts.add(miNewProduct);
-
-        miModifyProduct.setText("Modificar");
-        jmFileProducts.add(miModifyProduct);
-
-        miNewProductCategory.setText("Añadir Categoría");
-        jmFileProducts.add(miNewProductCategory);
-
-        miNewProductType.setText("Añadir Tipo ");
-        miNewProductType.addActionListener(new java.awt.event.ActionListener() {
+        miNewProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miNewProductTypeActionPerformed(evt);
+                miNewProductActionPerformed(evt);
             }
         });
-        jmFileProducts.add(miNewProductType);
+        jmFileProducts.add(miNewProduct);
 
         jmFile.add(jmFileProducts);
 
         jmFileOrders.setText("Pedidos");
 
         miNewOrder.setText("Nuevo");
+        miNewOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miNewOrderActionPerformed(evt);
+            }
+        });
         jmFileOrders.add(miNewOrder);
-
-        miModifyOrder.setText("Modificar");
-        jmFileOrders.add(miModifyOrder);
 
         miRemoveOrder.setText("Eliminar");
         jmFileOrders.add(miRemoveOrder);
 
         miPrintOrder.setText("Imprimir detalle");
+        miPrintOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miPrintOrderActionPerformed(evt);
+            }
+        });
         jmFileOrders.add(miPrintOrder);
 
         jmFile.add(jmFileOrders);
@@ -127,16 +120,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmFilePayments.setText("Cobros");
 
         miNewPayment.setText("Nuevo");
+        miNewPayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miNewPaymentActionPerformed(evt);
+            }
+        });
         jmFilePayments.add(miNewPayment);
-
-        miModifyPayment.setText("Modificar");
-        jmFilePayments.add(miModifyPayment);
 
         jmFile.add(jmFilePayments);
 
         jmFilePrizes.setText("Premios");
 
         miNewPrize.setText("Nuevo");
+        miNewPrize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miNewPrizeActionPerformed(evt);
+            }
+        });
         jmFilePrizes.add(miNewPrize);
 
         miModifyPrize.setText("Modificar");
@@ -148,6 +148,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmFilePrizes.add(miModifyPrize);
 
         miPrizeStatus.setText("Consultar Estado");
+        miPrizeStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miPrizeStatusActionPerformed(evt);
+            }
+        });
         jmFilePrizes.add(miPrizeStatus);
 
         jmFile.add(jmFilePrizes);
@@ -190,20 +195,86 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void miClientConsultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miClientConsultActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            ConsultaCliente cc = new ConsultaCliente();
+            cc.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miClientConsultActionPerformed
 
     private void miNewClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewClientActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            AltaCliente ac = new AltaCliente();
+            ac.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miNewClientActionPerformed
 
-    private void miNewProductTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewProductTypeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_miNewProductTypeActionPerformed
-
     private void miModifyPrizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miModifyPrizeActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            ModificarPremio mp = new ModificarPremio();
+            mp.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miModifyPrizeActionPerformed
+
+    private void miNewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewProductActionPerformed
+        try {
+            // TODO add your handling code here:
+            AltaProducto ap = new AltaProducto();
+            ap.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miNewProductActionPerformed
+
+    private void miNewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewOrderActionPerformed
+        try {
+            // TODO add your handling code here:
+            AltaPedido ap = new AltaPedido();
+            ap.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miNewOrderActionPerformed
+
+    private void miPrintOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPrintOrderActionPerformed
+        // TODO add your handling code here:
+        ConsultaPedidoPorCliente cppc = new ConsultaPedidoPorCliente();
+        cppc.setVisible(true);
+    }//GEN-LAST:event_miPrintOrderActionPerformed
+
+    private void miNewPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewPaymentActionPerformed
+        try {
+            // TODO add your handling code here:
+            AltaCobro ac = new AltaCobro();
+            ac.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miNewPaymentActionPerformed
+
+    private void miNewPrizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewPrizeActionPerformed
+        try {
+            // TODO add your handling code here:
+            AltaPremio ap = new AltaPremio();
+            ap.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miNewPrizeActionPerformed
+
+    private void miPrizeStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPrizeStatusActionPerformed
+        // TODO add your handling code here:
+        ConsultaPremio cp = new ConsultaPremio();
+        cp.setVisible(true);
+    }//GEN-LAST:event_miPrizeStatusActionPerformed
 
     /**
      * @param args the command line arguments
@@ -255,18 +326,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmRepProducts;
     private javax.swing.JMenu jmReports;
     private javax.swing.JMenuItem miClientConsult;
-    private javax.swing.JMenuItem miModifyClient;
-    private javax.swing.JMenuItem miModifyOrder;
-    private javax.swing.JMenuItem miModifyPayment;
     private javax.swing.JMenuItem miModifyPrize;
-    private javax.swing.JMenuItem miModifyProduct;
     private javax.swing.JMenuItem miNewClient;
     private javax.swing.JMenuItem miNewOrder;
     private javax.swing.JMenuItem miNewPayment;
     private javax.swing.JMenuItem miNewPrize;
     private javax.swing.JMenuItem miNewProduct;
-    private javax.swing.JMenuItem miNewProductCategory;
-    private javax.swing.JMenuItem miNewProductType;
     private javax.swing.JMenuItem miPrintOrder;
     private javax.swing.JMenuItem miPrizeStatus;
     private javax.swing.JMenuItem miRemoveOrder;
