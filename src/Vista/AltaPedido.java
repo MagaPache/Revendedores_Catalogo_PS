@@ -111,7 +111,7 @@ public class AltaPedido extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         txtaObservations = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Fecha");
 

@@ -31,11 +31,6 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miNewClientActionPerformed"/>
                   </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="miModifyClient">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Modificar"/>
-                  </Properties>
-                </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="miClientConsult">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Consultar"/>
@@ -55,23 +50,8 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Nuevo"/>
                   </Properties>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="miModifyProduct">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Modificar"/>
-                  </Properties>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="miNewProductCategory">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="A&#xf1;adir Categor&#xed;a"/>
-                  </Properties>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="miNewProductType">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="A&#xf1;adir Tipo "/>
-                  </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miNewProductTypeActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miNewProductActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>
@@ -85,11 +65,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Nuevo"/>
                   </Properties>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="miModifyOrder">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Modificar"/>
-                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miNewOrderActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="miRemoveOrder">
                   <Properties>
@@ -100,6 +78,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Imprimir detalle"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miPrintOrderActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -112,11 +93,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Nuevo"/>
                   </Properties>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="miModifyPayment">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Modificar"/>
-                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miNewPaymentActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -129,6 +108,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Nuevo"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miNewPrizeActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="miModifyPrize">
                   <Properties>
@@ -142,6 +124,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Consultar Estado"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miPrizeStatusActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>

@@ -63,7 +63,7 @@ public class AltaPremio extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblConditions = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Premio a ganar");
 
@@ -85,6 +85,11 @@ public class AltaPremio extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Condiciones"));
 
         btnAddCondition.setText("Nuevo");
+        btnAddCondition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddConditionActionPerformed(evt);
+            }
+        });
 
         tblConditions.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -140,9 +145,8 @@ public class AltaPremio extends javax.swing.JFrame {
                                     .addComponent(btnSavePrice))
                                 .addGap(57, 57, 57)
                                 .addComponent(jButton2))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
@@ -189,6 +193,16 @@ public class AltaPremio extends javax.swing.JFrame {
             Logger.getLogger(AltaPremio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSavePriceActionPerformed
+
+    private void btnAddConditionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddConditionActionPerformed
+        try {
+            // TODO add your handling code here:
+            AltaCondicion ac = new AltaCondicion();
+            ac.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaPremio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAddConditionActionPerformed
 
     /**
      * @param args the command line arguments
