@@ -52,7 +52,7 @@ public class ModificarCobro extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         lblPaymentNumber = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Agente Oficial");
 
@@ -97,7 +97,7 @@ public class ModificarCobro extends javax.swing.JFrame {
                             .addComponent(btnModifyPayment)
                             .addComponent(jLabel3)
                             .addComponent(jLabel5))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
@@ -118,8 +118,8 @@ public class ModificarCobro extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblOrderNumber)
                             .addComponent(jdcPaymentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCampaign))
-                        .addContainerGap())))
+                            .addComponent(lblCampaign))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -55,7 +55,7 @@ public class ModificarCliente extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         lblIdClient = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Nombre");
 
