@@ -56,7 +56,7 @@ public class ConsultaCliente extends javax.swing.JFrame {
         btnPrintClient = new javax.swing.JButton();
         btnUpdateTable = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tblClients.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

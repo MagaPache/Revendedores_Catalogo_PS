@@ -64,7 +64,7 @@ public class ModificarPremio extends javax.swing.JFrame {
         jdcLimitDate = new com.toedter.calendar.JDateChooser();
         btnSavePrice = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Agente Oficial");
 

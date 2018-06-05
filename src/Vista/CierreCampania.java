@@ -67,7 +67,7 @@ public class CierreCampania extends javax.swing.JFrame {
         txtTotalCost = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Agente Oficial");
 
