@@ -6,6 +6,7 @@
 package Controlador;
 
 import Modelo.Cliente;
+import Modelo.VmTopBuyers;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -150,6 +151,25 @@ public class GestorCliente {
         stmt.close();
         ad.cerrarConexion();
         return clients;
+    }
+    
+    public ArrayList<VmTopBuyers> getTopBuyersPerYear(int agente) throws SQLException{
+        ArrayList<VmTopBuyers> top = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_top_buys_per_client_per_agent ?");
+        stmt.setInt(1, agente);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {
+            VmTopBuyers vtb = new VmTopBuyers();
+            vtb.setYear(query.getString("Anio"));
+            vtb.setTotalBuyed(query.getFloat("Total Compras"));
+            vtb.setClientName(query.getString("nombre"));
+            top.add(vtb);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return top;
     }
 
 }
