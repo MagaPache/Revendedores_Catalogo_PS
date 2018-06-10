@@ -115,4 +115,21 @@ public class GestorCobro {
         return payments;
     }
     
+    public float getProfitPerCampaign(int agente, int campania) throws SQLException{
+        float profit = 0;
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_profit_per_campaign ?, ?");
+        stmt.setInt(1, agente);
+        stmt.setInt(2, campania);
+        ResultSet query = stmt.executeQuery();
+        if(query.next()){
+            profit = query.getFloat("Total Cobrado");
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return profit;
+    }
+    
+    //public float calculateNetProfitPerCampaign()
 }
