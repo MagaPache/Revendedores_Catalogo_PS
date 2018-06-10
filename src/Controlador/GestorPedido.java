@@ -163,6 +163,23 @@ public class GestorPedido {
         return resultados;
     }
 
+    public float getTotalAmount(int agente, int campania, int pedido) throws SQLException {
+        float totalAmount = 0;
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_total_amount_per_client_order ?, ?, ?");
+        stmt.setInt(1, agente);
+        stmt.setInt(2, campania);
+        stmt.setInt(3, pedido);
+        ResultSet query = stmt.executeQuery();
+        if (query.next()) {
+            totalAmount = query.getFloat("Monto Total");
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return totalAmount;
+    }
+
 //    public float getTotalAmount(){
 //        
 //    }
