@@ -179,6 +179,16 @@ public class GestorPedido {
         ad.cerrarConexion();
         return totalAmount;
     }
+    
+    public void deliverOrder(Pedido p) throws SQLException{
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_deliver_order ?, ?");
+        stmt.setInt(1, p.getIdOrder());
+        stmt.setString(2, p.getDeliveryDate());        
+        stmt.executeUpdate();
+        stmt.close();
+        ad.cerrarConexion();
+    }
 
 //    public float getTotalAmount(){
 //        
