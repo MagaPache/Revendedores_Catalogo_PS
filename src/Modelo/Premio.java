@@ -18,6 +18,7 @@ public class Premio {
     private String priceName;
     private int idOfficialAgent;
     private String limitDate;
+    private String startDate;
 
     public int getIdPrice() {
         return idPrice;
@@ -59,21 +60,34 @@ public class Premio {
         this.limitDate = limitDate;
     }
 
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }    
+    
+
     public Premio() {
     }
 
-    public Premio(int idPrice, int idCondition, String priceName, int idOfficialAgent, String limitDate) {
+    public Premio(int idPrice, int idCondition, String priceName, int idOfficialAgent, String limitDate, String startDate) {
         this.idPrice = idPrice;
         this.idCondition = idCondition;
         this.priceName = priceName;
         this.idOfficialAgent = idOfficialAgent;
         this.limitDate = limitDate;
+        this.startDate = startDate;
     }
 
     @Override
     public String toString() {
-        return "Premio{" + "idPrice=" + idPrice + ", idCondition=" + idCondition + ", priceName=" + priceName + ", idOfficialAgent=" + idOfficialAgent + ", limitDate=" + limitDate + '}';
+        return "Premio{" + "idPrice=" + idPrice + ", idCondition=" + idCondition + ", priceName=" + priceName + ", idOfficialAgent=" + idOfficialAgent + ", limitDate=" + limitDate + ", startDate=" + startDate + '}';
     }
+
+    
+
     
     
     

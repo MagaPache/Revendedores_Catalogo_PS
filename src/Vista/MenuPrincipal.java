@@ -245,9 +245,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_miNewOrderActionPerformed
 
     private void miPrintOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPrintOrderActionPerformed
-        // TODO add your handling code here:
-        ConsultaPedidoPorCliente cppc = new ConsultaPedidoPorCliente();
-        cppc.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            ConsultaPedidoPorCliente cppc = new ConsultaPedidoPorCliente();
+            cppc.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miPrintOrderActionPerformed
 
     private void miNewPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewPaymentActionPerformed
@@ -271,9 +275,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_miNewPrizeActionPerformed
 
     private void miPrizeStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPrizeStatusActionPerformed
-        // TODO add your handling code here:
-        ConsultaPremio cp = new ConsultaPremio();
-        cp.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            ConsultaEstadoPremio cp = new ConsultaEstadoPremio();
+            cp.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miPrizeStatusActionPerformed
 
     /**
