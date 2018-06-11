@@ -5,9 +5,16 @@
  */
 package Vista;
 
+import Controlador.GestorCampania;
+import Modelo.Campania;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 
 /**
  *
@@ -18,6 +25,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form MenuPrincipal
      */
+    GestorCampania gc = new GestorCampania();
+
     public MenuPrincipal() {
         initComponents();
     }
@@ -32,6 +41,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenu1 = new javax.swing.JMenu();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtaImportantNews = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jmFile = new javax.swing.JMenu();
         jmFileClients = new javax.swing.JMenu();
@@ -59,6 +71,34 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Avisos Importantes"));
+
+        txtaImportantNews.setColumns(20);
+        txtaImportantNews.setRows(5);
+        jScrollPane1.setViewportView(txtaImportantNews);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         jmFile.setText("Archivo");
 
@@ -184,11 +224,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(158, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -284,6 +330,27 @@ public class MenuPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_miPrizeStatusActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        try {
+            // TODO add your handling code here:
+            ArrayList<Campania> campaigns = new ArrayList<>();
+            campaigns = gc.getCampaingSoonToClose();
+            String message = "";
+            String message2 = "";
+            for (Campania campaign : campaigns) {
+                message += "La Campaña " + campaign.getDescription() + " está por cerrar! Fecha de cierre: "+ campaign.getCloseDate() +" \n";
+            }
+            ArrayList<Campania> campaignsArrival = new ArrayList<>();
+            campaignsArrival = gc.getCampaingSoonArrival();
+            for (Campania campania : campaignsArrival) {
+                message2 += "El pedido de la Campaña " + campania.getDescription() + " está por llegar! Fecha de Arribo: " + campania.getArrivalDate() + " \n\n";
+            }
+            txtaImportantNews.setText(message + "\n" + message2);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formWindowOpened
+
     /**
      * @param args the command line arguments
      */
@@ -322,6 +389,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenu jmAbout;
     private javax.swing.JMenu jmFile;
     private javax.swing.JMenu jmFileClients;
@@ -344,5 +413,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem miPrizeStatus;
     private javax.swing.JMenuItem miRemoveOrder;
     private javax.swing.JMenuItem miRepOrders;
+    private javax.swing.JTextArea txtaImportantNews;
     // End of variables declaration//GEN-END:variables
+
 }
