@@ -182,12 +182,15 @@ public class AltaPremio extends javax.swing.JFrame {
             // TODO add your handling code here:
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Premio p = new Premio();
-            p.setIdCondition((int)tblConditions.getModel().getValueAt(tblConditions.getSelectedRow(), 0));
-            p.setIdOfficialAgent(((AgenteOficial)cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent());
+            p.setIdCondition((int) tblConditions.getModel().getValueAt(tblConditions.getSelectedRow(), 0));
+            p.setIdOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent());
             p.setPriceName(txtPrice.getText());
             Date limitDate = jdcLimitDate.getDate();
             String fechaLimite = sdf.format(limitDate);
             p.setLimitDate(fechaLimite);
+            Date fecha = new Date();            
+            String fechaActual = sdf.format(fecha);
+            p.setStartDate(fechaActual);
             gp.addPrice(p);
         } catch (SQLException ex) {
             Logger.getLogger(AltaPremio.class.getName()).log(Level.SEVERE, null, ex);

@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -89,4 +90,51 @@ public class GestorCampania {
         ad.cerrarConexion();
         return campaigns;
     }
+    
+    public ArrayList<Campania> getCampaingSoonToClose() throws SQLException {
+        ArrayList<Campania> campaigns = new ArrayList<>();
+        ad.abrirConexion();
+        Statement stmt = ad.getConn().createStatement();        
+        ResultSet query = stmt.executeQuery("SELECT * FROM vw_get_campaigns_soon_close");
+        while(query.next()){
+            Campania c = new Campania();
+            c.setIdCampaign(query.getInt("idCampania"));
+            c.setStartDate(query.getString("fechaInicio"));
+            c.setCloseDate(query.getString("fechaCierre"));
+            c.setArrivalDate(query.getString("fechaArribo"));
+            c.setAvailableCredit(query.getFloat("creditoDisponible"));
+            c.setTotalCost(query.getFloat("costoTotal"));
+            c.setIdOfficialAgent(query.getInt("idAgenteOficial"));
+            c.setDescription(query.getString("descripcion"));
+            campaigns.add(c);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return campaigns;
+    }
+    
+    public ArrayList<Campania> getCampaingSoonArrival() throws SQLException {
+        ArrayList<Campania> campaigns = new ArrayList<>();
+        ad.abrirConexion();
+        Statement stmt = ad.getConn().createStatement();        
+        ResultSet query = stmt.executeQuery("SELECT * FROM vw_get_campaigns_soon_arrival");
+        while(query.next()){
+            Campania c = new Campania();
+            c.setIdCampaign(query.getInt("idCampania"));
+            c.setStartDate(query.getString("fechaInicio"));
+            c.setCloseDate(query.getString("fechaCierre"));
+            c.setArrivalDate(query.getString("fechaArribo"));
+            c.setAvailableCredit(query.getFloat("creditoDisponible"));
+            c.setTotalCost(query.getFloat("costoTotal"));
+            c.setIdOfficialAgent(query.getInt("idAgenteOficial"));
+            c.setDescription(query.getString("descripcion"));
+            campaigns.add(c);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return campaigns;
+    }
+    
 }
