@@ -214,12 +214,17 @@ public class ModificarPedido extends javax.swing.JFrame {
 
     private void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOfficialAgentItemStateChanged
         // TODO add your handling code here:
-        try {
-            loadCmbCampaign(gca.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
-            //String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
-            //lblOrderDate.setText(fechaPedido);
-        } catch (SQLException ex) {
-            System.out.println(ex);
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbOfficialAgent.getItemCount() > 0) {
+                    int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+                    loadCmbCampaign(gca.getCampaignPerOfficialAgent(idAgente));
+                    System.out.println(idAgente);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
 

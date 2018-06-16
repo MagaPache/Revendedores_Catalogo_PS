@@ -5,6 +5,42 @@
  */
 package Vista;
 
+import Controlador.GestorAgenteOficial;
+import Controlador.GestorCampania;
+import Controlador.GestorDetallePedido;
+import Controlador.GestorPedido;
+import Modelo.AgenteOficial;
+import Modelo.Campania;
+import Modelo.Cliente;
+import Modelo.VmDetallePedido;
+import Modelo.VmPedidoCliente;
+import Modelo.VmPedidoDetalle;
+import java.awt.event.ItemEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+import com.itextpdf.text.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
+
 /**
  *
  * @author Usuario
@@ -14,8 +50,25 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
     /**
      * Creates new form ModificarPedido
      */
-    public ImprimirDetallePedido() {
+    GestorAgenteOficial gao = new GestorAgenteOficial();
+    GestorCampania gca = new GestorCampania();
+    GestorPedido gp = new GestorPedido();
+    ArrayList<VmPedidoDetalle> details = new ArrayList<>();
+    GestorDetallePedido gd = new GestorDetallePedido();
+    //ArrayList<VmPedidoDetalle> detallesPedido;
+
+    public ImprimirDetallePedido() throws SQLException {
         initComponents();
+        loadCmbOfficialAgent(gao.getOfficialAgents());
+        loadCmbCampaign(gca.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+        int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+        loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
+        int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
+        details = gp.getOrdersWithDetails(idPedido);
+        loadTableClientOrderDetail();
+        String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
+        lblOrderDate.setText(fechaPedido);
     }
 
     /**
@@ -45,14 +98,29 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
         jLabel1.setText("Agente Oficial");
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOfficialAgent.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbOfficialAgentItemStateChanged(evt);
+            }
+        });
 
         jLabel2.setText("Campaña");
 
         cmbCampaign.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCampaign.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbCampaignItemStateChanged(evt);
+            }
+        });
 
         jLabel3.setText("Pedido");
 
         cmbOrder.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOrder.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbOrderItemStateChanged(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Productos Solicitados"));
 
@@ -91,6 +159,11 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
         lblOrderDate.setText("jLabel5");
 
         btnPrint.setText("Imprimir");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -152,6 +225,80 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOfficialAgentItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbOfficialAgent.getItemCount() > 0) {
+                    int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+                    loadCmbCampaign(gca.getCampaignPerOfficialAgent(idAgente));
+                    int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+                    loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgente));
+
+                    System.out.println(idAgente);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
+
+    private void cmbCampaignItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCampaignItemStateChanged
+        // TODO add your handling code here:
+        int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbCampaign.getItemCount() > 0) {
+                    int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+                    System.out.println(idAgent);
+                    System.out.println(idCampaign);
+                    loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
+                    String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
+                    lblOrderDate.setText(fechaPedido);
+                    int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
+                    details = gp.getOrdersWithDetails(idPedido);
+                    loadTableClientOrderDetail();
+                    loadTableClientOrderDetail(); //VERIFICAR CODIGO!!!
+                    //String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
+                    //lblOrderDate.setText(fechaPedido);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_cmbCampaignItemStateChanged
+
+    private void cmbOrderItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOrderItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            if (cmbCampaign.getItemCount() > 0) {
+                try {
+                    String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
+                    lblOrderDate.setText(fechaPedido);
+                    int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
+                    details = gp.getOrdersWithDetails(idPedido);
+                    loadTableClientOrderDetail();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+    }//GEN-LAST:event_cmbOrderItemStateChanged
+
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        // TODO add your handling code here:
+        try {
+            int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
+            details = gp.getOrdersWithDetails(idPedido);
+            GenerarPDF(((VmPedidoCliente) cmbOrder.getSelectedItem()).getClientName(), details);
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaPedidoPorCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnPrintActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -185,7 +332,11 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ImprimirDetallePedido().setVisible(true);
+                try {
+                    new ImprimirDetallePedido().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ImprimirDetallePedido.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -204,4 +355,89 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
     private javax.swing.JLabel lblOrderDate;
     private javax.swing.JTable tblOrderDetail;
     // End of variables declaration//GEN-END:variables
+
+    private void loadCmbOfficialAgent(ArrayList<AgenteOficial> getOfficialAgents) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (AgenteOficial officialAgent : getOfficialAgents) {
+            model.addElement(officialAgent);
+        }
+        cmbOfficialAgent.setModel(model);
+    }
+
+    private void loadCmbCampaign(ArrayList<Campania> campaigns) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (Campania campaign : campaigns) {
+            model.addElement(campaign);
+        }
+        cmbCampaign.setModel(model);
+    }
+
+    private void loadCmbClientOrder(ArrayList<VmPedidoCliente> clientsOrders) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (VmPedidoCliente order : clientsOrders) {
+            model.addElement(order);
+        }
+        cmbOrder.setModel(model);
+    }
+
+    private void loadTableClientOrderDetail() {
+        DefaultTableModel model = new DefaultTableModel();
+        String[] columns = {"Producto", "Cantidad", "Precio", "Página", "Observaciones"};
+        model.setColumnIdentifiers(columns);
+        for (VmPedidoDetalle detail : details) {
+            Object[] rows = {detail.getProductName(), detail.getAmount(), detail.getPrice(), detail.getPage(), detail.getObservations()};
+            model.addRow(rows);
+        }
+        tblOrderDetail.setModel(model);
+    }
+
+    public boolean GenerarPDF(String client, ArrayList<VmPedidoDetalle> detallesPedido) {
+        try {
+            Document doc = new Document(PageSize.A4.rotate());
+            String fecha = lblOrderDate.getText();
+            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("Detalle pedido " + client + "_" + fecha + ".pdf"));
+
+            doc.open();
+
+//            //seteamos el titulo
+            Font TitleLetter = FontFactory.getFont(FontFactory.TIMES_ROMAN, 24, Font.UNDERLINE);
+            Paragraph title = new Paragraph("Pedido del cliente " + client, TitleLetter);
+            title.setAlignment(Element.ALIGN_CENTER);
+            title.setSpacingAfter(70);
+
+            //seteamos la tabla a mostrar 
+            PdfPTable table = new PdfPTable(5);
+            table.setHeaderRows(1);
+            table.addCell("Producto");
+            table.addCell("Cantidad");
+            table.addCell("Precio");
+            table.addCell("Página");
+            table.addCell("Observaciones");//Checkear que observaciones si es null no muestre nada!
+
+            for (VmPedidoDetalle item : detallesPedido) {
+                table.addCell(item.getProductName());
+                table.addCell("" + item.getAmount());
+                table.addCell("" + item.getPrice());
+                table.addCell("" + item.getPage());
+                table.addCell("" + item.getObservations());
+            }
+            //pasamos al documento (por orden) las cosas que deseamos mostrar
+            doc.add(title);
+            doc.add(table);
+            doc.close();
+            Desktop.getDesktop().open(new File("Detalle pedido " + client + "_" + fecha + ".pdf"));
+            return true;
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+            return false;
+        } catch (DocumentException ex) {
+            System.out.println(ex);
+            return false;
+        } catch (IOException ex) {
+            System.out.println(ex);
+            return false;
+        }
+
+    }
+
 }
