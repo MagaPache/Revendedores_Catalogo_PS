@@ -6,6 +6,7 @@
 package Controlador;
 
 import Modelo.Cliente;
+import Modelo.VmMontoAdeudadoCampania;
 import Modelo.VmTopBuyers;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -254,6 +255,28 @@ public class GestorCliente {
         stmt.close();
         ad.cerrarConexion();
         return amountPayed;
+    }
+    
+    public ArrayList<VmMontoAdeudadoCampania> getAmountOwedPerCampaign(int agente, int campania) throws SQLException {
+        ArrayList<VmMontoAdeudadoCampania> debts = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_amount_owed_per_campaign ?, ?");
+        stmt.setInt(1, agente);
+        stmt.setInt(2, campania);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {
+            VmMontoAdeudadoCampania mac = new VmMontoAdeudadoCampania();
+            mac.setIdClient(query.getInt("idCliente"));
+            mac.setClientName(query.getString("nombre"));
+            mac.setAmountOwed(query.getFloat("Monto Adeudado"));
+            mac.setAmountPayed(query.getFloat("Monto Cobrado"));
+            mac.setTotalOwed(query.getFloat("Monto Total Adeudado"));
+            debts.add(mac);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return debts;
     }
 
 }
