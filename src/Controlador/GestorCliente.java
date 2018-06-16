@@ -8,6 +8,7 @@ package Controlador;
 import Modelo.Cliente;
 import Modelo.VmMontoAdeudadoCampania;
 import Modelo.VmTopBuyers;
+import Modelo.VmTopBuyersCampaign;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -184,6 +185,27 @@ public class GestorCliente {
             vtb.setTotalBuyed(query.getFloat("Total Compras"));
             vtb.setClientName(query.getString("nombre"));
             top.add(vtb);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return top;
+    }
+    
+    public ArrayList<VmTopBuyersCampaign> getTopBuyersPerCampaign(int agente, int campania) throws SQLException {
+        ArrayList<VmTopBuyersCampaign> top = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_top_buyer_per_campaign ?, ?");
+        stmt.setInt(1, agente);
+        stmt.setInt(2, campania);
+        ResultSet query = stmt.executeQuery();
+        if (query.next()) {
+            VmTopBuyersCampaign tb = new VmTopBuyersCampaign();
+            tb.setMaxAmountPurchased(query.getFloat("Total Compras"));
+            tb.setIdClient(query.getInt("idCliente"));
+            tb.setClientName(query.getString("nombre"));
+            tb.setUnitsBuyed(query.getInt("Productos Comprados"));
+            top.add(tb);
         }
         query.close();
         stmt.close();
