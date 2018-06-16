@@ -152,8 +152,26 @@ public class GestorCliente {
         ad.cerrarConexion();
         return clients;
     }
-    
-    public ArrayList<VmTopBuyers> getTopBuyersPerYear(int agente) throws SQLException{
+
+    public ArrayList<Cliente> getClientsWithOrders(int agente) throws SQLException {
+        ArrayList<Cliente> clients = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_clients_with_orders_per_agent ?");
+        stmt.setInt(1, agente);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {
+            Cliente c = new Cliente();
+            c.setClientName(query.getString("nombre"));
+            c.setIdClient(query.getInt("idCliente"));            
+            clients.add(c);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return clients;
+    }
+
+    public ArrayList<VmTopBuyers> getTopBuyersPerYear(int agente) throws SQLException {
         ArrayList<VmTopBuyers> top = new ArrayList<>();
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_top_buys_per_client_per_agent ?");
@@ -170,6 +188,38 @@ public class GestorCliente {
         stmt.close();
         ad.cerrarConexion();
         return top;
+    }
+    
+    public float getAmountOwedPerClient(int cliente, int agente) throws SQLException {
+        float totalAmount = 0;
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_amount_owed_per_client ?, ?");
+        stmt.setInt(1, cliente);
+        stmt.setInt(2, agente);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {            
+            totalAmount = query.getFloat("Monto Total");            
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return totalAmount;
+    }
+    
+    public float getAmountPayedPerClient(int cliente, int agente) throws SQLException {
+        float amountPayed = 0;
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_amount_payed_per_client ?, ?");
+        stmt.setInt(1, cliente);
+        stmt.setInt(2, agente);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {            
+            amountPayed = query.getFloat("Monto Abonado");            
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return amountPayed;
     }
 
 }
