@@ -221,5 +221,39 @@ public class GestorCliente {
         ad.cerrarConexion();
         return amountPayed;
     }
+    
+    public float getAmountOwedPerClientPerCampaign(int cliente, int agente, int campania) throws SQLException {
+        float amountOwed = 0;
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_amount_owed_per_client_per_campaign ?, ?, ?");
+        stmt.setInt(1, cliente);
+        stmt.setInt(2, agente);
+        stmt.setInt(3, campania);
+        ResultSet query = stmt.executeQuery();
+        if (query.next()) {            
+            amountOwed = query.getFloat("Monto Adeudado");            
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return amountOwed;
+    }
+    
+    public float getAmountPayedPerClientPerCampaign(int cliente, int agente, int campania) throws SQLException {
+        float amountPayed = 0;
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_amount_payed_per_client_per_campaign ?, ?, ?");
+        stmt.setInt(1, cliente);
+        stmt.setInt(2, agente);
+        stmt.setInt(3, campania);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {            
+            amountPayed = query.getFloat("Monto Abonado");            
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return amountPayed;
+    }
 
 }

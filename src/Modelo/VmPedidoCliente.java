@@ -12,6 +12,7 @@ package Modelo;
 public class VmPedidoCliente {
     
     private int idOrder;    
+    private int idClient;
     private String clientName;
     private String orderDate;
 
@@ -21,6 +22,14 @@ public class VmPedidoCliente {
 
     public void setIdOrder(int idOrder) {
         this.idOrder = idOrder;
+    }
+
+    public int getIdClient() {
+        return idClient;
+    }
+
+    public void setIdClient(int idClient) {
+        this.idClient = idClient;
     }
 
     public String getClientName() {
@@ -38,16 +47,16 @@ public class VmPedidoCliente {
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
-    
 
     public VmPedidoCliente() {
     }
 
-    public VmPedidoCliente(int idOrder, String clientName, String orderDate) {
-        this.idOrder = idOrder;        
+    public VmPedidoCliente(int idOrder, int idClient, String clientName, String orderDate) {
+        this.idOrder = idOrder;
+        this.idClient = idClient;
         this.clientName = clientName;
         this.orderDate = orderDate;
-    }
+    }    
     
 
     @Override

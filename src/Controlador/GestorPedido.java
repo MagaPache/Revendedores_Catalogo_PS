@@ -120,6 +120,7 @@ public class GestorPedido {
         while (query.next()) {
             VmPedidoCliente vpc = new VmPedidoCliente();
             vpc.setIdOrder(query.getInt("idPedido"));
+            vpc.setIdClient(query.getInt("idCliente"));
             vpc.setClientName(query.getString("nombre"));
             vpc.setOrderDate(query.getString("fechaPedido"));
             orders.add(vpc);
