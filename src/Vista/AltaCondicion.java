@@ -12,11 +12,16 @@ import Modelo.AgenteOficial;
 import Modelo.CategoriaProducto;
 import Modelo.Condicion;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -30,12 +35,14 @@ public class AltaCondicion extends javax.swing.JFrame {
     GestorAgenteOficial gao = new GestorAgenteOficial();
     GestorCategoriaProducto gcp = new GestorCategoriaProducto();
     GestorCondicion gco = new GestorCondicion();
-
+    final JDialog dialog = new JDialog();
+    
     public AltaCondicion() throws SQLException {
         initComponents();
         loadCmbOfficialAgent(gao.getOfficialAgents());
         int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
         loadCmbProductCategory(gcp.getProductCategoriesPerOfficialAgent(idAgente));
+        soloNumeros(txtAmount);
     }
 
     /**
@@ -84,22 +91,19 @@ public class AltaCondicion extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3))
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cmbOfficialAgent, 0, 163, Short.MAX_VALUE)
-                            .addComponent(cmbProductCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(107, 107, 107)
-                        .addComponent(btnSaveCondition)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSaveCondition)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbOfficialAgent, 0, 180, Short.MAX_VALUE)
+                        .addComponent(cmbProductCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,9 +120,9 @@ public class AltaCondicion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(btnSaveCondition)
-                .addGap(38, 38, 38))
+                .addGap(34, 34, 34))
         );
 
         pack();
@@ -132,24 +136,31 @@ public class AltaCondicion extends javax.swing.JFrame {
                     int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
                     System.out.println(idAgente);
                     loadCmbProductCategory(gcp.getProductCategoriesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
-
+                    
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
         }
     }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
 
     private void btnSaveConditionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveConditionActionPerformed
-        try {
-            // TODO add your handling code here:
-            Condicion c = new Condicion();
-            c.setIdProductCategory(((CategoriaProducto)cmbProductCategory.getSelectedItem()).getIdProductCategory());
-            c.setAmount(Integer.parseInt(txtAmount.getText()));
-            gco.addCondition(c);
-        } catch (SQLException ex) {
-            Logger.getLogger(AltaCondicion.class.getName()).log(Level.SEVERE, null, ex);
+        if (txtAmount.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "Debe ingresar la cantidad", "Error", JOptionPane.ERROR_MESSAGE);
+            txtAmount.requestFocus();
+        } else {
+            try {
+                // TODO add your handling code here:
+                Condicion c = new Condicion();
+                c.setIdProductCategory(((CategoriaProducto) cmbProductCategory.getSelectedItem()).getIdProductCategory());
+                c.setAmount(Integer.parseInt(txtAmount.getText()));
+                gco.addCondition(c);
+                JOptionPane.showMessageDialog(dialog, "Se ha registrado una nueva condición");
+                txtAmount.setText("");
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaCondicion.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnSaveConditionActionPerformed
 
@@ -209,7 +220,7 @@ public class AltaCondicion extends javax.swing.JFrame {
         }
         cmbOfficialAgent.setModel(model);
     }
-
+    
     private void loadCmbProductCategory(ArrayList<CategoriaProducto> productCategories) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (CategoriaProducto productCategory : productCategories) {
@@ -217,5 +228,17 @@ public class AltaCondicion extends javax.swing.JFrame {
         }
         cmbProductCategory.setModel(model);
     }
-
+    
+    public void soloNumeros(JTextField a) {
+        a.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (Character.isLetter(c)) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
+    }
+    
 }

@@ -91,6 +91,29 @@ public class GestorCampania {
         return campaigns;
     }
     
+    public ArrayList<Campania> getActiveCampaignsPerOfficialAgent(int agent) throws SQLException{
+        ArrayList<Campania> campaigns = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_active_campaigns_per_official_agent ?");
+        stmt.setInt(1, agent);
+        ResultSet query = stmt.executeQuery();
+        while(query.next()){
+            Campania c = new Campania();
+            c.setIdCampaign(query.getInt("idCampania"));
+            c.setStartDate(query.getString("fechaInicio"));
+            c.setCloseDate(query.getString("fechaCierre"));
+            c.setArrivalDate(query.getString("fechaArribo"));
+            c.setAvailableCredit(query.getFloat("creditoDisponible"));
+            c.setIdOfficialAgent(query.getInt("idAgenteOficial"));
+            c.setDescription(query.getString("descripcion"));
+            campaigns.add(c);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return campaigns;
+    }
+    
     public ArrayList<Campania> getCampaingSoonToClose() throws SQLException {
         ArrayList<Campania> campaigns = new ArrayList<>();
         ad.abrirConexion();
