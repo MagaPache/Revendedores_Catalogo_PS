@@ -9,6 +9,8 @@ import Controlador.GestorAgenteOficial;
 import Controlador.GestorCampania;
 import Modelo.AgenteOficial;
 import Modelo.Campania;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.Date;
 import java.text.DateFormat;
@@ -17,6 +19,9 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -29,17 +34,18 @@ public class AltaCampania extends javax.swing.JFrame {
      */
     GestorAgenteOficial gao = new GestorAgenteOficial();
     GestorCampania gc = new GestorCampania();
+    final JDialog dialog = new JDialog();
     Date startDate;
     Date closeDate;
-    Date arrivalDate;    
+    Date arrivalDate;
     String fechaInicio;
     String fechaCierre;
     String fechaArribo;
-    
 
     public AltaCampania() throws SQLException {
         initComponents();
         loadCmbOfficialAgent(gao.getOfficialAgents());
+        soloNumeros(txtAvailableCredit);
 
     }
 
@@ -81,6 +87,12 @@ public class AltaCampania extends javax.swing.JFrame {
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        txtDescription.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDescriptionActionPerformed(evt);
+            }
+        });
+
         jdcStartDate.setDateFormatString("MMM-dd-yyyy");
 
         jdcCloseDate.setDateFormatString("MMM-dd-yyyy");
@@ -97,6 +109,11 @@ public class AltaCampania extends javax.swing.JFrame {
         });
 
         btnCancel.setText("Cancelar");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,6 +123,14 @@ public class AltaCampania extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSaveCampaign)
+                            .addComponent(txtAvailableCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancel))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
@@ -114,21 +139,12 @@ public class AltaCampania extends javax.swing.JFrame {
                             .addComponent(jLabel5))
                         .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jdcArrivalDate, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jdcArrivalDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jdcCloseDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jdcStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnSaveCampaign)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtAvailableCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancel)))
+                                .addComponent(jdcStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)))))
                 .addContainerGap(106, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -145,13 +161,12 @@ public class AltaCampania extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jdcStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jdcCloseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel3))
+                    .addComponent(jdcStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addComponent(jdcCloseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
@@ -171,34 +186,49 @@ public class AltaCampania extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveCampaignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveCampaignActionPerformed
-        try {
-            // TODO add your handling code here:
-            //fechaInicio, fechaCierre, fechaArribo, creditoDisp, idAgente, descripcion
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");        
-            
-            startDate = jdcStartDate.getDate();
-            String fechaComoCadena = sdf.format(startDate);
-            System.out.println(fechaComoCadena);
-            closeDate = jdcCloseDate.getDate();
-            String fechaComoCadena2 = sdf.format(closeDate);
-            System.out.println(fechaComoCadena2);
-            arrivalDate = jdcArrivalDate.getDate();
-            String fechaComoCadena3 = sdf.format(arrivalDate);
-            System.out.println(fechaComoCadena3);
-            
-            Campania c = new Campania();            
-            c.setStartDate(fechaComoCadena);
-            c.setCloseDate(fechaComoCadena2);
-            c.setArrivalDate(fechaComoCadena3);
-            c.setAvailableCredit(Float.parseFloat(txtAvailableCredit.getText()));
-            c.setIdOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent());            
-            c.setDescription(txtDescription.getText());
-            gc.addCampaign(c);
-        } catch (SQLException ex) {
-            Logger.getLogger(AltaCampania.class.getName()).log(Level.SEVERE, null, ex);
+        if (esValido()) {
+            try {
+                // TODO add your handling code here:            
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+                startDate = jdcStartDate.getDate();
+                String fechaComoCadena = sdf.format(startDate);
+                //System.out.println(fechaComoCadena);
+                closeDate = jdcCloseDate.getDate();
+                String fechaComoCadena2 = sdf.format(closeDate);
+                //System.out.println(fechaComoCadena2);
+                arrivalDate = jdcArrivalDate.getDate();
+                String fechaComoCadena3 = sdf.format(arrivalDate);
+                //System.out.println(fechaComoCadena3);
+
+                Campania c = new Campania();
+                c.setStartDate(fechaComoCadena);
+                c.setCloseDate(fechaComoCadena2);
+                c.setArrivalDate(fechaComoCadena3);
+                c.setAvailableCredit(Float.parseFloat(txtAvailableCredit.getText()));
+                c.setIdOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent());
+                c.setDescription(txtDescription.getText());
+                gc.addCampaign(c);
+                JOptionPane.showMessageDialog(dialog, "Se ha registrado una nueva campaña");
+                limpiarControles();
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaCampania.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }//GEN-LAST:event_btnSaveCampaignActionPerformed
+
+    private void txtDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescriptionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDescriptionActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea cancelar?", "Alerta", JOptionPane.YES_NO_OPTION);
+        if (resp == 0) {
+            limpiarControles();
+        }
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,6 +292,47 @@ public class AltaCampania extends javax.swing.JFrame {
             model.addElement(officialAgent);
         }
         cmbOfficialAgent.setModel(model);
+    }
+
+    public void soloNumeros(JTextField a) {
+        a.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (Character.isLetter(c)) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
+    }
+
+    private void limpiarControles() {
+
+        try {
+            txtDescription.setText("");
+            jdcStartDate.setCalendar(null);
+            jdcCloseDate.setCalendar(null);
+            jdcArrivalDate.setCalendar(null);
+            loadCmbOfficialAgent(gao.getOfficialAgents());
+            txtAvailableCredit.setText("");
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaCampania.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private boolean esValido() {
+        if (txtDescription.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "Debe ingresar una descripción", "Error", JOptionPane.ERROR_MESSAGE);
+            txtDescription.requestFocus();
+            return false;
+        }
+        if (txtAvailableCredit.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "Debe ingresar el credito disponible", "Error", JOptionPane.ERROR_MESSAGE);
+            txtAvailableCredit.requestFocus();
+            return false;
+        }
+        return true;
     }
 
 }

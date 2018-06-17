@@ -7,6 +7,8 @@ package Vista;
 
 import Controlador.GestorCliente;
 import Modelo.Cliente;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import static javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -38,6 +43,7 @@ public class AltaCliente extends javax.swing.JFrame {
     String fechaNac;
     DateFormat dfDateInstance = DateFormat.getDateInstance();
     ArrayList<Cliente> clients = new ArrayList<>();
+    final JDialog dialog = new JDialog();
 
     public AltaCliente() throws SQLException {
         initComponents();
@@ -47,6 +53,9 @@ public class AltaCliente extends javax.swing.JFrame {
         btnSearchEmail.setEnabled(false);
         clients = gc.getAllClients();
         loadTableClients();
+        soloLetras(txtClientName);
+        soloLetras(txtSearchName);
+        soloNumeros(txtClientPhone);
 
     }
 
@@ -61,31 +70,34 @@ public class AltaCliente extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         txtClientName = new javax.swing.JTextField();
         txtClientAddress = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         txtClientPhone = new javax.swing.JTextField();
         txtClientMail = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jdcBirthDate = new com.toedter.calendar.JDateChooser();
         btnSaveClient = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClients = new javax.swing.JTable();
-        jLabel6 = new javax.swing.JLabel();
         rbtClientName = new javax.swing.JRadioButton();
-        rbtClientEmail = new javax.swing.JRadioButton();
         txtSearchName = new javax.swing.JTextField();
-        txtSearchEmail = new javax.swing.JTextField();
         btnSearchName = new javax.swing.JButton();
+        rbtClientEmail = new javax.swing.JRadioButton();
+        txtSearchEmail = new javax.swing.JTextField();
         btnSearchEmail = new javax.swing.JButton();
-        btnUpdateClient = new javax.swing.JButton();
         btnUpdateTable = new javax.swing.JButton();
+        btnUpdateClient = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Nuevo Cliente"));
 
         jLabel1.setText("Nombre");
 
@@ -93,19 +105,19 @@ public class AltaCliente extends javax.swing.JFrame {
 
         jLabel3.setText("Teléfono");
 
-        jLabel4.setText("E-mail");
-
-        jLabel5.setText("Fecha Nacimiento");
-
         txtClientMail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtClientMailActionPerformed(evt);
             }
         });
 
+        jLabel4.setText("E-mail");
+
+        jLabel5.setText("Fecha Nacimiento");
+
         jdcBirthDate.setDateFormatString("MMM-dd-yyyy");
 
-        btnSaveClient.setText("Agregar");
+        btnSaveClient.setText("Guardar");
         btnSaveClient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveClientActionPerformed(evt);
@@ -113,6 +125,77 @@ public class AltaCliente extends javax.swing.JFrame {
         });
 
         btnCancel.setText("Cancelar");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(27, 27, 27)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtClientPhone)
+                                    .addComponent(txtClientAddress)
+                                    .addComponent(txtClientMail)
+                                    .addComponent(txtClientName)
+                                    .addComponent(jdcBirthDate, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(btnSaveClient)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                        .addComponent(btnCancel)
+                        .addGap(41, 41, 41))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtClientName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtClientAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtClientPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtClientMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addComponent(jdcBirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSaveClient)
+                            .addComponent(btnCancel))
+                        .addContainerGap())))
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Buscar Cliente -- Modificar Cliente"));
 
         tblClients.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -127,19 +210,10 @@ public class AltaCliente extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblClients);
 
-        jLabel6.setText("Buscar Cliente");
-
         rbtClientName.setText("Nombre");
         rbtClientName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbtClientNameActionPerformed(evt);
-            }
-        });
-
-        rbtClientEmail.setText("E-mail");
-        rbtClientEmail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbtClientEmailActionPerformed(evt);
             }
         });
 
@@ -150,17 +224,17 @@ public class AltaCliente extends javax.swing.JFrame {
             }
         });
 
+        rbtClientEmail.setText("E-mail");
+        rbtClientEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtClientEmailActionPerformed(evt);
+            }
+        });
+
         btnSearchEmail.setText("Buscar");
         btnSearchEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchEmailActionPerformed(evt);
-            }
-        });
-
-        btnUpdateClient.setText("Modificar");
-        btnUpdateClient.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateClientActionPerformed(evt);
             }
         });
 
@@ -171,102 +245,82 @@ public class AltaCliente extends javax.swing.JFrame {
             }
         });
 
+        btnUpdateClient.setText("Modificar");
+        btnUpdateClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateClientActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(rbtClientName)
+                                .addGap(148, 148, 148)
+                                .addComponent(rbtClientEmail))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(txtSearchName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSearchName)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtSearchEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSearchEmail)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                        .addComponent(btnUpdateTable)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdateClient)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rbtClientName)
+                            .addComponent(rbtClientEmail))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSearchName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnSearchName)
+                        .addComponent(txtSearchEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearchEmail)
+                        .addComponent(btnUpdateClient)
+                        .addComponent(btnUpdateTable)))
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtClientPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                            .addComponent(txtClientAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                            .addComponent(txtClientName, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtClientMail, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                            .addComponent(jdcBirthDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel4)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(btnSaveClient)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancel)))
-                .addGap(55, 55, 55)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtSearchName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSearchName))
-                            .addComponent(rbtClientName))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rbtClientEmail)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtSearchEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnSearchEmail)
-                                .addGap(87, 87, 87)
-                                .addComponent(btnUpdateClient)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnUpdateTable)))))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtClientName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtClientAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtClientPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(txtClientMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(jdcBirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addComponent(jLabel6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(rbtClientEmail)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(rbtClientName)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSaveClient)
-                    .addComponent(btnCancel)
-                    .addComponent(txtSearchName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSearchEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearchName)
-                    .addComponent(btnSearchEmail)
-                    .addComponent(btnUpdateClient)
-                    .addComponent(btnUpdateTable))
-                .addGap(65, 65, 65))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         pack();
@@ -277,21 +331,23 @@ public class AltaCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_txtClientMailActionPerformed
 
     private void btnSaveClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveClientActionPerformed
-        try {
-            // TODO add your handling code here:
-            final JDialog dialog = new JDialog();
-            name = txtClientName.getText();
-            address = txtClientAddress.getText();
-            telephone = txtClientPhone.getText();
-            email = txtClientMail.getText();
-            birthDate = jdcBirthDate.getDate();
-            fechaNac = dfDateInstance.format(birthDate);
-            System.out.println(fechaNac);
-            Cliente c = new Cliente(name, address, telephone, email, fechaNac);
-            gc.addClient(c);
-            JOptionPane.showMessageDialog(dialog, "Se ha registrado un nuevo cliente");
-        } catch (SQLException ex) {
-            Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        if (esValido()) {
+            try {
+                // TODO add your handling code here:            
+                name = txtClientName.getText();
+                address = txtClientAddress.getText();
+                telephone = txtClientPhone.getText();
+                email = txtClientMail.getText();
+                birthDate = jdcBirthDate.getDate();
+                fechaNac = dfDateInstance.format(birthDate);
+                System.out.println(fechaNac);
+                Cliente c = new Cliente(name, address, telephone, email, fechaNac);
+                gc.addClient(c);
+                JOptionPane.showMessageDialog(dialog, "Se ha registrado un nuevo cliente");
+                limpiarControles();
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnSaveClientActionPerformed
 
@@ -320,22 +376,35 @@ public class AltaCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_rbtClientEmailActionPerformed
 
     private void btnSearchNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchNameActionPerformed
-        try {
-            // TODO add your handling code here:
-            clients = gc.getClientByName(txtSearchName.getText());
-            loadTableClients();
-        } catch (SQLException ex) {
-            Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (txtSearchName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "Debe ingresar el nombre de un cliente", "Error", JOptionPane.ERROR_MESSAGE);
+
+        } else {
+            try {
+                // TODO add your handling code here:
+                clients = gc.getClientByName(txtSearchName.getText());
+                loadTableClients();
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
+
     }//GEN-LAST:event_btnSearchNameActionPerformed
 
     private void btnSearchEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchEmailActionPerformed
-        try {
-            // TODO add your handling code here:
-            clients = gc.getClientByEmail(txtSearchEmail.getText());
-            loadTableClients();
-        } catch (SQLException ex) {
-            Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        if (txtSearchEmail.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "Debe ingresar la direccion de e-mail de un cliente", "Error", JOptionPane.ERROR_MESSAGE);
+
+        } else {
+            try {
+                // TODO add your handling code here:
+                clients = gc.getClientByEmail(txtSearchEmail.getText());
+                loadTableClients();
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnSearchEmailActionPerformed
 
@@ -351,31 +420,47 @@ public class AltaCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateTableActionPerformed
 
     private void btnUpdateClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateClientActionPerformed
-        try {
-            // TODO add your handling code here:
-            ModificarCliente vmc;
-            vmc = new ModificarCliente();
-            int id = (int) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 0);
-            String clientName = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 1);
-            String clientAddress = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 2);
-            String clientPhone = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 3);
-            String clientEmail = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 4);
-            String clientBirthDate = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 5);
-            SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
-            Date fecha = formatoTexto.parse(clientBirthDate);            
-            vmc.lblIdClient.setText(Integer.toString(id));
-            vmc.txtClientName.setText(clientName);
-            vmc.txtClientAddress.setText(clientAddress);
-            vmc.txtClientPhone.setText(clientPhone);
-            vmc.txtClientEmail.setText(clientEmail);
-            vmc.jdcBirthDate.setDate(fecha);
-            vmc.setVisible(true);
-        } catch (ParseException ex) {
-            Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        int filaSeleccionada = 0;
+        filaSeleccionada = tblClients.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(dialog, "¡Debe seleccionar algun registro!", "Error", JOptionPane.ERROR_MESSAGE);
+        }else
+        {
+
+            try {
+                // TODO add your handling code here:
+                ModificarCliente vmc;
+                vmc = new ModificarCliente();
+                int id = (int) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 0);
+                String clientName = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 1);
+                String clientAddress = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 2);
+                String clientPhone = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 3);
+                String clientEmail = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 4);
+                String clientBirthDate = (String) tblClients.getModel().getValueAt(tblClients.getSelectedRow(), 5);
+                SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
+                Date fecha = formatoTexto.parse(clientBirthDate);
+                vmc.lblIdClient.setText(Integer.toString(id));
+                vmc.txtClientName.setText(clientName);
+                vmc.txtClientAddress.setText(clientAddress);
+                vmc.txtClientPhone.setText(clientPhone);
+                vmc.txtClientEmail.setText(clientEmail);
+                vmc.jdcBirthDate.setDate(fecha);
+                vmc.setVisible(true);
+            } catch (ParseException ex) {
+                Logger.getLogger(AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
 
     }//GEN-LAST:event_btnUpdateClientActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea cancelar?", "Alerta", JOptionPane.YES_NO_OPTION);
+        if (resp == 0) {
+            limpiarControles();
+            txtClientName.requestFocus();
+        }
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -430,7 +515,8 @@ public class AltaCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private com.toedter.calendar.JDateChooser jdcBirthDate;
     private javax.swing.JRadioButton rbtClientEmail;
@@ -459,13 +545,72 @@ public class AltaCliente extends javax.swing.JFrame {
 
     private void loadTableClients() {
         DefaultTableModel model = new DefaultTableModel();
-        String[] columns = {"Id", "Nombre", "Dirección", "Teléfono", "E-mail", "Fecha Nacimiento"};
+        String[] columns = {"Codigo", "Nombre", "Dirección", "Teléfono", "E-mail", "Fecha Nacimiento"};
         model.setColumnIdentifiers(columns);
         for (Cliente client : clients) {
             Object[] rows = {client.getIdClient(), client.getClientName(), client.getAddress(), client.getTelephone(), client.getEmail(), client.getBirthDate()};
             model.addRow(rows);
         }
         tblClients.setModel(model);
+        tblClients.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+
+    public void soloLetras(JTextField a) {
+        a.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (Character.isDigit(c)) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
+    }
+
+    public void soloNumeros(JTextField a) {
+        a.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (Character.isLetter(c)) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
+    }
+
+    private boolean esValido() {
+        if (txtClientName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "El nombre no debe estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+            txtClientName.requestFocus();
+            return false;
+        }
+        if (txtClientAddress.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "La direccion no debe estar vacía", "Error", JOptionPane.ERROR_MESSAGE);
+            txtClientAddress.requestFocus();
+            return false;
+        }
+        if (txtClientPhone.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "El telefono no debe estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+            txtClientPhone.requestFocus();
+            return false;
+        }
+        if (txtClientMail.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "El e-mail no debe estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+            txtClientMail.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private void limpiarControles() {
+
+        txtClientName.setText("");
+        txtClientAddress.setText("");
+        txtClientPhone.setText("");
+        txtClientMail.setText("");
+        jdcBirthDate.setCalendar(null);
+
     }
 
 }
