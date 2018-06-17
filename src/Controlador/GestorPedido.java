@@ -191,7 +191,4 @@ public class GestorPedido {
         ad.cerrarConexion();
     }
 
-//    public float getTotalAmount(){
-//        
-//    }
 }

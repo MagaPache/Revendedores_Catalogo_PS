@@ -131,5 +131,4 @@ public class GestorCobro {
         return profit;
     }
     
-    //public float calculateNetProfitPerCampaign()
 }

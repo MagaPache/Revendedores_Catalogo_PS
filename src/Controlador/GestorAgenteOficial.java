@@ -29,10 +29,6 @@ public class GestorAgenteOficial {
             AgenteOficial ag = new AgenteOficial();
             ag.setIdOfficialAgent(query.getInt("idAgenteOficial"));
             ag.setAgentName(query.getString("nombreAgente"));
-//            ag.setCuit("cuit");
-//            ag.setAgentAddress("direccion");
-//            ag.setAgentTelephone("telefono");
-//            ag.setWebPage("direccionWeb");
             agents.add(ag);
         }
         query.close();
