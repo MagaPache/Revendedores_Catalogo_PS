@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,6 +33,7 @@ public class ConsultaEstadoPremio extends javax.swing.JFrame {
     GestorAgenteOficial gao = new GestorAgenteOficial();
     GestorPremio gp = new GestorPremio();
     ArrayList<VmPremioCondicion> prices = new ArrayList<>();
+    final JDialog dialog = new JDialog();
 
     public ConsultaEstadoPremio() throws SQLException {
         initComponents();
@@ -53,7 +56,6 @@ public class ConsultaEstadoPremio extends javax.swing.JFrame {
         cmbOfficialAgent = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         lblActualStatus = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblActivePrices = new javax.swing.JTable();
@@ -71,10 +73,6 @@ public class ConsultaEstadoPremio extends javax.swing.JFrame {
         });
 
         jLabel4.setText("Estado Actual de Premio");
-
-        lblActualStatus.setText("jLabel5");
-
-        jButton1.setText("Historial de Premios");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Premios Activos"));
 
@@ -124,20 +122,16 @@ public class ConsultaEstadoPremio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(30, 30, 30))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblActualStatus)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(lblActualStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -152,10 +146,8 @@ public class ConsultaEstadoPremio extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(jLabel4)
                 .addGap(37, 37, 37)
-                .addComponent(lblActualStatus)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
+                .addComponent(lblActualStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
@@ -177,35 +169,39 @@ public class ConsultaEstadoPremio extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
 
     private void btnConsultStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultStatusActionPerformed
+        int filaSeleccionada = 0;
+        filaSeleccionada = tblActivePrices.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(dialog, "¡Debe seleccionar algún registro!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                // TODO add your handling code here:
+                int cantidadTotal = 0;
+                int cantidadCondicion = 0;
+                int vendidos = 0;
+                ArrayList<VmProductBuyed> products = new ArrayList<>();
+                //agente, categoria string, fechaCom, fechaFin
+                int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+                String categoria = (String) tblActivePrices.getModel().getValueAt(tblActivePrices.getSelectedRow(), 4);
+                String fechaComienzo = (String) tblActivePrices.getModel().getValueAt(tblActivePrices.getSelectedRow(), 2);
+                String fechaFin = (String) tblActivePrices.getModel().getValueAt(tblActivePrices.getSelectedRow(), 3);
+                products = gp.getProductsBuyedPerCategory(idAgente, categoria, fechaComienzo, fechaFin);
+                for (VmProductBuyed product : products) {
+                    vendidos += product.getAmountSold();
+                }
+                cantidadCondicion = (int) tblActivePrices.getModel().getValueAt(tblActivePrices.getSelectedRow(), 5);
 
-        try {
-            // TODO add your handling code here:
-            int cantidadTotal = 0;
-            int cantidadCondicion = 0;
-            int vendidos = 0;
-            ArrayList<VmProductBuyed> products = new ArrayList<>();
-            //agente, categoria string, fechaCom, fechaFin
-            int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
-            String categoria = (String) tblActivePrices.getModel().getValueAt(tblActivePrices.getSelectedRow(), 4);
-            String fechaComienzo = (String) tblActivePrices.getModel().getValueAt(tblActivePrices.getSelectedRow(), 2);
-            String fechaFin = (String) tblActivePrices.getModel().getValueAt(tblActivePrices.getSelectedRow(), 3);
-            products = gp.getProductsBuyedPerCategory(idAgente, categoria, fechaComienzo, fechaFin);
-            for (VmProductBuyed product : products) {
-                vendidos += product.getAmountSold();
+                if (vendidos == cantidadCondicion || vendidos > cantidadCondicion) {
+                    lblActualStatus.setText("¡Llegaste a la cantidad requerida de productos! Has obtenido el premio");
+                } else {
+                    cantidadTotal = cantidadCondicion - vendidos;
+                    lblActualStatus.setText("¡Faltan " + cantidadTotal + " productos para ganar el premio! ¡¡Sigue adelante!!");
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ConsultaEstadoPremio.class.getName()).log(Level.SEVERE, null, ex);
             }
-            cantidadCondicion = (int) tblActivePrices.getModel().getValueAt(tblActivePrices.getSelectedRow(), 5);
-
-            if (vendidos == cantidadCondicion || vendidos > cantidadCondicion) {
-                lblActualStatus.setText("¡Llegaste a la cantidad requerida de productos! Has obtenido el premio");
-            } else {
-                cantidadTotal = cantidadCondicion - vendidos;
-                lblActualStatus.setText("¡Faltan " + cantidadTotal + " productos para ganar el premio! ¡¡Sigue adelante!!");
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(ConsultaEstadoPremio.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_btnConsultStatusActionPerformed
 
     /**
@@ -253,7 +249,6 @@ public class ConsultaEstadoPremio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultStatus;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;

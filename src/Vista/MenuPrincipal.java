@@ -265,6 +265,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         mOrderConsult.setText("Pedidos");
 
         miOrderConsult.setText("Consulta de Pedido");
+        miOrderConsult.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miOrderConsultActionPerformed(evt);
+            }
+        });
         mOrderConsult.add(miOrderConsult);
 
         jmConsults.add(mOrderConsult);
@@ -272,6 +277,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         mPriceConsult.setText("Premios");
 
         miPriceActualStatus.setText("Estado Actual");
+        miPriceActualStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miPriceActualStatusActionPerformed(evt);
+            }
+        });
         mPriceConsult.add(miPriceActualStatus);
 
         jmConsults.add(mPriceConsult);
@@ -466,6 +476,26 @@ public class MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_miCampaignsDebtsActionPerformed
+
+    private void miOrderConsultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miOrderConsultActionPerformed
+        try {
+            // TODO add your handling code here:
+            ConsultaPedidoPorCliente cppc = new ConsultaPedidoPorCliente();
+            cppc.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miOrderConsultActionPerformed
+
+    private void miPriceActualStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPriceActualStatusActionPerformed
+        try {
+            // TODO add your handling code here:
+            ConsultaEstadoPremio cep = new ConsultaEstadoPremio();
+            cep.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miPriceActualStatusActionPerformed
 
     /**
      * @param args the command line arguments
