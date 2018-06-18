@@ -82,8 +82,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         mProfitsReports = new javax.swing.JMenu();
         miNetProfit = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenu8 = new javax.swing.JMenu();
-        jMenu6 = new javax.swing.JMenu();
+        miPrintOrderDetail = new javax.swing.JMenuItem();
+        mPrintClientInfo = new javax.swing.JMenuItem();
         jmHelp = new javax.swing.JMenu();
         jmAbout = new javax.swing.JMenu();
 
@@ -100,14 +100,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         getContentPane().setLayout(null);
 
-        jPanel1.setBackground(new java.awt.Color(204, 0, 102));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Avisos Importantes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel1.setBackground(new java.awt.Color(255, 204, 153));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), "Avisos Importantes"));
         jPanel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel1.setMinimumSize(new java.awt.Dimension(1115, 170));
         jPanel1.setPreferredSize(new java.awt.Dimension(1115, 170));
 
         txtaImportantNews.setEditable(false);
-        txtaImportantNews.setBackground(new java.awt.Color(255, 204, 255));
         txtaImportantNews.setColumns(20);
         txtaImportantNews.setRows(5);
         txtaImportantNews.setMinimumSize(new java.awt.Dimension(1350, 22));
@@ -134,7 +133,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         getContentPane().add(jPanel1);
         jPanel1.setBounds(10, 400, 1240, 180);
 
-        lblBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Fondox.net_unas-rojas-y-petalos-de-rosas_1366x768.jpg"))); // NOI18N
+        lblBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/colorful-abstract-wallpapers-picture-Is-4K-Wallpaper.jpg"))); // NOI18N
         lblBackground.setMinimumSize(new java.awt.Dimension(1280, 620));
         getContentPane().add(lblBackground);
         lblBackground.setBounds(-10, -20, 1280, 620);
@@ -341,6 +340,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         mProfitsReports.setText("Ganancias");
 
         miNetProfit.setText("Ganancia Neta por Campaña");
+        miNetProfit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miNetProfitActionPerformed(evt);
+            }
+        });
         mProfitsReports.add(miNetProfit);
 
         jmReports.add(mProfitsReports);
@@ -349,11 +353,21 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenu4.setText("Imprimir");
 
-        jMenu8.setText("Detalle de Pedido");
-        jMenu4.add(jMenu8);
+        miPrintOrderDetail.setText("Detalle de Pedido");
+        miPrintOrderDetail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miPrintOrderDetailActionPerformed(evt);
+            }
+        });
+        jMenu4.add(miPrintOrderDetail);
 
-        jMenu6.setText("Información de Cliente");
-        jMenu4.add(jMenu6);
+        mPrintClientInfo.setText("Información de Clientes");
+        mPrintClientInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mPrintClientInfoActionPerformed(evt);
+            }
+        });
+        jMenu4.add(mPrintClientInfo);
 
         jMenuBar1.add(jMenu4);
 
@@ -545,8 +559,44 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_miDebtorsCampaignActionPerformed
 
     private void miTopPerTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miTopPerTypeActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            ReporteProductosPorTipo  ppt = new ReporteProductosPorTipo();
+            ppt.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miTopPerTypeActionPerformed
+
+    private void miNetProfitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNetProfitActionPerformed
+        try {
+            // TODO add your handling code here:
+            ReporteGananciaNeta rgn = new ReporteGananciaNeta();
+            rgn.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miNetProfitActionPerformed
+
+    private void miPrintOrderDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPrintOrderDetailActionPerformed
+        try {
+            // TODO add your handling code here:
+            ImprimirDetallePedido idp = new ImprimirDetallePedido();
+            idp.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miPrintOrderDetailActionPerformed
+
+    private void mPrintClientInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mPrintClientInfoActionPerformed
+        try {
+            // TODO add your handling code here:
+            ConsultaCliente cc = new ConsultaCliente();
+            cc.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_mPrintClientInfoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -586,8 +636,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -607,6 +655,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu mClientsReports;
     private javax.swing.JMenu mOrderConsult;
     private javax.swing.JMenu mPriceConsult;
+    private javax.swing.JMenuItem mPrintClientInfo;
     private javax.swing.JMenu mProductsReports;
     private javax.swing.JMenu mProfitsReports;
     private javax.swing.JMenuItem miAnualBuyers;
@@ -625,6 +674,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem miNewProduct;
     private javax.swing.JMenuItem miOrderConsult;
     private javax.swing.JMenuItem miPriceActualStatus;
+    private javax.swing.JMenuItem miPrintOrderDetail;
     private javax.swing.JMenuItem miRemoveOrder;
     private javax.swing.JMenuItem miTopPerClient;
     private javax.swing.JMenuItem miTopPerType;
