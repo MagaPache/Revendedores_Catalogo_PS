@@ -72,15 +72,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
         mPriceConsult = new javax.swing.JMenu();
         miPriceActualStatus = new javax.swing.JMenuItem();
         jmReports = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        mClientsReports = new javax.swing.JMenu();
+        miAnualBuyers = new javax.swing.JMenuItem();
+        miBuyersCampaign = new javax.swing.JMenuItem();
+        miDebtorsCampaign = new javax.swing.JMenuItem();
+        mProductsReports = new javax.swing.JMenu();
+        miTopPerClient = new javax.swing.JMenuItem();
+        miTopPerType = new javax.swing.JMenuItem();
+        mProfitsReports = new javax.swing.JMenu();
+        miNetProfit = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu8 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
@@ -290,45 +290,60 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jmReports.setText("Reportes");
 
-        jMenu2.setText("Clientes");
+        mClientsReports.setText("Clientes");
 
-        jMenuItem1.setText("Ranking Compradores Anuales");
-        jMenu2.add(jMenuItem1);
-
-        jMenuItem2.setText("Mejores Compradores por Campaña");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        miAnualBuyers.setText("Ranking Compradores Anuales");
+        miAnualBuyers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                miAnualBuyersActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem2);
+        mClientsReports.add(miAnualBuyers);
 
-        jMenuItem5.setText("Deudores por Campaña");
-        jMenu2.add(jMenuItem5);
-
-        jmReports.add(jMenu2);
-
-        jMenu3.setText("Productos");
-
-        jMenuItem3.setText("Más vendidos por Cliente");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        miBuyersCampaign.setText("Mejores Compradores por Campaña");
+        miBuyersCampaign.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                miBuyersCampaignActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem3);
+        mClientsReports.add(miBuyersCampaign);
 
-        jMenuItem4.setText("Ventas por tipo de Producto");
-        jMenu3.add(jMenuItem4);
+        miDebtorsCampaign.setText("Deudores por Campaña");
+        miDebtorsCampaign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miDebtorsCampaignActionPerformed(evt);
+            }
+        });
+        mClientsReports.add(miDebtorsCampaign);
 
-        jmReports.add(jMenu3);
+        jmReports.add(mClientsReports);
 
-        jMenu5.setText("Ganancias");
+        mProductsReports.setText("Productos");
 
-        jMenuItem6.setText("Ganancia Neta por Campaña");
-        jMenu5.add(jMenuItem6);
+        miTopPerClient.setText("Más vendidos por Cliente");
+        miTopPerClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miTopPerClientActionPerformed(evt);
+            }
+        });
+        mProductsReports.add(miTopPerClient);
 
-        jmReports.add(jMenu5);
+        miTopPerType.setText("Ventas por tipo de Producto");
+        miTopPerType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miTopPerTypeActionPerformed(evt);
+            }
+        });
+        mProductsReports.add(miTopPerType);
+
+        jmReports.add(mProductsReports);
+
+        mProfitsReports.setText("Ganancias");
+
+        miNetProfit.setText("Ganancia Neta por Campaña");
+        mProfitsReports.add(miNetProfit);
+
+        jmReports.add(mProfitsReports);
 
         jMenuBar1.add(jmReports);
 
@@ -444,13 +459,25 @@ public class MenuPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_miNewCampaignActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void miBuyersCampaignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBuyersCampaignActionPerformed
+        try {
+            // TODO add your handling code here:
+            ReporteTopComprasCliente rtcc = new ReporteTopComprasCliente();
+            rtcc.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miBuyersCampaignActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    private void miTopPerClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miTopPerClientActionPerformed
+        try {
+            // TODO add your handling code here:
+            ReporteTopProductosPorCliente tppc = new ReporteTopProductosPorCliente();
+            tppc.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miTopPerClientActionPerformed
 
     private void miClientConsultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miClientConsultActionPerformed
         try {
@@ -497,6 +524,30 @@ public class MenuPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_miPriceActualStatusActionPerformed
 
+    private void miAnualBuyersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAnualBuyersActionPerformed
+        try {
+            // TODO add your handling code here:
+            ReporteTopComprasAnual tca = new ReporteTopComprasAnual();
+            tca.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miAnualBuyersActionPerformed
+
+    private void miDebtorsCampaignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miDebtorsCampaignActionPerformed
+        try {
+            // TODO add your handling code here:
+            ReporteDeudoresCampania rdc = new ReporteDeudoresCampania();
+            rdc.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miDebtorsCampaignActionPerformed
+
+    private void miTopPerTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miTopPerTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_miTopPerTypeActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -534,19 +585,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenu jmAbout;
@@ -562,12 +604,19 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jmReports;
     private javax.swing.JLabel lblBackground;
     private javax.swing.JMenu mClientConsult;
+    private javax.swing.JMenu mClientsReports;
     private javax.swing.JMenu mOrderConsult;
     private javax.swing.JMenu mPriceConsult;
+    private javax.swing.JMenu mProductsReports;
+    private javax.swing.JMenu mProfitsReports;
+    private javax.swing.JMenuItem miAnualBuyers;
+    private javax.swing.JMenuItem miBuyersCampaign;
     private javax.swing.JMenuItem miCampaignsDebts;
     private javax.swing.JMenuItem miClientConsult;
     private javax.swing.JMenuItem miCloseCampaign;
+    private javax.swing.JMenuItem miDebtorsCampaign;
     private javax.swing.JMenuItem miModifyPrize;
+    private javax.swing.JMenuItem miNetProfit;
     private javax.swing.JMenuItem miNewCampaign;
     private javax.swing.JMenuItem miNewClient;
     private javax.swing.JMenuItem miNewOrder;
@@ -577,6 +626,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem miOrderConsult;
     private javax.swing.JMenuItem miPriceActualStatus;
     private javax.swing.JMenuItem miRemoveOrder;
+    private javax.swing.JMenuItem miTopPerClient;
+    private javax.swing.JMenuItem miTopPerType;
     private javax.swing.JMenuItem miTotalDebts;
     private javax.swing.JTextArea txtaImportantNews;
     // End of variables declaration//GEN-END:variables

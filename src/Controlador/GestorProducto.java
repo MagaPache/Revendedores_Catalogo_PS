@@ -8,6 +8,8 @@ package Controlador;
 import Modelo.AgenteOficial;
 import Modelo.Producto;
 import Modelo.VmProducto;
+import Modelo.VmTopProductClient;
+import Modelo.VmTopProductType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -130,6 +132,47 @@ public class GestorProducto {
         ad.cerrarConexion();
         return p;
     }
+    
+    public ArrayList<VmTopProductClient> getTop5ProductsPerClient(int cliente, int agente) throws SQLException {
+        ArrayList<VmTopProductClient> products = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_top5_products_per_client ?, ?");
+        stmt.setInt(1, cliente);
+        stmt.setInt(2, agente);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {
+            VmTopProductClient tp = new VmTopProductClient();
+            tp.setIdProduct(query.getInt("idProducto"));
+            tp.setProductName(query.getString("producto"));
+            tp.setAmountBuyed(query.getInt("Cantidad Comprada"));            
+            products.add(tp);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return products;
+    }
+    
+    public ArrayList<VmTopProductType> getTopProductsPerType(int agente, int tipo) throws SQLException {
+        ArrayList<VmTopProductType> products = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_top_products_sold_per_type ?,?");
+        stmt.setInt(1, agente);
+        stmt.setInt(2, tipo);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {
+            VmTopProductType tpt = new VmTopProductType();
+            tpt.setIdProduct(query.getInt("idProducto"));
+            tpt.setProductName(query.getString("producto"));
+            tpt.setAmountSold(query.getInt("Cantidad Vendida"));            
+            products.add(tpt);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return products;
+    }
+
     
 
 }
