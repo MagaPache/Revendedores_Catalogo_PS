@@ -69,6 +69,8 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
         loadTableClientOrderDetail();
         String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
         lblOrderDate.setText(fechaPedido);
+        float totalAmount = gp.getTotalAmount(idAgent, idCampaign, idPedido);
+        lblTotalAmount.setText(Float.toString(totalAmount));
     }
 
     /**
@@ -89,6 +91,9 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblOrderDetail = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lblTotalAmount = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         lblOrderDate = new javax.swing.JLabel();
         btnPrint = new javax.swing.JButton();
@@ -137,13 +142,25 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblOrderDetail);
 
+        jLabel5.setText("Monto Total");
+
+        jLabel6.setText("$");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -151,7 +168,14 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 17, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6))
+                .addGap(7, 7, 7))
         );
 
         jLabel4.setText("Fecha de Pedido");
@@ -194,7 +218,7 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(242, 242, 242)
+                .addGap(274, 274, 274)
                 .addComponent(btnPrint)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -217,9 +241,9 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
                     .addComponent(lblOrderDate))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(btnPrint)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -280,6 +304,10 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
                     int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
                     details = gp.getOrdersWithDetails(idPedido);
                     loadTableClientOrderDetail();
+                    int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+                    int idCampania = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+                    float totalAmount = gp.getTotalAmount(idAgente, idCampania, idPedido);
+                    lblTotalAmount.setText(Float.toString(totalAmount));
                 } catch (SQLException ex) {
                     Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -350,9 +378,12 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblOrderDate;
+    private javax.swing.JLabel lblTotalAmount;
     private javax.swing.JTable tblOrderDetail;
     // End of variables declaration//GEN-END:variables
 
@@ -395,6 +426,7 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
         try {
             Document doc = new Document(PageSize.A4.rotate());
             String fecha = lblOrderDate.getText();
+            String montoTotal = lblTotalAmount.getText();
             PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("Detalle pedido " + client + "_" + fecha + ".pdf"));
 
             doc.open();
@@ -421,9 +453,16 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
                 table.addCell("" + item.getPage());
                 table.addCell("" + item.getObservations());
             }
+            
+            Font letraContenido = FontFactory.getFont(FontFactory.TIMES_ROMAN, 15, Font.NORMAL);            
+            Paragraph contenido1 = new Paragraph("Monto Total $ " + montoTotal, letraContenido);
+            contenido1.setAlignment(Element.ALIGN_RIGHT);
+            contenido1.setSpacingBefore(30);
+            
             //pasamos al documento (por orden) las cosas que deseamos mostrar
             doc.add(title);
             doc.add(table);
+            doc.add(contenido1);
             doc.close();
             Desktop.getDesktop().open(new File("Detalle pedido " + client + "_" + fecha + ".pdf"));
             return true;
