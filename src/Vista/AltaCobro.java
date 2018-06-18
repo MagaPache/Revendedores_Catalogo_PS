@@ -16,6 +16,8 @@ import Modelo.VmCobro;
 import Modelo.VmPedidoCliente;
 import Modelo.VmPedidoDetalle;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,6 +26,10 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -43,6 +49,7 @@ public class AltaCobro extends javax.swing.JFrame {
     ArrayList<VmCobro> payments = new ArrayList<>();
     Date paymentDate;
     String fechaPago;
+    final JDialog dialog = new JDialog();
 
     public AltaCobro() throws SQLException {
         initComponents();
@@ -57,6 +64,8 @@ public class AltaCobro extends javax.swing.JFrame {
         loadTableClientOrderDetail();
         payments = gco.getAllPayments();
         loadTablePayments();
+        soloNumeros(txtAmountCharged);
+        soloLetras(txtSearchPayment);
 
     }
 
@@ -93,10 +102,11 @@ public class AltaCobro extends javax.swing.JFrame {
         txtSearchPayment = new javax.swing.JTextField();
         btnUpdateTable = new javax.swing.JButton();
         btnModifyPayment = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Nuevo Cobro"));
 
         jLabel1.setText("Agente Oficial");
 
@@ -127,7 +137,7 @@ public class AltaCobro extends javax.swing.JFrame {
 
         jLabel4.setText("Número de Pedido");
 
-        lblOrderNumber.setText("jLabel7");
+        lblOrderNumber.setText("-");
 
         tblClientOrderDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -154,6 +164,11 @@ public class AltaCobro extends javax.swing.JFrame {
         });
 
         btnCancel.setText("Cancelar");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -162,39 +177,39 @@ public class AltaCobro extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(25, 25, 25)
+                        .addGap(46, 46, 46)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
+                            .addComponent(jLabel2)
+                            .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel3)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblOrderNumber))
-                        .addComponent(cmbClientOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnSavePayment)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtAmountCharged, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtAmountCharged, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(13, 13, 13)))
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jdcPaymentDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(jdcPaymentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(56, 56, 56)
-                                .addComponent(btnCancel)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(btnCancel)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(cmbClientOrder, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addGap(77, 77, 77)
+                            .addComponent(lblOrderNumber))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,7 +247,7 @@ public class AltaCobro extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Buscar -- Modificar Cobro"));
 
         tblPayments.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -268,6 +283,8 @@ public class AltaCobro extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setText("Buscar Cliente");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -275,15 +292,18 @@ public class AltaCobro extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnUpdateTable, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnModifyPayment)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnSearchPayment)))
+                        .addComponent(btnSearchPayment)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnUpdateTable, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnModifyPayment))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -292,11 +312,13 @@ public class AltaCobro extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSearchPayment)
                     .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnUpdateTable)
-                    .addComponent(btnModifyPayment))
+                    .addComponent(btnModifyPayment)
+                    .addComponent(btnUpdateTable))
                 .addContainerGap())
         );
 
@@ -308,8 +330,8 @@ public class AltaCobro extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -318,26 +340,19 @@ public class AltaCobro extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmbCampaignItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCampaignItemStateChanged
-//        try {
-//            // TODO add your handling code here:
-//            loadCmbOfficialAgent(gao.getOfficialAgents());
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        // TODO add your handling code here:
         int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             try {
                 if (cmbCampaign.getItemCount() > 0) {
                     int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
-                    System.out.println(idAgent);
-                    System.out.println(idCampaign);
                     loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
                 }
             } catch (SQLException ex) {
@@ -355,7 +370,6 @@ public class AltaCobro extends javax.swing.JFrame {
                 if (cmbOfficialAgent.getItemCount() > 0) {
                     int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
                     loadCmbCampaignsPerOfficialAgent(gc.getCampaignPerOfficialAgent(idAgente));
-                    System.out.println(idAgente);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
@@ -382,21 +396,24 @@ public class AltaCobro extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbClientOrderItemStateChanged
 
     private void btnSavePaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePaymentActionPerformed
-        try {
-            // TODO add your handling code here:
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-            paymentDate = jdcPaymentDate.getDate();
-            fechaPago= sdf.format(paymentDate);
-            
-            Cobro c = new Cobro();
-            c.setIdOrder(Integer.parseInt(lblOrderNumber.getText()));
-            c.setAmountCharged(Float.parseFloat(txtAmountCharged.getText()));
-            c.setPaymentDate(fechaPago);
-            gco.addPayment(c);
-        } catch (SQLException ex) {
-            Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (esValido()) {
+            try {
+                // TODO add your handling code here:
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                paymentDate = jdcPaymentDate.getDate();
+                fechaPago = sdf.format(paymentDate);
 
+                Cobro c = new Cobro();
+                c.setIdOrder(Integer.parseInt(lblOrderNumber.getText()));
+                c.setAmountCharged(Float.parseFloat(txtAmountCharged.getText()));
+                c.setPaymentDate(fechaPago);
+                gco.addPayment(c);
+                JOptionPane.showMessageDialog(dialog, "Se ha registrado un nuevo cobro");
+                limpiarControles();
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnSavePaymentActionPerformed
 
     private void btnUpdateTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTableActionPerformed
@@ -410,40 +427,60 @@ public class AltaCobro extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateTableActionPerformed
 
     private void btnSearchPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPaymentActionPerformed
-        try {
-            // TODO add your handling code here:
-            payments = gco.getPaymentsByClient(txtSearchPayment.getText());
-            loadTablePayments();
-        } catch (SQLException ex) {
-            Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+        if (txtSearchPayment.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "Debe ingresar el nombre del cliente", "Error", JOptionPane.ERROR_MESSAGE);
+
+        } else {
+            try {
+                // TODO add your handling code here:
+                payments = gco.getPaymentsByClient(txtSearchPayment.getText());
+                loadTablePayments();
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnSearchPaymentActionPerformed
 
     private void btnModifyPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyPaymentActionPerformed
-        try {
-            // TODO add your handling code here:
-            ModificarCobro mc = new ModificarCobro();
-            int cobro = (int) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 0);
-            int pedido = (int) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 1);
-            String cliente = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 2);
-            float montoAbonado = (float) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 3);
-            String fechaPago = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 4);
-            String campania = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 5);
-            String agente = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 6);
-            SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
-            Date payDate = formatoTexto.parse(fechaPago);
-            mc.lblOfficialAgent.setText(agente);
-            mc.lblCampaign.setText(campania);
-            mc.lblClientName.setText(cliente);
-            mc.lblOrderNumber.setText(Integer.toString(pedido));
-            mc.lblPaymentNumber.setText(Integer.toString(cobro));
-            mc.txtAmountCharged.setText(Float.toString(montoAbonado));
-            mc.jdcPaymentDate.setDate(payDate);
-            mc.setVisible(true);
-        } catch (ParseException ex) {
-            Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+        int filaSeleccionada = 0;
+        filaSeleccionada = tblPayments.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(dialog, "¡Debe seleccionar algún registro!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                // TODO add your handling code here:
+                ModificarCobro mc = new ModificarCobro();
+                int cobro = (int) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 0);
+                int pedido = (int) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 1);
+                String cliente = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 2);
+                float montoAbonado = (float) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 3);
+                String fechaPago = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 4);
+                String campania = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 5);
+                String agente = (String) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 6);
+                SimpleDateFormat formatoTexto = new SimpleDateFormat("yyyy-MM-dd");
+                Date payDate = formatoTexto.parse(fechaPago);
+                mc.lblOfficialAgent.setText(agente);
+                mc.lblCampaign.setText(campania);
+                mc.lblClientName.setText(cliente);
+                mc.lblOrderNumber.setText(Integer.toString(pedido));
+                mc.lblPaymentNumber.setText(Integer.toString(cobro));
+                mc.txtAmountCharged.setText(Float.toString(montoAbonado));
+                mc.jdcPaymentDate.setDate(payDate);
+                mc.setVisible(true);
+            } catch (ParseException ex) {
+                Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnModifyPaymentActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea cancelar?", "Alerta", JOptionPane.YES_NO_OPTION);
+        if (resp == 0) {
+            limpiarControles();
+            txtAmountCharged.requestFocus();
+        }
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -500,6 +537,7 @@ public class AltaCobro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -545,17 +583,77 @@ public class AltaCobro extends javax.swing.JFrame {
             model.addRow(rows);
         }
         tblClientOrderDetail.setModel(model);
+
     }
-    
+
     private void loadTablePayments() {
         DefaultTableModel model = new DefaultTableModel();
-        String[] columns = {"Número Cobro","Número Pedido", "Cliente", "Monto Abonado", "Fecha Pago", "Campaña", "Agente Oficial"};
+        String[] columns = {"Número Cobro", "Número Pedido", "Cliente", "Monto Abonado", "Fecha Pago", "Campaña", "Agente Oficial"};
         model.setColumnIdentifiers(columns);
         for (VmCobro pay : payments) {
             Object[] rows = {pay.getIdPayment(), pay.getIdOrder(), pay.getClientName(), pay.getAmount(), pay.getPaymentDate(), pay.getCampaignName(), pay.getAgentName()};
             model.addRow(rows);
         }
         tblPayments.setModel(model);
+    }
+
+    public void soloNumeros(JTextField a) {
+        a.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (Character.isLetter(c)) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
+    }
+
+    public void soloLetras(JTextField a) {
+        a.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (Character.isDigit(c)) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
+    }
+
+    private boolean esValido() {
+        int filaSeleccionada = 0;
+        filaSeleccionada = tblClientOrderDetail.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(dialog, "¡Debe seleccionar algún registro!", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (txtAmountCharged.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "El monto cobrado no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+            txtAmountCharged.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private void limpiarControles() {
+
+        try {
+            txtAmountCharged.setText("");
+            jdcPaymentDate.setCalendar(null);
+            loadCmbOfficialAgent(gao.getOfficialAgents());
+            loadCmbCampaignsPerOfficialAgent(gc.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+            int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+            int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+            loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
+            int idPedido = ((VmPedidoCliente) cmbClientOrder.getSelectedItem()).getIdOrder();
+            lblOrderNumber.setText(Integer.toString(idPedido));
+            orderDetailed = gp.getOrdersWithDetails(idPedido);
+            loadTableClientOrderDetail();
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }
