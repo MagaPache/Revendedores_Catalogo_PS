@@ -62,6 +62,7 @@ public class AltaPremio extends javax.swing.JFrame {
         btnAddCondition = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblConditions = new javax.swing.JTable();
+        btnUpdateTable = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jdcLimitDate = new com.toedter.calendar.JDateChooser();
         btnSavePrice = new javax.swing.JButton();
@@ -97,6 +98,13 @@ public class AltaPremio extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblConditions);
 
+        btnUpdateTable.setText("Actualizar");
+        btnUpdateTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateTableActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -107,6 +115,8 @@ public class AltaPremio extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnUpdateTable)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAddCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -116,7 +126,9 @@ public class AltaPremio extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnAddCondition)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddCondition)
+                    .addComponent(btnUpdateTable))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -253,6 +265,16 @@ public class AltaPremio extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void btnUpdateTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTableActionPerformed
+        try {
+            // TODO add your handling code here:
+            conditions = gco.getConditions();
+            loadTableConditions();
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaPremio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnUpdateTableActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -296,6 +318,7 @@ public class AltaPremio extends javax.swing.JFrame {
     private javax.swing.JButton btnAddCondition;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSavePrice;
+    private javax.swing.JButton btnUpdateTable;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel7;
