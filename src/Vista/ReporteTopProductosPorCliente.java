@@ -6,11 +6,11 @@
 package Vista;
 
 import Controlador.GestorAgenteOficial;
-import Controlador.GestorCampania;
 import Controlador.GestorCliente;
+import Controlador.GestorProducto;
 import Modelo.AgenteOficial;
-import Modelo.Campania;
-import Modelo.VmMontoAdeudadoCampania;
+import Modelo.Cliente;
+import Modelo.VmTopProductClient;
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,24 +23,24 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Usuario
  */
-public class ReporteDeudoresCampania extends javax.swing.JFrame {
+public class ReporteTopProductosPorCliente extends javax.swing.JFrame {
 
     /**
-     * Creates new form ReporteDeudoresCampania
+     * Creates new form ReporteTopProductosPorCliente
      */
     GestorAgenteOficial gao = new GestorAgenteOficial();
-    GestorCampania gc = new GestorCampania();
-    GestorCliente gcl = new GestorCliente();
-    ArrayList<VmMontoAdeudadoCampania> debtors = new ArrayList<>();
+    GestorCliente gc = new GestorCliente();
+    GestorProducto gp = new GestorProducto();
+    ArrayList<VmTopProductClient> products = new ArrayList<>();
 
-    public ReporteDeudoresCampania() throws SQLException {
+    public ReporteTopProductosPorCliente() throws SQLException {
         initComponents();
-        loadCmbOfficialAgent(gao.getOfficialAgents());
-        loadCmbCampaignsPerOfficialAgent(gc.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
-        int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
-        int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
-        debtors = gcl.getAmountOwedPerCampaign(idAgent, idCampaign);
-        loadTableDebtors();
+        loadOfficialAgent(gao.getOfficialAgents());
+        loadCmbClient(gc.getAllClients());
+        int idCliente = ((Cliente) cmbClient.getSelectedItem()).getIdClient();
+        int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+        products = gp.getTop5ProductsPerClient(idCliente, idAgente);
+        loadTableTopProducts();
     }
 
     /**
@@ -55,16 +55,16 @@ public class ReporteDeudoresCampania extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         cmbOfficialAgent = new javax.swing.JComboBox<>();
-        cmbCampaign = new javax.swing.JComboBox<>();
+        cmbClient = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblDebtors = new javax.swing.JTable();
+        tblTopProducts = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Agente Oficial");
 
-        jLabel2.setText("Campaña");
+        jLabel2.setText("Cliente");
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbOfficialAgent.addItemListener(new java.awt.event.ItemListener() {
@@ -72,17 +72,27 @@ public class ReporteDeudoresCampania extends javax.swing.JFrame {
                 cmbOfficialAgentItemStateChanged(evt);
             }
         });
-
-        cmbCampaign.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbCampaign.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbCampaignItemStateChanged(evt);
+        cmbOfficialAgent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbOfficialAgentActionPerformed(evt);
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Deudores por Campaña"));
+        cmbClient.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbClient.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbClientItemStateChanged(evt);
+            }
+        });
+        cmbClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbClientActionPerformed(evt);
+            }
+        });
 
-        tblDebtors.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Ranking 5 productos"));
+
+        tblTopProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -93,7 +103,7 @@ public class ReporteDeudoresCampania extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblDebtors);
+        jScrollPane1.setViewportView(tblTopProducts);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -101,14 +111,14 @@ public class ReporteDeudoresCampania extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -123,12 +133,12 @@ public class ReporteDeudoresCampania extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
+                        .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                        .addGap(12, 12, 12)
+                        .addComponent(cmbClient, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,14 +148,39 @@ public class ReporteDeudoresCampania extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbClient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbOfficialAgentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOfficialAgentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbOfficialAgentActionPerformed
+
+    private void cmbClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClientActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbClientActionPerformed
+
+    private void cmbClientItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbClientItemStateChanged
+        // TODO add your handling code here:
+        int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbOfficialAgent.getItemCount() > 0) {
+                    int idCliente = ((Cliente) cmbClient.getSelectedItem()).getIdClient();
+                    products = gp.getTop5ProductsPerClient(idCliente, idAgente);
+                    loadTableTopProducts();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_cmbClientItemStateChanged
 
     private void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOfficialAgentItemStateChanged
         // TODO add your handling code here:
@@ -153,35 +188,16 @@ public class ReporteDeudoresCampania extends javax.swing.JFrame {
             try {
                 if (cmbOfficialAgent.getItemCount() > 0) {
                     int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
-                    loadCmbCampaignsPerOfficialAgent(gc.getCampaignPerOfficialAgent(idAgente));
-                    int idCampania = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
-                    debtors = gcl.getAmountOwedPerCampaign(idAgente, idCampania);
-                    loadTableDebtors();
-                    System.out.println(idAgente);
+                    int idCliente = ((Cliente) cmbClient.getSelectedItem()).getIdClient();
+                    products = gp.getTop5ProductsPerClient(idCliente, idAgente);
                 }
+                loadTableTopProducts();
             } catch (SQLException ex) {
                 Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
     }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
-
-    private void cmbCampaignItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCampaignItemStateChanged
-        // TODO add your handling code here:
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            try {
-                if (cmbCampaign.getItemCount() > 0) {
-                    int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
-                    int idCampania = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
-                    debtors = gcl.getAmountOwedPerCampaign(idAgente, idCampania);
-                    loadTableDebtors();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-    }//GEN-LAST:event_cmbCampaignItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -200,13 +216,13 @@ public class ReporteDeudoresCampania extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReporteDeudoresCampania.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReporteTopProductosPorCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReporteDeudoresCampania.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReporteTopProductosPorCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReporteDeudoresCampania.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReporteTopProductosPorCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ReporteDeudoresCampania.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReporteTopProductosPorCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -214,49 +230,49 @@ public class ReporteDeudoresCampania extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new ReporteDeudoresCampania().setVisible(true);
+                    new ReporteTopProductosPorCliente().setVisible(true);
                 } catch (SQLException ex) {
-                    Logger.getLogger(ReporteDeudoresCampania.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ReporteTopProductosPorCliente.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cmbCampaign;
+    private javax.swing.JComboBox<String> cmbClient;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblDebtors;
+    private javax.swing.JTable tblTopProducts;
     // End of variables declaration//GEN-END:variables
 
-    private void loadCmbOfficialAgent(ArrayList<AgenteOficial> getOfficialAgents) {
+    private void loadOfficialAgent(ArrayList<AgenteOficial> OfficialAgents) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        for (AgenteOficial officialAgent : getOfficialAgents) {
+        for (AgenteOficial officialAgent : OfficialAgents) {
             model.addElement(officialAgent);
         }
         cmbOfficialAgent.setModel(model);
     }
 
-    private void loadCmbCampaignsPerOfficialAgent(ArrayList<Campania> campaigns) {
+    private void loadCmbClient(ArrayList<Cliente> clients) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        for (Campania campaign : campaigns) {
-            model.addElement(campaign);
+        for (Cliente client : clients) {
+            model.addElement(client);
         }
-        cmbCampaign.setModel(model);
+        cmbClient.setModel(model);
     }
 
-    private void loadTableDebtors() {
+    private void loadTableTopProducts() {
         DefaultTableModel model = new DefaultTableModel();
-        String[] columns = {"Cliente", "Monto Adeudado", "Monto Abonado", "Monto Total Adeudado"};
+        String[] columns = {"Código Producto", "Producto", "Cantidad Comprada"};
         model.setColumnIdentifiers(columns);
-        for (VmMontoAdeudadoCampania debtor : debtors) {
-            Object[] rows = {debtor.getClientName(), debtor.getAmountOwed(), debtor.getAmountPayed(), debtor.getTotalOwed()};
+        for (VmTopProductClient product : products) {
+            Object[] rows = {product.getIdProduct(), product.getProductName(), product.getAmountBuyed()};
             model.addRow(rows);
         }
-        tblDebtors.setModel(model);
+        tblTopProducts.setModel(model);
     }
 
 }
