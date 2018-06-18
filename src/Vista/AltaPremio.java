@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -33,6 +35,7 @@ public class AltaPremio extends javax.swing.JFrame {
     GestorAgenteOficial gao = new GestorAgenteOficial();
     GestorPremio gp = new GestorPremio();
     ArrayList<VmCondicion> conditions = new ArrayList<>();
+    final JDialog dialog = new JDialog();
 
     public AltaPremio() throws SQLException {
         initComponents();
@@ -50,37 +53,27 @@ public class AltaPremio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        txtPrice = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         cmbOfficialAgent = new javax.swing.JComboBox<>();
-        btnSavePrice = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        jdcLimitDate = new com.toedter.calendar.JDateChooser();
+        txtPrice = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         btnAddCondition = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblConditions = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
+        jdcLimitDate = new com.toedter.calendar.JDateChooser();
+        btnSavePrice = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jLabel1.setText("Premio a ganar");
 
         jLabel7.setText("Agente oficial");
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        btnSavePrice.setText("Guardar");
-        btnSavePrice.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSavePriceActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Cancelar");
-
-        jLabel8.setText("Fecha límite");
+        jLabel1.setText("Premio a ganar");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Condiciones"));
 
@@ -110,10 +103,12 @@ public class AltaPremio extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnAddCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnAddCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,52 +120,90 @@ public class AltaPremio extends javax.swing.JFrame {
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
+        jLabel8.setText("Fecha límite");
+
+        btnSavePrice.setText("Guardar");
+        btnSavePrice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSavePriceActionPerformed(evt);
+            }
+        });
+
+        btnCancel.setText("Cancelar");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel7))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnSavePrice)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jdcLimitDate, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(82, 82, 82)
+                                .addComponent(btnCancel)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(19, 19, 19)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jdcLimitDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancel)
+                    .addComponent(btnSavePrice))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jdcLimitDate, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnSavePrice))
-                                .addGap(57, 57, 57)
-                                .addComponent(jButton2))
-                            .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jdcLimitDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSavePrice)
-                    .addComponent(jButton2))
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -178,22 +211,26 @@ public class AltaPremio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSavePriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePriceActionPerformed
-        try {
-            // TODO add your handling code here:
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Premio p = new Premio();
-            p.setIdCondition((int) tblConditions.getModel().getValueAt(tblConditions.getSelectedRow(), 0));
-            p.setIdOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent());
-            p.setPriceName(txtPrice.getText());
-            Date limitDate = jdcLimitDate.getDate();
-            String fechaLimite = sdf.format(limitDate);
-            p.setLimitDate(fechaLimite);
-            Date fecha = new Date();            
-            String fechaActual = sdf.format(fecha);
-            p.setStartDate(fechaActual);
-            gp.addPrice(p);
-        } catch (SQLException ex) {
-            Logger.getLogger(AltaPremio.class.getName()).log(Level.SEVERE, null, ex);
+        if (esValido()) {
+            try {
+                // TODO add your handling code here:
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Premio p = new Premio();
+                p.setIdCondition((int) tblConditions.getModel().getValueAt(tblConditions.getSelectedRow(), 0));
+                p.setIdOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent());
+                p.setPriceName(txtPrice.getText());
+                Date limitDate = jdcLimitDate.getDate();
+                String fechaLimite = sdf.format(limitDate);
+                p.setLimitDate(fechaLimite);
+                Date fecha = new Date();
+                String fechaActual = sdf.format(fecha);
+                p.setStartDate(fechaActual);
+                gp.addPrice(p);
+                JOptionPane.showMessageDialog(dialog, "Se ha registrado un nuevo premio");
+                limpiarControles();
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaPremio.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnSavePriceActionPerformed
 
@@ -206,6 +243,15 @@ public class AltaPremio extends javax.swing.JFrame {
             Logger.getLogger(AltaPremio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAddConditionActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea cancelar?", "Alerta", JOptionPane.YES_NO_OPTION);
+        if (resp == 0) {
+            limpiarControles();
+            txtPrice.requestFocus();
+        }
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,13 +294,14 @@ public class AltaPremio extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddCondition;
+    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSavePrice;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private com.toedter.calendar.JDateChooser jdcLimitDate;
     private javax.swing.JTable tblConditions;
@@ -278,5 +325,25 @@ public class AltaPremio extends javax.swing.JFrame {
             model.addRow(rows);
         }
         tblConditions.setModel(model);
+    }
+
+    private boolean esValido() {        
+        if (txtPrice.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "El nombre no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+            txtPrice.requestFocus();
+            return false;
+        }
+        int filaSeleccionada = 0;
+        filaSeleccionada = tblConditions.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(dialog, "¡Debe seleccionar alguna condición!", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    public void limpiarControles() {
+        txtPrice.setText("");
+        jdcLimitDate.setCalendar(null);
     }
 }
