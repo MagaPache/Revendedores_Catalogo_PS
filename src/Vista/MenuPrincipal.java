@@ -450,7 +450,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             String message = "";
             String message2 = "";
             for (Campania campaign : campaigns) {
-                message += "La Campaña " + campaign.getDescription() + " está por cerrar! Fecha de cierre: "+ campaign.getCloseDate() +" \n";
+                message += "La Campaña " + campaign.getDescription() + " está por cerrar! Fecha de cierre: "+ campaign.getCloseDate() +" \n\n";
             }
             ArrayList<Campania> campaignsArrival = new ArrayList<>();
             campaignsArrival = gc.getCampaingSoonArrival();
