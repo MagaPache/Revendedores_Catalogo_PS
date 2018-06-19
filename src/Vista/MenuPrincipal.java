@@ -154,6 +154,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmCampaigns.add(miNewCampaign);
 
         miCloseCampaign.setText("Cerrar");
+        miCloseCampaign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miCloseCampaignActionPerformed(evt);
+            }
+        });
         jmCampaigns.add(miCloseCampaign);
 
         jmFile.add(jmCampaigns);
@@ -519,7 +524,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_miTotalDebtsActionPerformed
 
     private void miCampaignsDebtsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCampaignsDebtsActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            ConsultaSaldoAdeudadoCampania csac = new ConsultaSaldoAdeudadoCampania();
+            csac.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_miCampaignsDebtsActionPerformed
 
@@ -612,6 +623,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
             Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_miCloseOrderActionPerformed
+
+    private void miCloseCampaignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCloseCampaignActionPerformed
+        try {
+            // TODO add your handling code here:
+            CierreCampania cc = new CierreCampania();
+            cc.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miCloseCampaignActionPerformed
 
     /**
      * @param args the command line arguments

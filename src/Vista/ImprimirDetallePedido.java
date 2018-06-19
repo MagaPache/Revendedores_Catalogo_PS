@@ -452,14 +452,18 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
                 table.addCell("" + item.getAmount());
                 table.addCell("" + item.getPrice());
                 table.addCell("" + item.getPage());
-                table.addCell("" + item.getObservations());
+                if (item.getObservations() == null) {
+                    table.addCell("");
+                } else {
+                    table.addCell("" + item.getObservations());
+                }
             }
-            
-            Font letraContenido = FontFactory.getFont(FontFactory.TIMES_ROMAN, 15, Font.NORMAL);            
+
+            Font letraContenido = FontFactory.getFont(FontFactory.TIMES_ROMAN, 15, Font.NORMAL);
             Paragraph contenido1 = new Paragraph("Monto Total $ " + montoTotal, letraContenido);
             contenido1.setAlignment(Element.ALIGN_RIGHT);
             contenido1.setSpacingBefore(30);
-            
+
             //pasamos al documento (por orden) las cosas que deseamos mostrar
             doc.add(title);
             doc.add(table);
