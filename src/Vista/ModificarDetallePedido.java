@@ -5,9 +5,20 @@
  */
 package Vista;
 
+import Controlador.GestorDetallePedido;
+import Controlador.GestorProducto;
+import Modelo.DetallePedido;
+import Modelo.VmProducto;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,8 +29,17 @@ public class ModificarDetallePedido extends javax.swing.JFrame {
     /**
      * Creates new form ModificarDetallePedido
      */
-    public ModificarDetallePedido() {
+    GestorProducto gp = new GestorProducto();
+    GestorDetallePedido gdp = new GestorDetallePedido();
+    ArrayList<VmProducto> products = new ArrayList<>();
+    final JDialog dialog = new JDialog();
+
+    public ModificarDetallePedido() throws SQLException {
         initComponents();
+        products = gp.getAllProducts();
+        loadTableProducts();
+        soloNumeros(txtPrice);
+        
     }
 
     /**
@@ -42,6 +62,12 @@ public class ModificarDetallePedido extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProducts = new javax.swing.JTable();
         btnNewProduct = new javax.swing.JButton();
+        btnUpdateTable = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtObservations = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        spnPageNumber = new javax.swing.JSpinner();
+        btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -54,6 +80,11 @@ public class ModificarDetallePedido extends javax.swing.JFrame {
         jLabel5.setText("Precio");
 
         btnModifyOrderDetail.setText("Guardar");
+        btnModifyOrderDetail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyOrderDetailActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Productos"));
 
@@ -77,53 +108,86 @@ public class ModificarDetallePedido extends javax.swing.JFrame {
             }
         });
 
+        btnUpdateTable.setText("Actualizar");
+        btnUpdateTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateTableActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnNewProduct)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnUpdateTable)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnNewProduct)
-                .addGap(0, 14, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpdateTable)
+                    .addComponent(btnNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
+
+        jLabel2.setText("Observaciones");
+
+        jLabel3.setText("Página");
+
+        btnCancel.setText("Cancelar");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(lblOrderNumber))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
+                        .addComponent(jLabel4)
+                        .addGap(46, 46, 46)
+                        .addComponent(spnAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(spnPageNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(spnAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(213, 213, 213)
-                        .addComponent(btnModifyOrderDetail)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnModifyOrderDetail)
+                                .addGap(66, 66, 66)
+                                .addComponent(btnCancel)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtObservations)))))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,14 +201,18 @@ public class ModificarDetallePedido extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(spnAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spnAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnModifyOrderDetail)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtObservations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(spnPageNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnModifyOrderDetail)
+                    .addComponent(btnCancel))
+                .addGap(29, 29, 29))
         );
 
         pack();
@@ -159,6 +227,46 @@ public class ModificarDetallePedido extends javax.swing.JFrame {
             Logger.getLogger(ModificarDetallePedido.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnNewProductActionPerformed
+
+    private void btnUpdateTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTableActionPerformed
+        try {
+            // TODO add your handling code here:
+            products = gp.getAllProducts();
+            loadTableProducts();
+        } catch (SQLException ex) {
+            Logger.getLogger(ModificarDetallePedido.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnUpdateTableActionPerformed
+
+    private void btnModifyOrderDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyOrderDetailActionPerformed
+        // TODO add your handling code here:
+        if(esValido()){
+            try {
+                DetallePedido dp = new DetallePedido();
+                dp.setIdOrder(Integer.parseInt(lblOrderNumber.getText()));
+                dp.setIdProduct((int)tblProducts.getModel().getValueAt(tblProducts.getSelectedRow(), 0));
+                dp.setAmount((int)spnAmount.getValue());
+                dp.setPrice(Float.parseFloat(txtPrice.getText()));
+                dp.setPage((int)spnPageNumber.getValue());
+                dp.setObservations(txtObservations.getText());
+                gdp.addOrderDetail(dp);
+                JOptionPane.showMessageDialog(dialog, "Se ha guardado correctamente el registro");
+                limpiarControles();
+            } catch (SQLException ex) {
+                Logger.getLogger(ModificarDetallePedido.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+    }//GEN-LAST:event_btnModifyOrderDetailActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea cancelar?", "Alerta", JOptionPane.YES_NO_OPTION);
+        if (resp == 0) {
+            limpiarControles();
+        }
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -190,22 +298,86 @@ public class ModificarDetallePedido extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ModificarDetallePedido().setVisible(true);
+                try {
+                    new ModificarDetallePedido().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ModificarDetallePedido.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnModifyOrderDetail;
     private javax.swing.JButton btnNewProduct;
+    private javax.swing.JButton btnUpdateTable;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblOrderNumber;
+    public javax.swing.JLabel lblOrderNumber;
     private javax.swing.JSpinner spnAmount;
+    private javax.swing.JSpinner spnPageNumber;
     private javax.swing.JTable tblProducts;
+    private javax.swing.JTextField txtObservations;
     private javax.swing.JTextField txtPrice;
     // End of variables declaration//GEN-END:variables
+
+    private void loadTableProducts() {
+        DefaultTableModel model = new DefaultTableModel();
+        String[] columns = {"Id", "Producto", "Código", "Tipo Producto", "Categoría", "Precio Unitario", "Agente Oficial"};
+        model.setColumnIdentifiers(columns);
+        for (VmProducto product : products) {
+            Object[] rows = {product.getIdProduct(), product.getProductName(), product.getProductCode(), product.getProductType(), product.getProductCategory(), product.getUnitPrice(), product.getAgentName()};
+            model.addRow(rows);
+        }
+        tblProducts.setModel(model);
+    }
+    
+    public void soloNumeros(JTextField a) {
+        a.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (Character.isLetter(c)) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
+    }
+    
+    private boolean esValido(){
+        int filaSeleccionada = 0;
+        filaSeleccionada = tblProducts.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(dialog, "¡Debe seleccionar algun registro!", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if((int)spnAmount.getValue() <= 0){
+            JOptionPane.showMessageDialog(dialog, "La cantidad debe ser mayor a cero", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if((int)spnPageNumber.getValue() < 0){
+            JOptionPane.showMessageDialog(dialog, "Debe ingresar un número de página válido", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (txtPrice.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(dialog, "Debe ingresar el precio del producto", "Error", JOptionPane.ERROR_MESSAGE);
+            txtPrice.requestFocus();
+            return false;
+        }      
+        return true;
+    }
+    
+    public void limpiarControles(){
+        spnAmount.setValue(0);
+        spnPageNumber.setValue(0);
+        txtPrice.setText("");
+        txtObservations.setText("");
+    }
+
 }

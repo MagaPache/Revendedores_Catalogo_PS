@@ -7,18 +7,22 @@ package Vista;
 
 import Controlador.GestorAgenteOficial;
 import Controlador.GestorCampania;
+import Controlador.GestorDetallePedido;
 import Controlador.GestorPedido;
 import Modelo.AgenteOficial;
 import Modelo.Campania;
 import Modelo.DetallePedido;
 import Modelo.VmPedidoCliente;
 import Modelo.VmPedidoDetalle;
+import Modelo.VmPedidoDetalleId;
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -33,7 +37,9 @@ public class ModificarPedido extends javax.swing.JFrame {
     GestorAgenteOficial gao = new GestorAgenteOficial();
     GestorCampania gca = new GestorCampania();
     GestorPedido gp = new GestorPedido();
-    ArrayList<VmPedidoDetalle> details = new ArrayList<>();
+    GestorDetallePedido gdp = new GestorDetallePedido();
+    ArrayList<VmPedidoDetalleId> details = new ArrayList<>();
+    final JDialog dialog = new JDialog();
 
     public ModificarPedido() throws SQLException {
         initComponents();
@@ -43,7 +49,7 @@ public class ModificarPedido extends javax.swing.JFrame {
         int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
         loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
         int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
-        details = gp.getOrdersWithDetails(idPedido);
+        details = gp.getOrdersWithDetailsId(idPedido);
         loadTableClientOrderDetail();
         String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
         lblOrderDate.setText(fechaPedido);
@@ -68,6 +74,7 @@ public class ModificarPedido extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblOrderDetail = new javax.swing.JTable();
+        btnUpdateTable = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         lblOrderDate = new javax.swing.JLabel();
         btnAddItem = new javax.swing.JButton();
@@ -117,13 +124,24 @@ public class ModificarPedido extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblOrderDetail);
 
+        btnUpdateTable.setText("Actualizar");
+        btnUpdateTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateTableActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnUpdateTable)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -131,6 +149,8 @@ public class ModificarPedido extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnUpdateTable)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -139,6 +159,11 @@ public class ModificarPedido extends javax.swing.JFrame {
         lblOrderDate.setText("jLabel5");
 
         btnAddItem.setText("Agregar");
+        btnAddItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddItemActionPerformed(evt);
+            }
+        });
 
         btnDropItem.setText("Quitar");
         btnDropItem.addActionListener(new java.awt.event.ActionListener() {
@@ -157,36 +182,35 @@ public class ModificarPedido extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cmbOfficialAgent, 0, 178, Short.MAX_VALUE)
+                                    .addComponent(cmbOrder, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(cmbOfficialAgent, 0, 178, Short.MAX_VALUE)
-                                            .addComponent(cmbOrder, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(lblOrderDate)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(162, 162, 162)
-                                .addComponent(btnAddItem)
-                                .addGap(76, 76, 76)
-                                .addComponent(btnDropItem)))
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblOrderDate))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnAddItem)
+                .addGap(76, 76, 76)
+                .addComponent(btnDropItem)
+                .addGap(220, 220, 220))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -200,13 +224,17 @@ public class ModificarPedido extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(lblOrderDate))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddItem)
-                    .addComponent(btnDropItem))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(80, 80, 80))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAddItem)
+                            .addComponent(btnDropItem))
+                        .addGap(30, 30, 30))))
         );
 
         pack();
@@ -256,7 +284,7 @@ public class ModificarPedido extends javax.swing.JFrame {
                     String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
                     lblOrderDate.setText(fechaPedido);
                     int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
-                    details = gp.getOrdersWithDetails(idPedido);
+                    details = gp.getOrdersWithDetailsId(idPedido);
                     loadTableClientOrderDetail();
                 } catch (SQLException ex) {
                     Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
@@ -268,9 +296,45 @@ public class ModificarPedido extends javax.swing.JFrame {
 
     private void btnDropItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDropItemActionPerformed
         // TODO add your handling code here:
-//        DetallePedido dp = new DetallePedido();
-//        dp.setIdOrderDetail(PROPERTIES);
+        int filaSeleccionada = 0;
+        filaSeleccionada = tblOrderDetail.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(dialog, "¡Debe seleccionar algun registro!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                int idDetalle = (int) tblOrderDetail.getModel().getValueAt(tblOrderDetail.getSelectedRow(), 0);
+                gdp.deleteOrderDetail(idDetalle);
+                int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
+                details = gp.getOrdersWithDetailsId(idPedido);
+                loadTableClientOrderDetail();
+            } catch (SQLException ex) {
+                Logger.getLogger(ModificarPedido.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnDropItemActionPerformed
+
+    private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
+        try {
+            // TODO add your handling code here:
+            ModificarDetallePedido mdp = new ModificarDetallePedido();
+            int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
+            mdp.lblOrderNumber.setText(Integer.toString(idPedido));
+            mdp.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(ModificarPedido.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAddItemActionPerformed
+
+    private void btnUpdateTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTableActionPerformed
+        try {
+            // TODO add your handling code here:
+            int idPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getIdOrder();
+            details = gp.getOrdersWithDetailsId(idPedido);
+            loadTableClientOrderDetail();
+        } catch (SQLException ex) {
+            Logger.getLogger(ModificarPedido.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnUpdateTableActionPerformed
 
     /**
      * @param args the command line arguments
@@ -314,6 +378,7 @@ public class ModificarPedido extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddItem;
     private javax.swing.JButton btnDropItem;
+    private javax.swing.JButton btnUpdateTable;
     private javax.swing.JComboBox<String> cmbCampaign;
     private javax.swing.JComboBox<String> cmbOfficialAgent;
     private javax.swing.JComboBox<String> cmbOrder;
@@ -353,10 +418,10 @@ public class ModificarPedido extends javax.swing.JFrame {
 
     private void loadTableClientOrderDetail() {
         DefaultTableModel model = new DefaultTableModel();
-        String[] columns = {"Producto", "Cantidad", "Precio", "Página", "Observaciones"};
+        String[] columns = {"Código", "Producto", "Cantidad", "Precio", "Página", "Observaciones"};
         model.setColumnIdentifiers(columns);
-        for (VmPedidoDetalle detail : details) {
-            Object[] rows = {detail.getProductName(), detail.getAmount(), detail.getPrice(), detail.getPage(), detail.getObservations()};
+        for (VmPedidoDetalleId detail : details) {
+            Object[] rows = {detail.getIdDetail(), detail.getProductName(), detail.getAmount(), detail.getPrice(), detail.getPageNumber(), detail.getObservations()};
             model.addRow(rows);
         }
         tblOrderDetail.setModel(model);

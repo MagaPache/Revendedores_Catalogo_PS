@@ -49,10 +49,10 @@ public class GestorDetallePedido {
         ad.cerrarConexion();
     }
 
-    public void deleteOrderDetail(DetallePedido dp) throws SQLException {
+    public void deleteOrderDetail(int idDetalle) throws SQLException {
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_delete_order_detail ?");
-        stmt.setInt(1, dp.getIdOrderDetail());
+        stmt.setInt(1, idDetalle);
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
