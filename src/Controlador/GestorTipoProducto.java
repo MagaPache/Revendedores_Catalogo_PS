@@ -25,7 +25,7 @@ public class GestorTipoProducto {
         ArrayList<TipoProducto> types = new ArrayList<>();
         ad.abrirConexion();
         Statement stmt = ad.getConn().createStatement();
-        ResultSet query = stmt.executeQuery("select * from TIPOS_PRODUCTOS"); //Arreglar en gestor producto que se cargue dependiendo del agente oficial que elija
+        ResultSet query = stmt.executeQuery("select * from TIPOS_PRODUCTOS");
         while(query.next()){
             TipoProducto tp = new TipoProducto();
             tp.setIdProductType(query.getInt("idTipoProducto"));

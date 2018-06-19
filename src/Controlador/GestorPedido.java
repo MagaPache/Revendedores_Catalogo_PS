@@ -8,6 +8,7 @@ package Controlador;
 import Modelo.Pedido;
 import Modelo.VmPedidoDetalle;
 import Modelo.VmPedidoCliente;
+import Modelo.VmPedidoDetalleId;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -101,6 +102,30 @@ public class GestorPedido {
             vp.setAmount(query.getInt("cantidad"));
             vp.setPrice(query.getFloat("precio"));
             vp.setPage(query.getInt("pagina"));
+            vp.setObservations(query.getString("observaciones"));
+            orders.add(vp);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return orders;
+    }
+    
+    public ArrayList<VmPedidoDetalleId> getOrdersWithDetailsId(int idPedido) throws SQLException {
+        ArrayList<VmPedidoDetalleId> orders = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_orders_with_details_id ?");
+        stmt.setInt(1, idPedido);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {
+            VmPedidoDetalleId vp = new VmPedidoDetalleId();            
+            vp.setIdOrder(query.getInt("pedido"));
+            vp.setIdDetail(query.getInt("detalle"));
+            vp.setClientName(query.getString("nombre"));
+            vp.setProductName(query.getString("producto"));
+            vp.setAmount(query.getInt("cantidad"));
+            vp.setPrice(query.getFloat("precio"));
+            vp.setPageNumber(query.getInt("pagina"));
             vp.setObservations(query.getString("observaciones"));
             orders.add(vp);
         }
