@@ -9,6 +9,7 @@ import Modelo.Pedido;
 import Modelo.VmPedidoDetalle;
 import Modelo.VmPedidoCliente;
 import Modelo.VmPedidoDetalleId;
+import Modelo.VmPedidoNoEntregado;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,10 +46,10 @@ public class GestorPedido {
         ad.cerrarConexion();
     }
 
-    public void deleteOrder(Pedido p) throws SQLException {
+    public void deleteOrder(int idPedido) throws SQLException {
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_delete_order ?");
-        stmt.setInt(1, p.getIdOrder());
+        stmt.setInt(1, idPedido);
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();
@@ -127,6 +128,26 @@ public class GestorPedido {
             vp.setPrice(query.getFloat("precio"));
             vp.setPageNumber(query.getInt("pagina"));
             vp.setObservations(query.getString("observaciones"));
+            orders.add(vp);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return orders;
+    }
+    
+    public ArrayList<VmPedidoNoEntregado> getOrdersNotDeliveredByAgent(int agente) throws SQLException {
+        ArrayList<VmPedidoNoEntregado> orders = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_orders_not_delivered_by_agent ?");
+        stmt.setInt(1, agente);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {
+            VmPedidoNoEntregado vp = new VmPedidoNoEntregado();
+            vp.setIdOrder(query.getInt("idPedido"));
+            vp.setOrderDate(query.getString("fechaPedido"));
+            vp.setClientName(query.getString("nombre"));
+            vp.setCampaignName(query.getString("descripcion"));            
             orders.add(vp);
         }
         query.close();
