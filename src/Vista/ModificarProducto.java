@@ -13,6 +13,7 @@ import Controlador.GestorTipoProducto;
 import Modelo.AgenteOficial;
 import Modelo.CategoriaProducto;
 import Modelo.Producto;
+import java.awt.event.ItemEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -39,12 +40,8 @@ public class ModificarProducto extends javax.swing.JFrame {
     public ModificarProducto() throws SQLException {
         initComponents();
         loadCmbOfficialAgent(gao.getOfficialAgents());
-//        String texto = txtOfficialAgent.getText();        
-//        if(texto.equals(cmbOfficialAgent.getModel().getSelectedItem().toString())){
-//            cmbOfficialAgent.setSelectedIndex(+1);
-//        }
-        loadCmbProductType(gtp.getProductTypes());
-        loadCmbProductCategory(gcp.getProductCategories());
+        loadCmbProductType(gtp.getProductTypesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        loadCmbProductCategory(gcp.getProductCategoriesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
 
     }
 
@@ -90,6 +87,11 @@ public class ModificarProducto extends javax.swing.JFrame {
         jLabel5.setText("Precio Unitario");
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOfficialAgent.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbOfficialAgentItemStateChanged(evt);
+            }
+        });
         cmbOfficialAgent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbOfficialAgentActionPerformed(evt);
@@ -204,6 +206,7 @@ public class ModificarProducto extends javax.swing.JFrame {
             p.setIdProductCategory(((CategoriaProducto) cmbProductCategory.getSelectedItem()).getIdProductCategory());
             p.setUnitPrice(Float.parseFloat(txtProductPrice.getText()));
             p.setIdOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent());
+           
             gp.modifyProduct(p);
             JOptionPane.showMessageDialog(dialog, "Se ha modificado correctamente");
             dispose();
@@ -211,6 +214,23 @@ public class ModificarProducto extends javax.swing.JFrame {
             Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnModifyProductActionPerformed
+
+    private void cmbOfficialAgentItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbOfficialAgentItemStateChanged
+        // TODO add your handling code here:     
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                if (cmbOfficialAgent.getItemCount() > 0) {
+                    int idAgente = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+                    System.out.println(idAgente);
+                }
+                loadCmbProductType(gtp.getProductTypesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+                loadCmbProductCategory(gcp.getProductCategoriesPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_cmbOfficialAgentItemStateChanged
 
     /**
      * @param args the command line arguments

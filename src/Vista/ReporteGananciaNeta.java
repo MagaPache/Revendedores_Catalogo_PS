@@ -137,17 +137,19 @@ public class ReporteGananciaNeta extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(lblAmountPayed, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAmountPayed, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel4)))
                 .addGap(10, 10, 10)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(lblTotalCost, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTotalCost, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel7)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(50, 50, 50)
@@ -156,7 +158,7 @@ public class ReporteGananciaNeta extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel9)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblNetProfit, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8))))
                 .addContainerGap(26, Short.MAX_VALUE))
@@ -230,7 +232,7 @@ public class ReporteGananciaNeta extends javax.swing.JFrame {
                     int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
                     float campaignProfit = gco.getProfitPerCampaign(idAgent, idCampaign);
                     lblAmountPayed.setText(Float.toString(campaignProfit));
-                    Campania c = gc.getCampaign(idAgent, idCampaign);
+                    Campania c = gc.getCampaign(idAgent, idCampaign);                    
                     lblTotalCost.setText(Float.toString(c.getTotalCost()));
                     float resultado = campaignProfit - c.getTotalCost();
                     lblNetProfit.setText(Float.toString(resultado));
@@ -240,7 +242,7 @@ public class ReporteGananciaNeta extends javax.swing.JFrame {
                     } else if (resultado > 0) {
                         lblCampaignConclusion.setText("Has ganado $" + resultado + " en esta campaña! Felicitaciones!!");
                     } else {
-                        lblCampaignConclusion.setText("Has perdido $" + resultado + " en esta campaña");
+                        lblCampaignConclusion.setText("Has perdido $" + (c.getTotalCost() - campaignProfit) + " en esta campaña");
                     }
                 }
             } catch (SQLException ex) {

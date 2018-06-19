@@ -70,7 +70,7 @@ public class AltaPedido extends javax.swing.JFrame {
         loadTableProducts();
         loadTableClients();
         fechaActual = sdf.format(fecha);
-        lblDate.setText(fechaActual);  
+        lblDate.setText(fechaActual);
         soloNumeros(txtPrice);
         soloLetras(txtProductName);
         soloLetras(txtSearchClientName);
@@ -107,12 +107,14 @@ public class AltaPedido extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         txtaObservations = new javax.swing.JTextArea();
+        btnAddNewProduct = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblClients = new javax.swing.JTable();
         btnNewClient = new javax.swing.JButton();
         btnSearchClient = new javax.swing.JButton();
         txtSearchClientName = new javax.swing.JTextField();
+        btnAddNewClient = new javax.swing.JButton();
         btnAddToOrder = new javax.swing.JButton();
         btnSaveOrder = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -187,6 +189,13 @@ public class AltaPedido extends javax.swing.JFrame {
         txtaObservations.setRows(5);
         jScrollPane4.setViewportView(txtaObservations);
 
+        btnAddNewProduct.setText("Nuevo");
+        btnAddNewProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddNewProductActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -211,7 +220,9 @@ public class AltaPedido extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAddNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -226,7 +237,8 @@ public class AltaPedido extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnSearchProduct)
-                        .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAddNewProduct))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
                         .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -274,6 +286,13 @@ public class AltaPedido extends javax.swing.JFrame {
             }
         });
 
+        btnAddNewClient.setText("Nuevo");
+        btnAddNewClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddNewClientActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -285,8 +304,10 @@ public class AltaPedido extends javax.swing.JFrame {
                         .addComponent(btnNewClient, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtSearchClientName, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSearchClient, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSearchClient, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnAddNewClient, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -299,7 +320,8 @@ public class AltaPedido extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNewClient)
                     .addComponent(btnSearchClient)
-                    .addComponent(txtSearchClientName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSearchClientName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddNewClient))
                 .addContainerGap())
         );
 
@@ -393,8 +415,8 @@ public class AltaPedido extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(spnPageNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(spnPageNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jpInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)))
@@ -477,6 +499,8 @@ public class AltaPedido extends javax.swing.JFrame {
         datos[4] = Float.parseFloat(txtPrice.getText());
         datos[5] = spnAmount.getValue();
 
+        JOptionPane.showMessageDialog(dialog, "OK");
+
     }//GEN-LAST:event_btnNewProductActionPerformed
 
     private void btnNewClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewClientActionPerformed
@@ -494,6 +518,7 @@ public class AltaPedido extends javax.swing.JFrame {
 //                
 //            }
             //codigoPedido++;
+            JOptionPane.showMessageDialog(dialog, "OK");
         } else {
             JOptionPane.showMessageDialog(dialog, "Debe seleccionar un producto antes de elegir un cliente");
         }
@@ -579,6 +604,26 @@ public class AltaPedido extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSearchClientActionPerformed
 
+    private void btnAddNewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewProductActionPerformed
+        try {
+            // TODO add your handling code here:
+            AltaProducto ap = new AltaProducto();
+            ap.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaPedido.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAddNewProductActionPerformed
+
+    private void btnAddNewClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewClientActionPerformed
+        try {
+            // TODO add your handling code here:
+            AltaCliente ac = new AltaCliente();
+            ac.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaPedido.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAddNewClientActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -619,6 +664,8 @@ public class AltaPedido extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddNewClient;
+    private javax.swing.JButton btnAddNewProduct;
     private javax.swing.JButton btnAddToOrder;
     private javax.swing.JButton btnNewClient;
     private javax.swing.JButton btnNewProduct;
@@ -658,7 +705,7 @@ public class AltaPedido extends javax.swing.JFrame {
     private void loadlstOrderDetail(ArrayList<Object[]> listado) {
         DefaultListModel model = new DefaultListModel();
         for (Object[] object : listado) {
-            String view = object[0].toString() + "- " + object[2].toString() + "- " + object[3].toString() + object[4].toString() + "- " + object[5].toString() + ", "+ object[6].toString() + "- " + object[7].toString() + " Obs: " + object[8].toString();
+            String view = object[0].toString() + "- " + object[2].toString() + "- " + object[3].toString() + object[4].toString() + "- " + object[5].toString() + ", " + object[6].toString() + "- " + object[7].toString() + " Obs: " + object[8].toString();
             model.addElement(view);
         }
         lstOrderDetail.setModel(model);
@@ -734,7 +781,7 @@ public class AltaPedido extends javax.swing.JFrame {
 
         return true;
     }
-    
+
     public void soloNumeros(JTextField a) {
         a.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
@@ -758,12 +805,11 @@ public class AltaPedido extends javax.swing.JFrame {
             }
         });
     }
-    
-    private void limpiarControles(){
+
+    private void limpiarControles() {
         txtPrice.setText("");
         spnAmount.setValue(0);
         txtaObservations.setText("");
     }
-    
 
 }
