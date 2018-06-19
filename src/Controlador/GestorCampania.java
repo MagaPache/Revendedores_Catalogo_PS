@@ -59,6 +59,7 @@ public class GestorCampania {
             c.setCloseDate(query.getString("fechaCierre"));
             c.setArrivalDate(query.getString("fechaArribo"));
             c.setAvailableCredit(query.getFloat("creditoDisponible"));
+            c.setTotalCost(query.getFloat("costoTotal"));
             c.setIdOfficialAgent(query.getInt("idAgenteOficial"));
             c.setDescription(query.getString("descripcion"));
         }
