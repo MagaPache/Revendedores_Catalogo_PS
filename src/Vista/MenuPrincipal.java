@@ -56,7 +56,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         miNewProduct = new javax.swing.JMenuItem();
         jmFileOrders = new javax.swing.JMenu();
         miNewOrder = new javax.swing.JMenuItem();
-        miRemoveOrder = new javax.swing.JMenuItem();
+        miCloseOrder = new javax.swing.JMenuItem();
         jmFilePayments = new javax.swing.JMenu();
         miNewPayment = new javax.swing.JMenuItem();
         jmFilePrizes = new javax.swing.JMenu();
@@ -192,8 +192,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         jmFileOrders.add(miNewOrder);
 
-        miRemoveOrder.setText("Eliminar");
-        jmFileOrders.add(miRemoveOrder);
+        miCloseOrder.setText("Cerrar Pedido");
+        miCloseOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miCloseOrderActionPerformed(evt);
+            }
+        });
+        jmFileOrders.add(miCloseOrder);
 
         jmFile.add(jmFileOrders);
 
@@ -598,6 +603,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mPrintClientInfoActionPerformed
 
+    private void miCloseOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCloseOrderActionPerformed
+        try {
+            // TODO add your handling code here:
+            CerrarPedido cp = new CerrarPedido();
+            cp.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_miCloseOrderActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -663,6 +678,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem miCampaignsDebts;
     private javax.swing.JMenuItem miClientConsult;
     private javax.swing.JMenuItem miCloseCampaign;
+    private javax.swing.JMenuItem miCloseOrder;
     private javax.swing.JMenuItem miDebtorsCampaign;
     private javax.swing.JMenuItem miModifyPrize;
     private javax.swing.JMenuItem miNetProfit;
@@ -675,7 +691,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem miOrderConsult;
     private javax.swing.JMenuItem miPriceActualStatus;
     private javax.swing.JMenuItem miPrintOrderDetail;
-    private javax.swing.JMenuItem miRemoveOrder;
     private javax.swing.JMenuItem miTopPerClient;
     private javax.swing.JMenuItem miTopPerType;
     private javax.swing.JMenuItem miTotalDebts;
