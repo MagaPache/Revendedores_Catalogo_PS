@@ -56,7 +56,8 @@ public class EliminarPedido extends javax.swing.JFrame {
         tblRegisteredOrders = new javax.swing.JTable();
         btnDeleteOrder = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Agente Oficial");
 
@@ -113,7 +114,7 @@ public class EliminarPedido extends javax.swing.JFrame {
                         .addGap(11, 11, 11)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()

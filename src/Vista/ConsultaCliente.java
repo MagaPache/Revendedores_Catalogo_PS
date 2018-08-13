@@ -83,6 +83,7 @@ public class ConsultaCliente extends javax.swing.JFrame {
         btnUpdateTable = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         btnPrintClient.setText("Imprimir");
         btnPrintClient.addActionListener(new java.awt.event.ActionListener() {

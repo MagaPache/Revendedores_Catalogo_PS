@@ -578,8 +578,9 @@ public class AltaPedido extends javax.swing.JFrame {
                 }
                 dp.setIdOrder(Integer.parseInt(objects[0].toString()));
                 gdp.addOrderDetail(dp);
-                JOptionPane.showMessageDialog(dialog, "Se ha registrado correctamente el pedido");
             }
+            JOptionPane.showMessageDialog(dialog, "Se ha registrado correctamente el pedido");
+
         } catch (SQLException ex) {
             System.out.println(ex);
         }

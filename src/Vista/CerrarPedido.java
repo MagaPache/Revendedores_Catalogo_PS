@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -35,6 +37,7 @@ public class CerrarPedido extends javax.swing.JFrame {
     GestorCampania gca = new GestorCampania();
     GestorPedido gp = new GestorPedido();
     ArrayList<VmPedidoDetalle> details = new ArrayList<>();
+    final JDialog dialog = new JDialog();
 
     public CerrarPedido() throws SQLException {
         initComponents();
@@ -71,6 +74,7 @@ public class CerrarPedido extends javax.swing.JFrame {
         btnDeliverOrder = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Agente Oficial");
 
@@ -79,6 +83,7 @@ public class CerrarPedido extends javax.swing.JFrame {
         jLabel3.setText("Pedido");
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOfficialAgent.setPreferredSize(new java.awt.Dimension(55, 20));
         cmbOfficialAgent.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbOfficialAgentItemStateChanged(evt);
@@ -86,6 +91,7 @@ public class CerrarPedido extends javax.swing.JFrame {
         });
 
         cmbCampaign.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCampaign.setPreferredSize(new java.awt.Dimension(55, 20));
         cmbCampaign.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbCampaignItemStateChanged(evt);
@@ -93,6 +99,7 @@ public class CerrarPedido extends javax.swing.JFrame {
         });
 
         cmbOrder.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOrder.setPreferredSize(new java.awt.Dimension(55, 20));
         cmbOrder.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbOrderItemStateChanged(evt);
@@ -253,6 +260,8 @@ public class CerrarPedido extends javax.swing.JFrame {
             String fechaEntrega = sdf.format(jdcDeliveryDate.getDate());
             p.setDeliveryDate(fechaEntrega);
             gp.deliverOrder(p);
+            JOptionPane.showMessageDialog(dialog, "Se ha registrado la entrega del pedido");
+
         } catch (SQLException ex) {
             Logger.getLogger(CerrarPedido.class.getName()).log(Level.SEVERE, null, ex);
         }

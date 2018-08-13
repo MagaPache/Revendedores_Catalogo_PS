@@ -91,6 +91,7 @@ public class AltaProducto extends javax.swing.JFrame {
         btnUpdateTable = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Nuevo Producto"));
 
@@ -101,6 +102,7 @@ public class AltaProducto extends javax.swing.JFrame {
         jLabel6.setText("Agente Oficial");
 
         cmbOfficialAgent.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOfficialAgent.setMinimumSize(new java.awt.Dimension(55, 20));
         cmbOfficialAgent.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbOfficialAgentItemStateChanged(evt);
@@ -110,14 +112,17 @@ public class AltaProducto extends javax.swing.JFrame {
         jLabel3.setText("Tipo");
 
         cmbProductType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbProductType.setPreferredSize(new java.awt.Dimension(55, 20));
 
         jLabel4.setText("Categoría");
 
         cmbProductCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbProductCategory.setMinimumSize(new java.awt.Dimension(55, 20));
 
         jLabel5.setText("Precio Unitario");
 
         btnNewProduct.setText("Guardar");
+        btnNewProduct.setPreferredSize(new java.awt.Dimension(75, 23));
         btnNewProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewProductActionPerformed(evt);
@@ -164,7 +169,7 @@ public class AltaProducto extends javax.swing.JFrame {
                                 .addComponent(cmbProductCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
-                        .addComponent(btnNewProduct)
+                        .addComponent(btnNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCancel)))
                 .addContainerGap(37, Short.MAX_VALUE))
@@ -199,11 +204,11 @@ public class AltaProducto extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
-                    .addComponent(btnNewProduct))
+                    .addComponent(btnNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Buscar --Modificar Producto"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Buscar -- Modificar Producto"));
 
         tblProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

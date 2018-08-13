@@ -127,7 +127,7 @@ public class ReporteDeudoresCampania extends javax.swing.JFrame {
                         .addGap(33, 33, 33)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cmbCampaign, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(45, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(

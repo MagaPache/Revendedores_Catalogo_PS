@@ -34,6 +34,22 @@ public class ReporteGananciaNeta extends javax.swing.JFrame {
         initComponents();
         loadCmbOfficialAgent(gao.getOfficialAgents());
         loadCmbCampaign(gc.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+        int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+            int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+            float campaignProfit = gco.getProfitPerCampaign(idAgent, idCampaign);
+            lblAmountPayed.setText(Float.toString(campaignProfit));
+            Campania c = gc.getCampaign(idAgent, idCampaign);
+            lblTotalCost.setText(Float.toString(c.getTotalCost()));
+            float resultado = campaignProfit - c.getTotalCost();
+            lblNetProfit.setText(Float.toString(resultado));
+
+            if (resultado == 0) {
+                lblCampaignConclusion.setText("No has ganado ni perdido dinero en esta campaña");
+            } else if (resultado > 0) {
+                lblCampaignConclusion.setText("Has ganado $" + resultado + " en esta campaña! Felicitaciones!!");
+            } else {
+                lblCampaignConclusion.setText("Has perdido $" + (c.getTotalCost() - campaignProfit) + " en esta campaña");
+            }
     }
 
     /**
@@ -65,6 +81,7 @@ public class ReporteGananciaNeta extends javax.swing.JFrame {
         lblCampaignConclusion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Agente Oficial");
 
@@ -216,6 +233,22 @@ public class ReporteGananciaNeta extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             loadCmbCampaign(gc.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
+            int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+            int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+            float campaignProfit = gco.getProfitPerCampaign(idAgent, idCampaign);
+            lblAmountPayed.setText(Float.toString(campaignProfit));
+            Campania c = gc.getCampaign(idAgent, idCampaign);
+            lblTotalCost.setText(Float.toString(c.getTotalCost()));
+            float resultado = campaignProfit - c.getTotalCost();
+            lblNetProfit.setText(Float.toString(resultado));
+
+            if (resultado == 0) {
+                lblCampaignConclusion.setText("No has ganado ni perdido dinero en esta campaña");
+            } else if (resultado > 0) {
+                lblCampaignConclusion.setText("Has ganado $" + resultado + " en esta campaña! Felicitaciones!!");
+            } else {
+                lblCampaignConclusion.setText("Has perdido $" + (c.getTotalCost() - campaignProfit) + " en esta campaña");
+            }
             //String fechaPedido = ((VmPedidoCliente) cmbOrder.getSelectedItem()).getOrderDate();
             //lblOrderDate.setText(fechaPedido);
         } catch (SQLException ex) {
@@ -232,7 +265,7 @@ public class ReporteGananciaNeta extends javax.swing.JFrame {
                     int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
                     float campaignProfit = gco.getProfitPerCampaign(idAgent, idCampaign);
                     lblAmountPayed.setText(Float.toString(campaignProfit));
-                    Campania c = gc.getCampaign(idAgent, idCampaign);                    
+                    Campania c = gc.getCampaign(idAgent, idCampaign);
                     lblTotalCost.setText(Float.toString(c.getTotalCost()));
                     float resultado = campaignProfit - c.getTotalCost();
                     lblNetProfit.setText(Float.toString(resultado));

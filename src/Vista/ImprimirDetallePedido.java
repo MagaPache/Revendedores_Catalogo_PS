@@ -99,6 +99,7 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
         btnPrint = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Agente Oficial");
 
@@ -181,7 +182,7 @@ public class ImprimirDetallePedido extends javax.swing.JFrame {
 
         jLabel4.setText("Fecha de Pedido");
 
-        lblOrderDate.setText("jLabel5");
+        lblOrderDate.setText("-");
 
         btnPrint.setText("Imprimir");
         btnPrint.addActionListener(new java.awt.event.ActionListener() {

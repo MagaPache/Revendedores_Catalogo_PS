@@ -176,6 +176,27 @@ public class GestorPedido {
         ad.cerrarConexion();
         return orders;
     }
+    
+    public ArrayList<VmPedidoCliente> getClientOrderNotPayedByCampaign(int campaign, int agent) throws SQLException {
+        ArrayList<VmPedidoCliente> orders = new ArrayList<>();
+        ad.abrirConexion();
+        PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_get_client_order_not_payed_by_campaign ?, ?");
+        stmt.setInt(1, campaign);
+        stmt.setInt(2, agent);
+        ResultSet query = stmt.executeQuery();
+        while (query.next()) {
+            VmPedidoCliente vpc = new VmPedidoCliente();
+            vpc.setIdOrder(query.getInt("idPedido"));
+            vpc.setIdClient(query.getInt("idCliente"));
+            vpc.setClientName(query.getString("nombre"));
+            vpc.setOrderDate(query.getString("fechaPedido"));
+            orders.add(vpc);
+        }
+        query.close();
+        stmt.close();
+        ad.cerrarConexion();
+        return orders;
+    }
 
     public int getMaxCodigo() throws SQLException {
         ad.abrirConexion();

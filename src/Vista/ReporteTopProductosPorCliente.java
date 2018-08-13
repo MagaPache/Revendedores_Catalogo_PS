@@ -61,6 +61,7 @@ public class ReporteTopProductosPorCliente extends javax.swing.JFrame {
         tblTopProducts = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Agente Oficial");
 

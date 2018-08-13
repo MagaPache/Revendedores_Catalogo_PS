@@ -69,6 +69,7 @@ public class AltaPremio extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel7.setText("Agente oficial");
 
@@ -135,6 +136,7 @@ public class AltaPremio extends javax.swing.JFrame {
         jLabel8.setText("Fecha límite");
 
         btnSavePrice.setText("Guardar");
+        btnSavePrice.setPreferredSize(new java.awt.Dimension(75, 23));
         btnSavePrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSavePriceActionPerformed(evt);
@@ -167,7 +169,7 @@ public class AltaPremio extends javax.swing.JFrame {
                                     .addComponent(cmbOfficialAgent, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnSavePrice)
+                                    .addComponent(btnSavePrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel8)
                                         .addGap(18, 18, 18)
@@ -198,7 +200,7 @@ public class AltaPremio extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
-                    .addComponent(btnSavePrice))
+                    .addComponent(btnSavePrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
