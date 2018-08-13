@@ -56,6 +56,7 @@ public class ModificarCobro extends javax.swing.JFrame {
         lblPaymentNumber = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Agente Oficial");
 

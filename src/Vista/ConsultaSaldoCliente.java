@@ -71,6 +71,7 @@ public class ConsultaSaldoCliente extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Cliente");
 
@@ -183,7 +184,7 @@ public class ConsultaSaldoCliente extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(cmbClient, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cmbClient, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -213,6 +214,13 @@ public class ConsultaSaldoCliente extends javax.swing.JFrame {
                     lblTotalOwed.setText("");
                     lblTotalPayed.setText("");
                     lblTotalDebt.setText("");
+                    int idCliente = ((Cliente) cmbClient.getSelectedItem()).getIdClient();
+                    float montoTotalAdeudado = gc.getAmountOwedPerClient(idCliente, idAgente);
+                    lblTotalOwed.setText(Float.toString(montoTotalAdeudado));
+                    float montoTotalPagado = gc.getAmountPayedPerClient(idCliente, idAgente);
+                    lblTotalPayed.setText(Float.toString(montoTotalPagado));
+                    totalDebt = montoTotalAdeudado - montoTotalPagado;
+                    lblTotalDebt.setText(Float.toString(totalDebt));
                     System.out.println(idAgente);
                 }
             } catch (SQLException ex) {

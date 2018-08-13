@@ -44,10 +44,10 @@ public class GestorCobro {
         ad.cerrarConexion();
     }
     
-    public void deletePayment(Cobro c) throws SQLException{
+    public void deletePayment(int idCobro) throws SQLException{
         ad.abrirConexion();
         PreparedStatement stmt = ad.getConn().prepareStatement("EXEC sp_delete_payment ?");
-        stmt.setInt(1, c.getIdPayment());
+        stmt.setInt(1, idCobro);
         stmt.executeUpdate();
         stmt.close();
         ad.cerrarConexion();

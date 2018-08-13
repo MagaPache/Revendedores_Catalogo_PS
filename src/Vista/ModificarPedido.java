@@ -156,7 +156,7 @@ public class ModificarPedido extends javax.swing.JFrame {
 
         jLabel4.setText("Fecha de Pedido");
 
-        lblOrderDate.setText("jLabel5");
+        lblOrderDate.setText("-");
 
         btnAddItem.setText("Agregar");
         btnAddItem.addActionListener(new java.awt.event.ActionListener() {

@@ -57,7 +57,7 @@ public class AltaCobro extends javax.swing.JFrame {
         loadCmbCampaignsPerOfficialAgent(gc.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
         int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
         int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
-        loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
+        loadCmbClientOrder(gp.getClientOrderNotPayedByCampaign(idCampaign, idAgent));
         int idPedido = ((VmPedidoCliente) cmbClientOrder.getSelectedItem()).getIdOrder();
         lblOrderNumber.setText(Integer.toString(idPedido));
         orderDetailed = gp.getOrdersWithDetails(idPedido);
@@ -103,6 +103,7 @@ public class AltaCobro extends javax.swing.JFrame {
         btnUpdateTable = new javax.swing.JButton();
         btnModifyPayment = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -132,6 +133,11 @@ public class AltaCobro extends javax.swing.JFrame {
         cmbClientOrder.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbClientOrderItemStateChanged(evt);
+            }
+        });
+        cmbClientOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbClientOrderActionPerformed(evt);
             }
         });
 
@@ -288,6 +294,13 @@ public class AltaCobro extends javax.swing.JFrame {
 
         jLabel7.setText("Buscar Cliente");
 
+        btnDelete.setText("Eliminar");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -302,7 +315,9 @@ public class AltaCobro extends javax.swing.JFrame {
                         .addComponent(btnSearchPayment)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnUpdateTable, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(3, 3, 3)
+                        .addComponent(btnDelete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnModifyPayment))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel7)
@@ -321,7 +336,8 @@ public class AltaCobro extends javax.swing.JFrame {
                     .addComponent(btnSearchPayment)
                     .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnModifyPayment)
-                    .addComponent(btnUpdateTable))
+                    .addComponent(btnUpdateTable)
+                    .addComponent(btnDelete))
                 .addContainerGap())
         );
 
@@ -355,7 +371,7 @@ public class AltaCobro extends javax.swing.JFrame {
             try {
                 if (cmbCampaign.getItemCount() > 0) {
                     int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
-                    loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
+                    loadCmbClientOrder(gp.getClientOrderNotPayedByCampaign(idCampaign, idAgent));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(AltaProducto.class.getName()).log(Level.SEVERE, null, ex);
@@ -405,13 +421,24 @@ public class AltaCobro extends javax.swing.JFrame {
                 paymentDate = jdcPaymentDate.getDate();
                 fechaPago = sdf.format(paymentDate);
 
-                Cobro c = new Cobro();
-                c.setIdOrder(Integer.parseInt(lblOrderNumber.getText()));
-                c.setAmountCharged(Float.parseFloat(txtAmountCharged.getText()));
-                c.setPaymentDate(fechaPago);
-                gco.addPayment(c);
-                JOptionPane.showMessageDialog(dialog, "Se ha registrado un nuevo cobro");
-                limpiarControles();
+                int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
+                int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
+                int idOrder = Integer.parseInt(lblOrderNumber.getText());
+                float totalAmountPerOrder = gp.getTotalAmount(idAgent, idCampaign, idOrder);
+                float totalPayment = getTotalPayedPerOrder();
+                float payment = Float.parseFloat(txtAmountCharged.getText());
+                System.out.println(totalPayment);
+                if (totalAmountPerOrder < (totalPayment + payment)) {
+                    JOptionPane.showMessageDialog(dialog, "El monto a abonar excede el total de la deuda!!  Deuda Restante: $" + (totalAmountPerOrder - totalPayment));
+                } else {
+                    Cobro c = new Cobro();
+                    c.setIdOrder(Integer.parseInt(lblOrderNumber.getText()));
+                    c.setAmountCharged(Float.parseFloat(txtAmountCharged.getText()));
+                    c.setPaymentDate(fechaPago);
+                    gco.addPayment(c);
+                    JOptionPane.showMessageDialog(dialog, "Se ha registrado un nuevo cobro");
+                    limpiarControles();
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -477,12 +504,31 @@ public class AltaCobro extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
-        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea cancelar?", "Alerta", JOptionPane.YES_NO_OPTION);
+        int resp = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cancelar?", "Alerta", JOptionPane.YES_NO_OPTION);
         if (resp == 0) {
             limpiarControles();
             txtAmountCharged.requestFocus();
         }
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        int resp = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea eliminar el registro?", "Alerta", JOptionPane.YES_NO_OPTION);
+        if (resp == 0) {
+            try {
+                int idCobro = (int) tblPayments.getModel().getValueAt(tblPayments.getSelectedRow(), 0);
+                gco.deletePayment(idCobro);
+                payments = gco.getAllPayments();
+                loadTablePayments();
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void cmbClientOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClientOrderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbClientOrderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -526,6 +572,7 @@ public class AltaCobro extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnModifyPayment;
     private javax.swing.JButton btnSavePayment;
     private javax.swing.JButton btnSearchPayment;
@@ -624,18 +671,29 @@ public class AltaCobro extends javax.swing.JFrame {
     }
 
     private boolean esValido() {
-        int filaSeleccionada = 0;
-        filaSeleccionada = tblClientOrderDetail.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(dialog, "¡Debe seleccionar algún registro!", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
         if (txtAmountCharged.getText().isEmpty()) {
             JOptionPane.showMessageDialog(dialog, "El monto cobrado no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
             txtAmountCharged.requestFocus();
             return false;
         }
         return true;
+    }
+
+    private float getTotalPayedPerOrder() {
+        float totalPayment = 0;
+        try {
+            int orderNumber = Integer.parseInt(lblOrderNumber.getText());
+            payments = gco.getAllPayments();
+            for (VmCobro payment : payments) {
+                int idOrder = payment.getIdOrder();
+                if (orderNumber == idOrder) {
+                    totalPayment += payment.getAmount();
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaCobro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return totalPayment;
     }
 
     private void limpiarControles() {
@@ -647,7 +705,7 @@ public class AltaCobro extends javax.swing.JFrame {
             loadCmbCampaignsPerOfficialAgent(gc.getCampaignPerOfficialAgent(((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent()));
             int idAgent = ((AgenteOficial) cmbOfficialAgent.getSelectedItem()).getIdOfficialAgent();
             int idCampaign = ((Campania) cmbCampaign.getSelectedItem()).getIdCampaign();
-            loadCmbClientOrder(gp.getClientOrderByCampaign(idCampaign, idAgent));
+            loadCmbClientOrder(gp.getClientOrderNotPayedByCampaign(idCampaign, idAgent));
             int idPedido = ((VmPedidoCliente) cmbClientOrder.getSelectedItem()).getIdOrder();
             lblOrderNumber.setText(Integer.toString(idPedido));
             orderDetailed = gp.getOrdersWithDetails(idPedido);

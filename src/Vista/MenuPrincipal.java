@@ -7,6 +7,7 @@ package Vista;
 
 import Controlador.GestorCampania;
 import Modelo.Campania;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,18 +51,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmCampaigns = new javax.swing.JMenu();
         miNewCampaign = new javax.swing.JMenuItem();
         miCloseCampaign = new javax.swing.JMenuItem();
-        jmFileClients = new javax.swing.JMenu();
-        miNewClient = new javax.swing.JMenuItem();
-        jmFileProducts = new javax.swing.JMenu();
-        miNewProduct = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jmFileOrders = new javax.swing.JMenu();
         miNewOrder = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         miCloseOrder = new javax.swing.JMenuItem();
-        jmFilePayments = new javax.swing.JMenu();
-        miNewPayment = new javax.swing.JMenuItem();
         jmFilePrizes = new javax.swing.JMenu();
         miNewPrize = new javax.swing.JMenuItem();
         miModifyPrize = new javax.swing.JMenuItem();
+        jmiClose = new javax.swing.JMenuItem();
         jmConsults = new javax.swing.JMenu();
         mClientConsult = new javax.swing.JMenu();
         miClientConsult = new javax.swing.JMenuItem();
@@ -85,12 +85,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
         miPrintOrderDetail = new javax.swing.JMenuItem();
         mPrintClientInfo = new javax.swing.JMenuItem();
         jmHelp = new javax.swing.JMenu();
-        jmAbout = new javax.swing.JMenu();
+        jmiHelp = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1280, 641));
+        setTitle("MAPACHE SYS - Revendedores Catálogo ");
         setMinimumSize(new java.awt.Dimension(1280, 641));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -100,8 +100,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         getContentPane().setLayout(null);
 
-        jPanel1.setBackground(new java.awt.Color(255, 204, 153));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), "Avisos Importantes"));
+        jPanel1.setBackground(new java.awt.Color(37, 4, 37));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), "Avisos Importantes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel1.setMinimumSize(new java.awt.Dimension(1115, 170));
         jPanel1.setPreferredSize(new java.awt.Dimension(1115, 170));
@@ -126,26 +126,27 @@ public class MenuPrincipal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(10, 400, 1240, 180);
 
-        lblBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/colorful-abstract-wallpapers-picture-Is-4K-Wallpaper.jpg"))); // NOI18N
+        lblBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/small_irregular_cubes-wallpaper-1366x768.jpg"))); // NOI18N
         lblBackground.setMinimumSize(new java.awt.Dimension(1280, 620));
         getContentPane().add(lblBackground);
         lblBackground.setBounds(-10, -20, 1280, 620);
 
         jMenuBar1.setMinimumSize(new java.awt.Dimension(0, 4));
-        jMenuBar1.setPreferredSize(new java.awt.Dimension(208, 30));
+        jMenuBar1.setPreferredSize(new java.awt.Dimension(208, 35));
 
+        jmFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/if_Rounded-39_2024636.png"))); // NOI18N
         jmFile.setText("Archivo");
 
         jmCampaigns.setText("Campañas");
 
-        miNewCampaign.setText("Nueva");
+        miNewCampaign.setText("Nueva Campaña");
         miNewCampaign.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miNewCampaignActionPerformed(evt);
@@ -153,7 +154,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         jmCampaigns.add(miNewCampaign);
 
-        miCloseCampaign.setText("Cerrar");
+        miCloseCampaign.setText("Cerrar Campaña");
         miCloseCampaign.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miCloseCampaignActionPerformed(evt);
@@ -163,39 +164,47 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jmFile.add(jmCampaigns);
 
-        jmFileClients.setText("Clientes");
-
-        miNewClient.setText("Nuevo");
-        miNewClient.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem1.setText("Clientes");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miNewClientActionPerformed(evt);
+                jMenuItem1ActionPerformed(evt);
             }
         });
-        jmFileClients.add(miNewClient);
+        jmFile.add(jMenuItem1);
 
-        jmFile.add(jmFileClients);
-
-        jmFileProducts.setText("Productos");
-
-        miNewProduct.setText("Nuevo");
-        miNewProduct.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem4.setText("Cobros");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miNewProductActionPerformed(evt);
+                jMenuItem4ActionPerformed(evt);
             }
         });
-        jmFileProducts.add(miNewProduct);
+        jmFile.add(jMenuItem4);
 
-        jmFile.add(jmFileProducts);
+        jMenuItem2.setText("Productos");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jmFile.add(jMenuItem2);
 
         jmFileOrders.setText("Pedidos");
 
-        miNewOrder.setText("Nuevo");
+        miNewOrder.setText("Nuevo Pedido");
         miNewOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miNewOrderActionPerformed(evt);
             }
         });
         jmFileOrders.add(miNewOrder);
+
+        jMenuItem3.setText("Modificar Pedido");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jmFileOrders.add(jMenuItem3);
 
         miCloseOrder.setText("Cerrar Pedido");
         miCloseOrder.addActionListener(new java.awt.event.ActionListener() {
@@ -207,21 +216,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jmFile.add(jmFileOrders);
 
-        jmFilePayments.setText("Cobros");
-
-        miNewPayment.setText("Nuevo");
-        miNewPayment.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miNewPaymentActionPerformed(evt);
-            }
-        });
-        jmFilePayments.add(miNewPayment);
-
-        jmFile.add(jmFilePayments);
-
         jmFilePrizes.setText("Premios");
 
-        miNewPrize.setText("Nuevo");
+        miNewPrize.setText("Nuevo Premio");
         miNewPrize.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miNewPrizeActionPerformed(evt);
@@ -229,7 +226,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         jmFilePrizes.add(miNewPrize);
 
-        miModifyPrize.setText("Modificar");
+        miModifyPrize.setText("Modificar Premio");
         miModifyPrize.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miModifyPrizeActionPerformed(evt);
@@ -239,8 +236,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jmFile.add(jmFilePrizes);
 
+        jmiClose.setText("Salir");
+        jmiClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiCloseActionPerformed(evt);
+            }
+        });
+        jmFile.add(jmiClose);
+
         jMenuBar1.add(jmFile);
 
+        jmConsults.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/if_Rounded-10_2024633.png"))); // NOI18N
         jmConsults.setText("Consultas");
 
         mClientConsult.setText("Clientes");
@@ -297,6 +303,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jmConsults);
 
+        jmReports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/if_Rounded-20_2024655.png"))); // NOI18N
         jmReports.setText("Reportes");
 
         mClientsReports.setText("Clientes");
@@ -361,6 +368,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jmReports);
 
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/if_Rounded-04_2024631.png"))); // NOI18N
         jMenu4.setText("Imprimir");
 
         miPrintOrderDetail.setText("Detalle de Pedido");
@@ -381,26 +389,28 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu4);
 
+        jmHelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/if_Rounded-11_2024664.png"))); // NOI18N
         jmHelp.setText("Ayuda");
-        jMenuBar1.add(jmHelp);
+        jmHelp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmHelpActionPerformed(evt);
+            }
+        });
 
-        jmAbout.setText("Acerca de");
-        jMenuBar1.add(jmAbout);
+        jmiHelp.setText("Manual de Usuario");
+        jmiHelp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiHelpActionPerformed(evt);
+            }
+        });
+        jmHelp.add(jmiHelp);
+
+        jMenuBar1.add(jmHelp);
 
         setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void miNewClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewClientActionPerformed
-        try {
-            // TODO add your handling code here:
-            AltaCliente ac = new AltaCliente();
-            ac.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_miNewClientActionPerformed
 
     private void miModifyPrizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miModifyPrizeActionPerformed
         try {
@@ -412,16 +422,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_miModifyPrizeActionPerformed
 
-    private void miNewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewProductActionPerformed
-        try {
-            // TODO add your handling code here:
-            AltaProducto ap = new AltaProducto();
-            ap.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_miNewProductActionPerformed
-
     private void miNewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewOrderActionPerformed
         try {
             // TODO add your handling code here:
@@ -431,16 +431,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
             Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_miNewOrderActionPerformed
-
-    private void miNewPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewPaymentActionPerformed
-        try {
-            // TODO add your handling code here:
-            AltaCobro ac = new AltaCobro();
-            ac.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_miNewPaymentActionPerformed
 
     private void miNewPrizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNewPrizeActionPerformed
         try {
@@ -634,6 +624,66 @@ public class MenuPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_miCloseCampaignActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        try {
+            // TODO add your handling code here:
+            AltaCliente ac = new AltaCliente();
+            ac.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        try {
+            // TODO add your handling code here:
+            AltaProducto ap = new AltaProducto();
+            ap.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        try {
+            // TODO add your handling code here:
+            ModificarPedido mp = new ModificarPedido();
+            mp.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        try {
+            // TODO add your handling code here:
+            AltaCobro ac = new AltaCobro();
+            ac.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jmiCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiCloseActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jmiCloseActionPerformed
+
+    private void jmHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmHelpActionPerformed
+        
+    }//GEN-LAST:event_jmHelpActionPerformed
+
+    private void jmiHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiHelpActionPerformed
+        try {
+            //Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler"+"C:\\Users\\Usuario\\Desktop\\DEFINITIVO\\REVENDEDORES_CATÁLOGO_108826.docx");
+            String url = "C:\\Users\\Usuario\\Desktop\\DEFINITIVO\\REVENDEDORES_CATÁLOGO_108826.docx";
+            ProcessBuilder pb = new ProcessBuilder();
+            pb.command("cmd.exe","/c",url);
+            pb.start();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jmiHelpActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -673,19 +723,21 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JMenu jmAbout;
     private javax.swing.JMenu jmCampaigns;
     private javax.swing.JMenu jmConsults;
     private javax.swing.JMenu jmFile;
-    private javax.swing.JMenu jmFileClients;
     private javax.swing.JMenu jmFileOrders;
-    private javax.swing.JMenu jmFilePayments;
     private javax.swing.JMenu jmFilePrizes;
-    private javax.swing.JMenu jmFileProducts;
     private javax.swing.JMenu jmHelp;
     private javax.swing.JMenu jmReports;
+    private javax.swing.JMenuItem jmiClose;
+    private javax.swing.JMenuItem jmiHelp;
     private javax.swing.JLabel lblBackground;
     private javax.swing.JMenu mClientConsult;
     private javax.swing.JMenu mClientsReports;
@@ -704,11 +756,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem miModifyPrize;
     private javax.swing.JMenuItem miNetProfit;
     private javax.swing.JMenuItem miNewCampaign;
-    private javax.swing.JMenuItem miNewClient;
     private javax.swing.JMenuItem miNewOrder;
-    private javax.swing.JMenuItem miNewPayment;
     private javax.swing.JMenuItem miNewPrize;
-    private javax.swing.JMenuItem miNewProduct;
     private javax.swing.JMenuItem miOrderConsult;
     private javax.swing.JMenuItem miPriceActualStatus;
     private javax.swing.JMenuItem miPrintOrderDetail;
